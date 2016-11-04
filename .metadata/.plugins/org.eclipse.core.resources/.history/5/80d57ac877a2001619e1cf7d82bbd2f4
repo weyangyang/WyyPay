@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+   
+    <color name="yellow">#f5963d</color>
+    <color name="gray">#cccccc</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="bg_cardview">#00d0bf</color>
+    <color name="bg_edit_text">#00bef3</color>
+    <color name="bg_activation_nav">#91cf50</color>
+    <color name="red">#ff0000</color>
+    <color name="bg_main_gray">#eaeaea</color>
+    </resources>

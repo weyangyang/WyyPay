@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main_gray"
+     >
+<RelativeLayout 
+    android:id="@+id/rlLoginTitle"
+     android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_background"
+         android:layout_alignParentTop="true"
+         android:gravity="center"
+    >
+    <ImageView
+        android:id="@+id/ivLoginTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:background="@drawable/ic_login_top"
+         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivLoginTitle"
+        android:textColor="@color/white"
+        android:text="微洋洋收银" />
+</RelativeLayout>
+<ImageView 
+    android:id="@+id/ivAccount"
+    android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/rlLoginTitle"
+        android:background="@drawable/icon_account"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+    />
+<com.weyangyang.pay.view.ClearEditText
+    android:id="@+id/etAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/ivAccount"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/rlLoginTitle"
+        android:hint="请输入手机号"
+            android:paddingBottom="5dp"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:textColor="@color/text_gray_1"
+            android:textColorHint="@color/text_hint"
+        android:text="18501053570" />
+<View 
+     android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginRight="20dp"
+         android:layout_below="@+id/etAccount"
+         android:layout_toRightOf="@+id/ivAccount"
+    />
+</RelativeLayout>

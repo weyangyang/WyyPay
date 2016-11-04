@@ -1,0 +1,141 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main_gray"
+     >
+<RelativeLayout 
+    android:id="@+id/rlLoginTitle"
+     android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_background"
+         android:layout_alignParentTop="true"
+         android:gravity="center"
+    >
+    <ImageView
+        android:id="@+id/ivLoginTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:background="@drawable/ic_login_top"
+         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivLoginTitle"
+        android:textColor="@color/white"
+        android:text="微洋洋收银" />
+</RelativeLayout>
+<ImageView 
+    android:id="@+id/ivAccount"
+    android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/rlLoginTitle"
+        android:background="@drawable/icon_account"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+    />
+<com.weyangyang.pay.view.ClearEditText
+    android:id="@+id/etAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/ivAccount"
+        android:layout_marginTop="25dp"
+        android:paddingTop="5dp"
+        android:layout_below="@+id/rlLoginTitle"
+        android:hint="请输入手机号"
+            android:paddingBottom="5dp"
+            android:singleLine="true"
+            android:textColor="@color/text_gray_press_3"
+            android:textColorHint="@color/text_gray_3"
+            android:background="@null"
+           android:inputType="phone"
+         />
+<View 
+    android:id="@+id/viewAccount"
+     android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_gray_3"
+        android:layout_marginRight="20dp"
+         android:layout_below="@+id/etAccount"
+         android:layout_toRightOf="@+id/ivAccount"
+    />
+<ImageView 
+    android:id="@+id/ivPasswd"
+    android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/viewAccount"
+        android:background="@drawable/icon_password"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+    />
+<com.weyangyang.pay.view.ClearEditText
+    android:id="@+id/etPasswd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/ivPasswd"
+        android:layout_marginTop="25dp"
+        android:paddingTop="5dp"
+        android:layout_below="@+id/viewAccount"
+        android:hint="请输入密码"
+            android:paddingBottom="5dp"
+            android:singleLine="true"
+            android:textColor="@color/text_gray_press_3"
+            android:textColorHint="@color/text_gray_3"
+            android:background="@null"
+           android:inputType="textPassword"
+         />
+<View 
+    android:id="@+id/viewPasswd"
+     android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_gray_3"
+        android:layout_marginRight="20dp"
+         android:layout_below="@+id/etPasswd"
+         android:layout_toRightOf="@+id/ivPasswd"
+    />
+ <TextView
+     android:id="@+id/tvForgetPwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewPasswd"
+        android:textColor="@color/white"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:text="忘记密码" />
+ <Button
+     android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textColor="@color/white"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/bg_btn_other"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+         android:textSize="16sp"
+        android:text="注册" />
+ <Button
+     android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_btn_normal"
+        android:textColor="@color/white"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_above="@+id/btnRegister"
+        android:textSize="16sp"
+        android:text="登录"
+         />
+ 
+</RelativeLayout>

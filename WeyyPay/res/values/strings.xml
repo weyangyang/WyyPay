@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">微洋洋收银</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="username_or_password_empty">用户名和密码不能为空</string>
+    <string name="username_is_error">您输入的手机号不正确，请重新输入</string>
+    <string name="passwd_is_error">您输入的密码不正确，请输入6-18位字母与数字组合</string>
+</resources>
