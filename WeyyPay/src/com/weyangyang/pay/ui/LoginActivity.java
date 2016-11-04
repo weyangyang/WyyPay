@@ -14,7 +14,7 @@ import com.weyangyang.pay.utils.Utils;
 import com.weyangyang.pay.view.ClearEditText;
 
 
-public class LoginActivity extends Activity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private com.weyangyang.pay.view.ClearEditText etAccount, etPasswd;
     private TextView tvForgetPwd;
     private Button btnRegister, btnLogin;
@@ -28,21 +28,25 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         initListener();
     }
 
-    private void initListener() {
-        tvForgetPwd.setOnClickListener(this);
-        btnLogin.setOnClickListener(this);
-        btnRegister.setOnClickListener(this);
-    }
-
-    private void initData() {
-    }
-
-    private void initView() {
+    @Override
+    public void initView() {
         etAccount = (ClearEditText) findViewById(R.id.etAccount);
         etPasswd = (ClearEditText) findViewById(R.id.etPasswd);
         tvForgetPwd = (TextView) findViewById(R.id.tvForgetPwd);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnRegister = (Button) findViewById(R.id.btnRegister);
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void initListener() {
+        tvForgetPwd.setOnClickListener(this);
+        btnLogin.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
     }
 
     @Override
@@ -72,8 +76,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 //                startActivity(intent);
                 break;
             case R.id.btnRegister://注册
+                intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(intent);
                 break;
             case R.id.tvForgetPwd://忘记密码
+                intent = new Intent(LoginActivity.this,ForgetPasswdActivity.class);
+                startActivity(intent);
                 break;
         }
     }

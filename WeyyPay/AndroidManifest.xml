@@ -29,6 +29,16 @@
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:label="登录界面"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.weyangyang.pay.ui.RegisterActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:label="注册界面"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.weyangyang.pay.ui.ForgetPasswdActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:label="忘记密码界面"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
