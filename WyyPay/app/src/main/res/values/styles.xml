@@ -1,0 +1,52 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+   <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <attr name="type">
+        <enum name="circle" value="0" />
+        <enum name="roundAngle" value="1" />
+    </attr>
+    <attr name="border" format="dimension"></attr>
+    <attr name="radius" format="dimension"></attr>
+    <attr name="borderColor" format="color"></attr>
+    <attr name="imageHeight" format="dimension"></attr>
+    <attr name="imageWidth" format="dimension"></attr>
+    <attr name="roundLeftTop" format="boolean"></attr>
+    <attr name="roundLeftBottom" format="boolean"></attr>
+    <attr name="roundRightTop" format="boolean"></attr>
+    <attr name="roundRightBottom" format="boolean"></attr>
+    <attr name="lineColor" format="color" />
+    <attr name="circleColor" format="color" />
+    <attr name="showTop" format="boolean" />
+    <attr name="showBottom" format="boolean" />
+    <attr name="showCircle" format="boolean" />
+<declare-styleable name="ClearEditText">
+        <attr name="deleteDrawable" format="reference"/>
+        <attr name="passwordDrawable" format="reference"/>
+        <attr name="passwordDrawableInvisible" format="reference"/>
+        <attr name="isshowpassword" format="boolean"/>
+        <attr name="isCenter" format="boolean"/>
+        
+    </declare-styleable>
+    <declare-styleable name="WyyCircleImageView">
+        <attr name="radius" />
+        <attr name="border" />
+        <attr name="borderColor" />
+        <attr name="showShadow" format="boolean" />
+    </declare-styleable>
+
+</resources>

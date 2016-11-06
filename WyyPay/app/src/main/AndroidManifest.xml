@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wyy.pay"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="21" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.wyy.pay.ui.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.wyy.pay.ui.MainUIActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:label="主程序界面"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wyy.pay.ui.LoginActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:label="登录界面"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wyy.pay.ui.RegisterActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:label="注册界面"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wyy.pay.ui.ForgetPasswdActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:label="忘记密码界面"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.wyy.pay.ui.MyActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:label="我的界面"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>
