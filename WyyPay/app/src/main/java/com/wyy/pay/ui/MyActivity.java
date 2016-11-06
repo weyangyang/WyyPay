@@ -1,16 +1,24 @@
 package com.wyy.pay.ui;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.wyy.pay.R;
+import com.wyy.pay.utils.ConstantUtils;
+import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.WyyCircleImageView;
+import com.xuetangx.net.abs.AbsGetUpgradeData;
+import com.xuetangx.net.bean.GetUpgradeDataBean;
 
 
 public class MyActivity extends Activity implements View.OnClickListener {
@@ -79,6 +87,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        Intent intent = null;
         switch (v.getId()){
             case R.id.ivAvater://点击头像
                 break;
@@ -97,13 +106,100 @@ public class MyActivity extends Activity implements View.OnClickListener {
             case R.id.tvCashierSetting://收银设置
                 break;
             case R.id.tvEvaluateUs://评价我们
+                String packageName = MyActivity.this.getApplication().getPackageName();
+                try {
+                    Uri uri = Uri.parse("market://details?id=" + packageName);
+                    Intent grade = new Intent(Intent.ACTION_VIEW, uri);
+                    MyActivity.this.startActivity(grade);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(MyActivity.this, R.string.no_any_market,
+                            Toast.LENGTH_LONG).show();
+                }
                 break;
             case R.id.tvFeedback://意见反馈
+                intent = new Intent(MyActivity.this,FeedbackActivity.class);
+                MyActivity.this.startActivity(intent);
                 break;
             case R.id.tvAboutUs://关于我们
                 break;
             case R.id.tvUpdateVersition://版本更新
+                if(!tvNewVersionHint.isShown()){
+                    Toast.makeText(MyActivity.this,
+                            R.string.new_version_checking, Toast.LENGTH_SHORT).show();
+                }
+                update(true);
                 break;
         }
+    }
+    public void update(final boolean isShowUpdateDialog) {
+
+
+        Utils.checkApkUpdate(MyActivity.this, new AbsGetUpgradeData() {
+            @Override
+            public void getErrData(int errCode, String errMsg, String strUrl) {
+                super.getErrData(errCode, errMsg, strUrl);
+                toastUpdateApkErr(isShowUpdateDialog);
+            }
+
+            @Override
+            public void getParserErrData(int errCode, String errMsg, String strUrl) {
+                super.getParserErrData(errCode, errMsg, strUrl);
+                toastUpdateApkErr(isShowUpdateDialog);
+            }
+
+            @Override
+            public void getExceptionData(int errCode, String errMsg, String strUrl) {
+                super.getExceptionData(errCode, errMsg, strUrl);
+                toastUpdateApkErr(isShowUpdateDialog);
+            }
+
+            @Override
+            public void getSuccData(final GetUpgradeDataBean mGetUpgradeDataBean, String strUrl) {
+                MyActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mGetUpgradeDataBean!=null&&mGetUpgradeDataBean.getIntVersionCode()>  Utils.getAppVersionCode(MyActivity.this)
+                                &&Utils.getChannel(MyActivity.this).equals(mGetUpgradeDataBean.getStrChannel())
+                                &&!TextUtils.isEmpty(mGetUpgradeDataBean.getStrUrl())){//需要升级
+                            if(isShowUpdateDialog){
+                                if(isShowUpdateDialog && xtcore.utils.PreferenceUtils.getPrefBoolean(MyActivity.this, ConstantUtils.APK_UPDATE_DOWNLOADING,false)){
+                                    Toast.makeText(MyActivity.this,
+                                            MyActivity.this.getResources()
+                                                    .getString(R.string.apk_downloading),
+                                            Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                Intent intent = new Intent(MyActivity.this,ApkUpdateActivity.class);
+                                intent.putExtra(ConstantUtils.APK_UPDATE,mGetUpgradeDataBean);
+                                intent.putExtra(ConstantUtils.IS_GONE_UPDATE_CHECKBOX,true);
+                                MyActivity.this.startActivity(intent);
+                            }else {
+                                tvNewVersionHint.setVisibility(View.VISIBLE);
+                            }
+
+                        }else {
+                            if (isShowUpdateDialog) {
+                                Toast.makeText(MyActivity.this,
+                                        R.string.no_new_version, Toast.LENGTH_SHORT).show();
+                            }
+                            tvNewVersionHint.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
+    private void toastUpdateApkErr(final boolean isShowUpdateDialog) {
+        MyActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (isShowUpdateDialog) {
+                    Toast.makeText(MyActivity.this,
+                            R.string.no_new_version, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

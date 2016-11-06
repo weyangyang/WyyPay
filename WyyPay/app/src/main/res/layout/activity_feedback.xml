@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main_gray" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        <include layout="@layout/nav_title_bar"
+            android:id="@+id/navBar"
+            />
+        <LinearLayout
+            android:layout_below="@+id/navBar"
+            android:id="@+id/linearLayout_focus"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="0px"
+            android:layout_height="0px">
+        </LinearLayout>
+        <TextView
+            android:id="@+id/activity_feedback_contact_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="left"
+            android:text="@string/contact_title"
+            android:textColor="@color/text_gray_3"
+            android:textSize="13sp" />
+
+        <com.xuetangx.mobile.view.ClearEditText
+            android:id="@+id/activity_feedback_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/edittext_background"
+            android:gravity="bottom"
+            android:hint="@string/feedback_contact_message"
+            android:inputType="textEmailAddress"
+            android:paddingBottom="14dp"
+            android:paddingLeft="16dp"
+            android:singleLine="true"
+            android:textColor="@color/text_gray_1"
+            android:textColorHint="@color/text_hint"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/activity_feedback_content_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="36dp"
+            android:gravity="left"
+            android:text="@string/content_title"
+            android:textColor="@color/text_gray_3"
+            android:textSize="13sp" />
+
+        <com.xuetangx.mobile.view.ClearEditText
+            android:id="@+id/activity_feedback_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/edittext_background"
+            android:gravity="bottom"
+            android:hint="@string/feedback_content_hint"
+            android:paddingBottom="14dp"
+            android:paddingLeft="16dp"
+            android:textColor="@color/text_gray_1"
+            android:textColorHint="@color/text_hint"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/activity_feedback_submit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="64dp"
+            android:background="@drawable/bg_btn_normal"
+            android:gravity="center"
+            android:text="@string/submit"
+            android:clickable="true"
+            android:onClick="submit"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_radius_white" >
+
+    <LinearLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="19dp"
+        android:paddingBottom="15dp">
+
+        <!-- Title -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="112dp"
+            android:layout_marginBottom="16dp" >
+
+
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="112dp"
+               android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                android:text="@string/have_new_apk_version"
+                android:textSize="25sp"
+                android:textColor="@color/text_gray_3" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/update_huiji"
+                />
+
+
+        </RelativeLayout>
+
+        <!-- split -->
+
+        <!-- Content -->
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:maxHeight="200dp"
+            android:layout_marginBottom="21dp"
+            >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tvUpdateContent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:textColor="#3A3F49"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Ignore CheckBox -->
+
+        <TextView
+            android:id="@+id/tvApkVersionName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#3A3F49"
+            android:textSize="13sp"
+            />
+        <TextView
+            android:id="@+id/tvApkSize"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#3A3F49"
+            android:textSize="13sp"
+            android:layout_marginBottom="16dp"
+            />
+        <CheckBox
+            android:id="@+id/cbxUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ignore_apk_version"
+            android:button="@drawable/cbx_background_update"
+            android:textColor="@color/text_gray_3"
+            android:paddingLeft="5dp"
+            android:textSize="13sp" />
+
+        <!-- OK&Cancel Button -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+           >
+            <Button
+                android:id="@+id/btnUpdateOK"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_normal"
+                android:gravity="center"
+                android:text="@string/quick_update_apk"
+                android:focusable="true"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnUpdateCancel"
+                android:layout_marginLeft="10dp"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_other"
+                android:gravity="center"
+                android:text="@string/next_update_apk"
+                android:focusable="true"
+                android:textSize="16sp"
+                android:textColor="@color/text_gray_3" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

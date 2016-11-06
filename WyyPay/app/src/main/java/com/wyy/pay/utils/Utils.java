@@ -36,6 +36,13 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.wyy.pay.ui.ApkUpdateActivity;
+import com.xuetangx.net.abs.AbsGetUpgradeData;
+import com.xuetangx.net.bean.GetUpgradeDataBean;
+import com.xuetangx.net.factory.ExternalFactory;
+
+import xtcore.utils.SystemUtils;
+
 public class Utils {
 	public static String getScreenOrientation(Context context) {
 		if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -607,47 +614,6 @@ public class Utils {
 	    return versionName;  
 	}
 
-//	public static void checkApkUpdate(final Activity activity,AbsGetUpgradeData mAbsGetUpgradeData) {
-//
-//		final String currentChannel = Utils.getChannel(activity);
-//		final int currentVersionCode = Utils.getAppVersionCode(activity);
-//		if(!SystemUtils.checkAllNet(activity)){
-//			return;
-//		}
-//		if(mAbsGetUpgradeData==null){
-//			ExternalFactory.getInstance().createGetUpgrade().getUpgrade(UserUtils.getDefaultHttpHeader(),currentChannel,currentVersionCode, new AbsGetUpgradeData() {
-//				@Override
-//				public void getSuccData(final GetUpgradeDataBean mGetUpgradeDataBean, String strUrl) {
-//					activity.runOnUiThread(new Runnable() {
-//						@Override
-//						public void run() {
-//							if(mGetUpgradeDataBean!=null&&mGetUpgradeDataBean.getIntVersionCode()> currentVersionCode
-//									&&currentChannel.equals(mGetUpgradeDataBean.getStrChannel())
-//									&&!TextUtils.isEmpty(mGetUpgradeDataBean.getStrUrl())){//需要升级
-//								Intent intent = new Intent(activity,ApkUpdateActivity.class);
-//								intent.putExtra(IntentKey.APK_UPDATE,mGetUpgradeDataBean);
-//								activity.startActivity(intent);
-//							}
-//
-//						}
-//					});
-//
-//				}
-//			});
-//		}else {
-//			ExternalFactory.getInstance().createGetUpgrade().getUpgrade(UserUtils.getDefaultHttpHeader(),currentChannel,currentVersionCode,mAbsGetUpgradeData);
-//		}
-//
-//	}
-	//安装APK
-	public static void installAPK(String  filePath,Context context) {
-		Intent intent = new Intent();
-		intent.setAction("android.intent.action.VIEW");
-		intent.addCategory("android.intent.category.DEFAULT");
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//广播里面操作需要加上这句，存在于一个独立的栈里
-		intent.setDataAndType(Uri.fromFile(new File(filePath)),"application/vnd.android.package-archive");
-		context.startActivity(intent);
-	}
 	/**
 	 * 获取 Channel
 	 *
@@ -793,6 +759,54 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return "";
+	}
+	//检查版本更新
+	public static void checkApkUpdate(Activity activity) {
+		if(xtcore.utils.PreferenceUtils.getPrefBoolean(activity,ConstantUtils.APK_UPDATE_CHECKBOX_STATE,false)){
+			return;//启动时忽略此版本更新
+		}
+		checkApkUpdate(activity,null);
+	}
+	public static void checkApkUpdate(final Activity activity,AbsGetUpgradeData mAbsGetUpgradeData) {
+
+		final String currentChannel = Utils.getChannel(activity);
+		final int currentVersionCode = Utils.getAppVersionCode(activity);
+		if(!SystemUtils.checkAllNet(activity)){
+			return;
+		}
+		if(mAbsGetUpgradeData==null){
+			ExternalFactory.getInstance().createGetUpgrade().getUpgrade(UserUtils.getDefaultHttpHeader(),currentChannel,currentVersionCode, new AbsGetUpgradeData() {
+				@Override
+				public void getSuccData(final GetUpgradeDataBean mGetUpgradeDataBean, String strUrl) {
+					activity.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							if(mGetUpgradeDataBean!=null&&mGetUpgradeDataBean.getIntVersionCode()> currentVersionCode
+									&&currentChannel.equals(mGetUpgradeDataBean.getStrChannel())
+									&&!TextUtils.isEmpty(mGetUpgradeDataBean.getStrUrl())){//需要升级
+								Intent intent = new Intent(activity,ApkUpdateActivity.class);
+								intent.putExtra(ConstantUtils.APK_UPDATE,mGetUpgradeDataBean);
+								activity.startActivity(intent);
+							}
+
+						}
+					});
+
+				}
+			});
+		}else {
+			ExternalFactory.getInstance().createGetUpgrade().getUpgrade(UserUtils.getDefaultHttpHeader(),currentChannel,currentVersionCode,mAbsGetUpgradeData);
+		}
+
+	}
+	//安装APK
+	public static void installAPK(String  filePath,Context context) {
+		Intent intent = new Intent();
+		intent.setAction("android.intent.action.VIEW");
+		intent.addCategory("android.intent.category.DEFAULT");
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//广播里面操作需要加上这句，存在于一个独立的栈里
+		intent.setDataAndType(Uri.fromFile(new File(filePath)),"application/vnd.android.package-archive");
+		context.startActivity(intent);
 	}
 	public static Drawable getDrawableAround(Context mContext, int resId) {
 		Drawable drawable = mContext.getResources().getDrawable(resId);

@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/WyyCore/WyyCore.iml" filepath="$PROJECT_DIR$/WyyCore/WyyCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WyyNetReq/WyyNetReq.iml" filepath="$PROJECT_DIR$/WyyNetReq/WyyNetReq.iml" />
       <module fileurl="file://$PROJECT_DIR$/WyyPay.iml" filepath="$PROJECT_DIR$/WyyPay.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
