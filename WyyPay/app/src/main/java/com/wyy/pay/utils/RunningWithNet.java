@@ -2,9 +2,8 @@ package com.wyy.pay.utils;
 
 import android.widget.Toast;
 
-import com.xuetangx.mobile.R;
-import com.xuetangx.mobile.base.BaseApplication;
-import com.xuetangx.mobile.toast.DefaultToast;
+import com.wyy.pay.R;
+import com.wyy.pay.ui.BaseApplication;
 
 /**
  * 处理网络状态逻辑代码抽像类，构造里不传参数则默认在没有网络时显示errToast
@@ -28,7 +27,7 @@ public abstract class RunningWithNet implements RunningWithNetInterf{
 	@Override
 	public void netErr() {
 		if(showErrToast){
-			DefaultToast.makeText(BaseApplication.mContext, R.string.net_error, Toast.LENGTH_SHORT).show();
+			Toast.makeText(BaseApplication.mContext, R.string.net_error, Toast.LENGTH_SHORT).show();
 		}
 	}
 	

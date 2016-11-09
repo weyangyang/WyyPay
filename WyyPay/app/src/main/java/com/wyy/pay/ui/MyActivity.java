@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,12 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.wyy.net.abs.AbsGetUpgradeData;
+import com.wyy.net.bean.GetUpgradeDataBean;
 import com.wyy.pay.R;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.WyyCircleImageView;
-import com.xuetangx.net.abs.AbsGetUpgradeData;
-import com.xuetangx.net.bean.GetUpgradeDataBean;
+
 
 
 public class MyActivity extends Activity implements View.OnClickListener {

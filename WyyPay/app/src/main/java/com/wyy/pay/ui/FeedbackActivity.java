@@ -10,13 +10,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
+import com.wyy.net.abs.AbsFeedbackData;
+import com.wyy.net.factory.ExternalFactory;
 import com.wyy.pay.R;
 import com.wyy.pay.utils.NetUtils;
 import com.wyy.pay.utils.RunningWithNet;
 import com.wyy.pay.utils.UserUtils;
 import com.wyy.pay.view.ClearEditText;
-import com.xuetangx.net.abs.AbsFeedbackData;
-import com.xuetangx.net.factory.ExternalFactory;
+
 
 import netutils.http.HttpHeader;
 
@@ -26,20 +27,19 @@ public class FeedbackActivity extends BaseActivity {
 	private Button btnSubmit;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		initView();
+		setContentView(R.layout.activity_feedback);
 		super.onCreate(savedInstanceState);
+		initView();
 		initData();
 		initListener();
 	}
 	@Override
 	public void initView() {
-		// TODO Auto-generated method stub
-		setContentView(R.layout.activity_feedback);
 		edtContact = (ClearEditText) findViewById(R.id.activity_feedback_contact);
 		edtContent = (ClearEditText) findViewById(R.id.activity_feedback_content);
 		btnSubmit = (Button) findViewById(R.id.activity_feedback_submit);
 		tvNavLeft.setBackgroundResource(R.drawable.ic_nav_back);
-		tvNavTitle.setText("注册");
+		tvNavTitle.setText("意见反馈");
 	}
 
 	@Override

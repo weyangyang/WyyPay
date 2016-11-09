@@ -31,7 +31,7 @@
             android:textColor="@color/text_gray_3"
             android:textSize="13sp" />
 
-        <com.xuetangx.mobile.view.ClearEditText
+        <com.wyy.pay.view.ClearEditText
             android:id="@+id/activity_feedback_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             android:textColor="@color/text_gray_3"
             android:textSize="13sp" />
 
-        <com.xuetangx.mobile.view.ClearEditText
+        <com.wyy.pay.view.ClearEditText
             android:id="@+id/activity_feedback_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -36,10 +36,10 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.wyy.net.abs.AbsGetUpgradeData;
+import com.wyy.net.bean.GetUpgradeDataBean;
+import com.wyy.net.factory.ExternalFactory;
 import com.wyy.pay.ui.ApkUpdateActivity;
-import com.xuetangx.net.abs.AbsGetUpgradeData;
-import com.xuetangx.net.bean.GetUpgradeDataBean;
-import com.xuetangx.net.factory.ExternalFactory;
 
 import xtcore.utils.SystemUtils;
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:gravity="center"
+        android:layout_height="fill_parent" >
+		
+        <SurfaceView
+            android:id="@+id/preview_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerInParent="true"
+            />
+
+        <com.wyy.pay.view.ViewfinderView
+            android:id="@+id/viewfinder_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <include layout="@layout/nav_title_bar"
+            android:id="@+id/navBar"
+            />
+        <TextView 
+            android:id="@+id/tv1"
+            android:layout_below="@id/navBar"
+		     android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="5dp"
+             android:gravity="center"
+            android:text="应收金额"
+		    />
+        <TextView 
+            android:id="@+id/tv2"
+            android:layout_below="@id/tv1"
+		     android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/holo_orange_light"
+            android:gravity="center"
+            android:text="¥10.00"
+		    />
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="40dp"
+             android:layout_alignParentBottom="true"
+             android:gravity="center_horizontal"
+            >
+        <ImageView 
+            android:id="@+id/tv3"
+            android:layout_marginBottom="20dp"
+		     android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_launcher"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+		    />
+        <TextView 
+            android:id="@+id/tv4"
+		     android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/holo_blue_dark"
+            android:gravity="center"
+            android:text="请顾客出示付款码\n\r将顾客的付款码放入扫描框内"
+		    />
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>

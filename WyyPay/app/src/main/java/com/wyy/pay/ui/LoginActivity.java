@@ -54,10 +54,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         Intent intent = null;
         switch (v.getId()) {
             case R.id.btnLogin://登录
-                intent = new Intent(LoginActivity.this,MainUIActivity.class);
+                intent = new Intent(LoginActivity.this,ScanPayActivity.class);
                 startActivity(intent);
+//                intent = new Intent(LoginActivity.this,MainUIActivity.class);
+//                startActivity(intent);
                 if(3>0){
-                    LoginActivity.this.finish();
+                  //  LoginActivity.this.finish();
                     return;
                 }
                 final String userName = etAccount.getText().toString().trim();
