@@ -59,7 +59,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 intent = new Intent(LoginActivity.this,MainUIActivity.class);
                 startActivity(intent);
                 if(3>0){
-                  //  LoginActivity.this.finish();
+                    LoginActivity.this.finish();
                     return;
                 }
                 final String userName = etAccount.getText().toString().trim();

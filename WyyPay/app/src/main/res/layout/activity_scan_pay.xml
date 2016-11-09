@@ -79,6 +79,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="15dp"
             android:layout_marginBottom="30dp"
+            android:layout_marginRight="15dp"
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/ivProScanPic"
@@ -136,6 +137,18 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
                 android:text="商品库存: 20"/>
+            <TextView
+                android:id="@+id/tvProAdd"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textColor="@color/yellow"
+                android:layout_below="@+id/ivProScanPic"
+                android:background="@drawable/bg_btn_other"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="添加"/>
         </RelativeLayout>
     </RelativeLayout>
 

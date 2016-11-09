@@ -59,6 +59,7 @@ public final class CaptureActivityHandler extends Handler {
         }
         break;
       case R.id.restart_preview:
+        this.activity.setProLayoutShow(false);
         Log.d(TAG, "Got restart preview message");
         restartPreviewAndDecode();
         break;

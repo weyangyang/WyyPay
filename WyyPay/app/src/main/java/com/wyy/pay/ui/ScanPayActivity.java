@@ -26,7 +26,6 @@ import com.wyy.pay.R;
 import com.wyy.pay.camera.CameraManager;
 import com.wyy.pay.decoding.CaptureActivityHandler;
 import com.wyy.pay.decoding.InactivityTimer;
-import com.wyy.pay.utils.BitmapUtils;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.view.ViewfinderView;
 
@@ -54,13 +53,12 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     private RelativeLayout rlProMessage;//商品扫码时显示的商品信息
     private int payType;//界面类型
     private TextView tvMoneyTitle;//应收金额
+    private TextView tvProAdd;//商品扫码时的添加按钮
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_scan_pay);
         super.onCreate(savedInstanceState);
-        CameraManager.init(getApplication());
-
         initView();
         initData();
         initListener();
@@ -99,12 +97,19 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         }
         CameraManager.get().closeDriver();
     }
+    public void setProLayoutShow(boolean isShow){
+        if(isShow){
+            rlProMessage.setVisibility(View.VISIBLE);
+        }else {
+
+            rlProMessage.setVisibility(View.GONE);
+        }
+    }
     public void restartPreviewAfterDelay(long delayMS) {
         if (handler != null) {
             handler.sendEmptyMessageDelayed(R.id.restart_preview, delayMS);
         }
         // resetStatusView();
-        rlProMessage.setVisibility(View.GONE);
     }
     @Override
     protected void onDestroy() {
@@ -140,7 +145,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
 //                return;
             }
             //在此处处理扫码成功后的代码逻辑
-            restartPreviewAfterDelay(1000L);//重复扫码
+
 
 
         }
@@ -260,6 +265,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
 
     @Override
     public void initView() {
+        tvProAdd =(TextView)findViewById(R.id.tvProAdd);
         rlProMessage = (RelativeLayout) findViewById(R.id.rlProMessage);
         llPayLogoTips = (LinearLayout) findViewById(R.id.llPayLogoTips);
         tvMoneyTitle = (TextView)findViewById(R.id.tvMoneyTitle);
@@ -278,14 +284,16 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         payType =  intent.getIntExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,10);
         switch (payType){
             case ConstantUtils.PAY_TYPE_SCAN_PRO:
+                CameraManager.init(getApplication(),40.0f,100.0f);
                 tvNavTitle.setText("商品扫码");
                 llPayLogoTips.setVisibility(View.GONE);
                 rlProMessage.setVisibility(View.GONE);
                 tvMoneyTitle.setVisibility(View.GONE);
                 tvSumOfMoney.setVisibility(View.GONE);
-
+                tvProAdd.setVisibility(View.VISIBLE);
                 break;
             case ConstantUtils.PAY_TYPE_ALIPAY:
+                CameraManager.init(getApplication());
                 llPayLogoTips.setVisibility(View.VISIBLE);
                 rlProMessage.setVisibility(View.GONE);
                 tvMoneyTitle.setVisibility(View.VISIBLE);
@@ -296,6 +304,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 tvSumOfMoney.setText(String.format("¥\r\r%s",sumOfMoney));
                 break;
             case ConstantUtils.PAY_TYPE_WEXIN:
+                CameraManager.init(getApplication());
                 tvMoneyTitle.setVisibility(View.VISIBLE);
                 rlProMessage.setVisibility(View.GONE);
                 llPayLogoTips.setVisibility(View.VISIBLE);
@@ -314,6 +323,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     public void initListener() {
         tvNavLeft.setOnClickListener(this);
         tvNavRight.setOnClickListener(this);
+        tvProAdd.setOnClickListener(this);
     }
 
     @Override
@@ -324,6 +334,9 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 break;
             case R.id.tvNavRight:
                 Toast.makeText(this,"不要了",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tvProAdd:
+                restartPreviewAfterDelay(2000L);//重复扫码
                 break;
         }
     }
