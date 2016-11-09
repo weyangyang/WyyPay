@@ -49,10 +49,11 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     private static final float BEEP_VOLUME = 0.10f;
     private boolean vibrate;
     private ImageView ivPayLogo;
-    private TextView tvSumOfMoney;
+    private TextView tvSumOfMoney;////￥100.00
     private LinearLayout llPayLogoTips;//支付扫码时的logo提示
     private RelativeLayout rlProMessage;//商品扫码时显示的商品信息
     private int payType;//界面类型
+    private TextView tvMoneyTitle;//应收金额
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,6 +104,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
             handler.sendEmptyMessageDelayed(R.id.restart_preview, delayMS);
         }
         // resetStatusView();
+        rlProMessage.setVisibility(View.GONE);
     }
     @Override
     protected void onDestroy() {
@@ -260,6 +262,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     public void initView() {
         rlProMessage = (RelativeLayout) findViewById(R.id.rlProMessage);
         llPayLogoTips = (LinearLayout) findViewById(R.id.llPayLogoTips);
+        tvMoneyTitle = (TextView)findViewById(R.id.tvMoneyTitle);
         tvNavLeft.setBackgroundResource(R.drawable.ic_nav_back);
         tvNavRight.setText("作废");
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
@@ -278,19 +281,25 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 tvNavTitle.setText("商品扫码");
                 llPayLogoTips.setVisibility(View.GONE);
                 rlProMessage.setVisibility(View.GONE);
+                tvMoneyTitle.setVisibility(View.GONE);
+                tvSumOfMoney.setVisibility(View.GONE);
 
                 break;
             case ConstantUtils.PAY_TYPE_ALIPAY:
                 llPayLogoTips.setVisibility(View.VISIBLE);
                 rlProMessage.setVisibility(View.GONE);
+                tvMoneyTitle.setVisibility(View.VISIBLE);
+                tvSumOfMoney.setVisibility(View.VISIBLE);
                 tvNavTitle.setText("支付宝付款");
                 ivPayLogo.setBackgroundResource(R.drawable.icon_bill_alipay);
                 float sumOfMoney = intent.getFloatExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0.00f);
                 tvSumOfMoney.setText(String.format("¥\r\r%s",sumOfMoney));
                 break;
             case ConstantUtils.PAY_TYPE_WEXIN:
+                tvMoneyTitle.setVisibility(View.VISIBLE);
                 rlProMessage.setVisibility(View.GONE);
                 llPayLogoTips.setVisibility(View.VISIBLE);
+                tvSumOfMoney.setVisibility(View.VISIBLE);
                 ivPayLogo.setBackgroundResource(R.drawable.icon_bill_wechat);
                 tvNavTitle.setText("微信付款");
                  sumOfMoney = intent.getFloatExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0.00f);
