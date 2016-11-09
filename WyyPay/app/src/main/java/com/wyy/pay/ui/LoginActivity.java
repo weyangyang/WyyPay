@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wyy.pay.R;
+import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.ClearEditText;
 
@@ -54,10 +55,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         Intent intent = null;
         switch (v.getId()) {
             case R.id.btnLogin://登录
-                intent = new Intent(LoginActivity.this,ScanPayActivity.class);
+
+                intent = new Intent(LoginActivity.this,MainUIActivity.class);
                 startActivity(intent);
-//                intent = new Intent(LoginActivity.this,MainUIActivity.class);
-//                startActivity(intent);
                 if(3>0){
                   //  LoginActivity.this.finish();
                     return;

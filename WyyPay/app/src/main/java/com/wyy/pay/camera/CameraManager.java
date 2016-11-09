@@ -23,7 +23,6 @@ public final class CameraManager {
   private static final int MAX_FRAME_HEIGHT = 180;
 
   private static CameraManager cameraManager;
-  private AutoFocusManager autoFocusManager;
   static final int SDK_INT; // Later we can use Build.VERSION.SDK_INT
   static {
     int sdkInt;
@@ -90,13 +89,7 @@ public final class CameraManager {
   public synchronized void setTorch(boolean newSetting) {
 	    if (newSetting != configManager.getTorchState(camera)) {
 	      if (camera != null) {
-	        if (autoFocusManager != null) {
-	          autoFocusManager.stop();
-	        }
 	        configManager.setTorch(camera, newSetting);
-	        if (autoFocusManager != null) {
-	          autoFocusManager.start();
-	        }
 	      }
 	    }
 	  }
@@ -147,7 +140,6 @@ public final class CameraManager {
     if (camera != null && !previewing) {
       camera.startPreview();
       previewing = true;
-      autoFocusManager = new AutoFocusManager(camera);
     }
   }
 
@@ -155,10 +147,6 @@ public final class CameraManager {
    * Tells the camera to stop drawing preview frames.
    */
   public void stopPreview() {
-	   if (autoFocusManager != null) {
-		      autoFocusManager.stop();
-		      autoFocusManager = null;
-		    }
     if (camera != null && previewing) {
       if (!useOneShotPreviewCallback) {
         camera.setPreviewCallback(null);

@@ -13,4 +13,8 @@ public class ConstantUtils {
     public final static String APK_UPDATE = "apk_update";
     public final static String IS_GONE_UPDATE_CHECKBOX = "is_gone_update_checkbox";
     public static final String P_IMAGE = "wyypay/mobilev1/image/";
+    public static final String INTENT_KEY_PAY_TYPE = "intent_key_pay_type";
+    public static final String INTENT_KEY_SUM_OF_MONEY = "intent_key_sum_of_money";
+    public static final int PAY_TYPE_ALIPAY = 10;
+    public static final int PAY_TYPE_WEXIN = 20;
 }

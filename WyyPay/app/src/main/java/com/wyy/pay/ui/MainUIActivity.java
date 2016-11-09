@@ -21,7 +21,7 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
     private TabHost mTabHost;
     private TabHost.TabSpec spec;
     public static final String TAB_ID_CASHIER = "cashier";//收银
-    private static final String TAB_ID_VGROUP_BUY = "vGroupBuy";
+    private static final String TAB_ID_ORDER = "order";//订单
     private static final String TAB_ID_VCHAT = "vChat";
     private static final String TAB_ID_MY = "my";
     private int widgetW = 0, currIndex = 0;
@@ -40,9 +40,9 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
                 if (widgetW == 0) {
                     widgetW = mTabHost.getTabWidget().getWidth() / 4;
                 }
-                if (tabId.equals(TAB_ID_CASHIER)) {
+                if (tabId.equals(TAB_ID_ORDER)) {
                     arg0 = 0;
-                } else if (tabId.equals(TAB_ID_VGROUP_BUY)) {
+                } else if (tabId.equals(TAB_ID_CASHIER)) {
                     arg0 = 1;
                 } else if (tabId.equals(TAB_ID_VCHAT)) {
                     arg0 = 2;
@@ -58,8 +58,8 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
                 setImageViewWidth(widgetW);
             }
         });
-        addBottomTab(LoginActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_page,TAB_ID_CASHIER);
-        addBottomTab(SplashActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_page,TAB_ID_VGROUP_BUY);
+        addBottomTab(ProOrderActivity.class,R.drawable.tab_activity_main_ui,R.string.text_order,TAB_ID_ORDER);
+        addBottomTab(SplashActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_page,TAB_ID_CASHIER);
         addBottomTab(RegisterActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_page,TAB_ID_VCHAT);
         addBottomTab(MyActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_page,TAB_ID_MY);
         setDefaultTab(0);
@@ -108,9 +108,9 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
     }
 
     private void changedTabShow(String tabId) {
-        if (TAB_ID_CASHIER.equals(tabId)) {
+        if (TAB_ID_ORDER.equals(tabId)) {
             setIntTabId(1);
-        } else if (TAB_ID_VGROUP_BUY.equals(tabId)) {
+        } else if (TAB_ID_CASHIER.equals(tabId)) {
             setIntTabId(2);
         } else if (TAB_ID_VCHAT.equals(tabId)) {
             setIntTabId(3);

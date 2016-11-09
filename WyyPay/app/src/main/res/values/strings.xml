@@ -5,6 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="text_main_ui_page">主页</string>
+    <string name="text_order">订单</string>
     <string name="no_any_market">在您的手机上没有找到任何应用市场或者手机助手</string>
     <string name="username_or_password_empty">用户名和密码不能为空</string>
     <string name="username_is_error">您输入的手机号不正确，请重新输入</string>

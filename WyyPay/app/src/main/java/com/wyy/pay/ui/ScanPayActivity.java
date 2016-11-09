@@ -15,6 +15,7 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -24,6 +25,7 @@ import com.wyy.pay.camera.CameraManager;
 import com.wyy.pay.decoding.CaptureActivityHandler;
 import com.wyy.pay.decoding.InactivityTimer;
 import com.wyy.pay.utils.BitmapUtils;
+import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.view.ViewfinderView;
 
 import java.io.IOException;
@@ -44,18 +46,15 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     private boolean playBeep;
     private static final float BEEP_VOLUME = 0.10f;
     private boolean vibrate;
-    private ImageView logoView;
+    private ImageView ivPayLogo;
+    private TextView tvSumOfMoney;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_scan_pay);
         super.onCreate(savedInstanceState);
-        //ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
         CameraManager.init(getApplication());
-        viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
-        logoView = (ImageView) findViewById(R.id.tv3);
-        hasSurface = false;
-        inactivityTimer = new InactivityTimer(this);
+
         initView();
         initData();
         initListener();
@@ -121,7 +120,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         }else {
             if(barcode!=null){
                 Bitmap bt = BitmapUtils.scaleImage(barcode, 200, 200);
-                logoView.setImageBitmap(bt);
+                ivPayLogo.setImageBitmap(bt);
 //                Intent resultIntent = new Intent();
 //                resultIntent.putExtra("result", resultString);
 //                resultIntent.putExtra("bitmap", bt);
@@ -251,13 +250,27 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     @Override
     public void initView() {
         tvNavLeft.setBackgroundResource(R.drawable.ic_nav_back);
-        tvNavTitle.setText("支付宝付款");
         tvNavRight.setText("作废");
+        viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
+        ivPayLogo = (ImageView) findViewById(R.id.ivPayLogo);
+        tvSumOfMoney = (TextView) findViewById(R.id.tvSumOfMoney);
+        hasSurface = false;
+        inactivityTimer = new InactivityTimer(this);
     }
 
     @Override
     public void initData() {
-
+        Intent intent = getIntent();
+       int payType =  intent.getIntExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,10);
+        if(ConstantUtils.PAY_TYPE_ALIPAY==payType){
+            tvNavTitle.setText("支付宝付款");
+            ivPayLogo.setBackgroundResource(R.drawable.icon_bill_alipay);
+        }else if(ConstantUtils.PAY_TYPE_WEXIN ==payType){
+            ivPayLogo.setBackgroundResource(R.drawable.icon_bill_wechat);
+            tvNavTitle.setText("微信付款");
+        }
+        float sumOfMoney = intent.getFloatExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0.00f);
+        tvSumOfMoney.setText(String.format("¥\r\r%s",sumOfMoney));
     }
 
     @Override
