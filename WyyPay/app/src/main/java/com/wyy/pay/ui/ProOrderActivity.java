@@ -22,6 +22,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
     public void initView() {
         tvNavTitle.setText("生成订单");
         tvNavRight.setText("扫码");
+        tvNavLeft.setText("付款");
     }
 
     @Override
@@ -32,6 +33,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void initListener() {
         tvNavRight.setOnClickListener(this);
+        tvNavLeft.setOnClickListener(this);
     }
 
     @Override
@@ -39,6 +41,11 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         Intent intent = null;
         switch (v.getId()){
             case R.id.tvNavRight:
+                intent = new Intent(ProOrderActivity.this,ScanPayActivity.class);
+                intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,ConstantUtils.PAY_TYPE_SCAN_PRO);
+                startActivity(intent);
+                break;
+            case R.id.tvNavLeft:
                 intent = new Intent(ProOrderActivity.this,ScanPayActivity.class);
                 intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,ConstantUtils.PAY_TYPE_ALIPAY);
                 intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,100.00f);

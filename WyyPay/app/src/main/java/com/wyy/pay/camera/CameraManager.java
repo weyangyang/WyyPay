@@ -57,6 +57,12 @@ public final class CameraManager {
    * @param context The Activity which wants to use the camera.
    */
   public static void init(Context context) {
+   init(context,leftOffset2,topOffset2);
+
+  }
+  public static void init(Context context,float lOffset,float tOffset) {
+    CameraManager.leftOffset2 = lOffset;
+    CameraManager.topOffset2 = tOffset;
     if (cameraManager == null) {
       cameraManager = new CameraManager(context);
     }
@@ -191,6 +197,7 @@ public final class CameraManager {
     }
   }
 
+  private static float leftOffset2=40.0f,topOffset2=200.0f;
   /**
    * Calculates the framing rect which the UI should draw to show the user where to place the
    * barcode. This target helps with alignment as well as forces the user to hold the device
@@ -206,10 +213,8 @@ public final class CameraManager {
       }
       int width = screenResolution.x * 3 / 4;
       int height = screenResolution.y * 3 / 4;
-      int leftOffset = (screenResolution.x - width+100) / 2;
-      int topOffset = (screenResolution.y - height+400) / 2;//�޸Ŀ��붥���ľ���
-//      int leftOffset = (screenResolution.x - width+100) / 2;
-//      int topOffset = (screenResolution.y - height+400) / 2;//�޸Ŀ��붥���ľ���
+      int leftOffset = (screenResolution.x - width+dip2px(getContext(),leftOffset2)) / 2;
+      int topOffset = (screenResolution.y - height+dip2px(getContext(),topOffset2)) / 2;
       if (width < MIN_FRAME_WIDTH) {
     	  width = dip2px(getContext(), MIN_FRAME_WIDTH);
       } else if (width > MAX_FRAME_WIDTH) {

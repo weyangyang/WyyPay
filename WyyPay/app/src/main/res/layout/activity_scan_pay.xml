@@ -24,18 +24,18 @@
             android:id="@+id/navBar"
             />
         <TextView 
-            android:id="@+id/tv1"
+            android:id="@+id/tvMoneyTitle"
             android:layout_below="@id/navBar"
 		     android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
              android:gravity="center"
             android:text="应收金额"
 		    />
         <TextView 
             android:id="@+id/tvSumOfMoney"
-            android:layout_below="@id/tv1"
+            android:layout_below="@id/tvMoneyTitle"
 		     android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="30sp"
@@ -44,12 +44,14 @@
             android:gravity="center"
             android:text="¥ 0.00"
 		    />
-        <LinearLayout 
+        <LinearLayout
+            android:id="@+id/llPayLogoTips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginBottom="40dp"
              android:layout_alignParentBottom="true"
+            android:visibility="gone"
              android:gravity="center_horizontal"
             >
         <ImageView 
@@ -71,6 +73,70 @@
             android:text="请顾客出示付款码\n\r将顾客的付款码放入扫描框内"
 		    />
         </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/rlProMessage"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="30dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/ivProScanPic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/test_pro"
+                />
+            <TextView
+                android:id="@+id/tvProNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_toRightOf="@+id/ivProScanPic"
+
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="商品编号:653855495248"/>
+            <TextView
+                android:id="@+id/tvProName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_toRightOf="@+id/ivProScanPic"
+                android:layout_below="@+id/tvProNum"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="商品名称:天猫超市"/>
+            <TextView
+                android:id="@+id/tvProPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_toRightOf="@+id/ivProScanPic"
+                android:layout_below="@+id/tvProName"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="商品价格:¥ 15.00"/>
+            <TextView
+                android:id="@+id/tvProBrand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_toRightOf="@+id/ivProScanPic"
+                android:layout_below="@+id/tvProPrice"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="商品品牌: 淘宝"/>
+            <TextView
+                android:id="@+id/tvProSaveNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:layout_toRightOf="@+id/ivProScanPic"
+                android:layout_below="@+id/tvProBrand"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:text="商品库存: 20"/>
+        </RelativeLayout>
     </RelativeLayout>
 
 </FrameLayout>

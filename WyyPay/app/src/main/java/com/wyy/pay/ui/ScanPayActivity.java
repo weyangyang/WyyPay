@@ -15,6 +15,8 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +50,9 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     private boolean vibrate;
     private ImageView ivPayLogo;
     private TextView tvSumOfMoney;
+    private LinearLayout llPayLogoTips;//支付扫码时的logo提示
+    private RelativeLayout rlProMessage;//商品扫码时显示的商品信息
+    private int payType;//界面类型
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,8 +124,12 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
             Toast.makeText(ScanPayActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
         }else {
             if(barcode!=null){
-                Bitmap bt = BitmapUtils.scaleImage(barcode, 200, 200);
-                ivPayLogo.setImageBitmap(bt);
+                if(ConstantUtils.PAY_TYPE_SCAN_PRO == payType){
+                    rlProMessage.setVisibility(View.VISIBLE);
+                    //设置商品数据
+                }
+               // Bitmap bt = BitmapUtils.scaleImage(barcode, 200, 200);
+               // ivPayLogo.setImageBitmap(bt);
 //                Intent resultIntent = new Intent();
 //                resultIntent.putExtra("result", resultString);
 //                resultIntent.putExtra("bitmap", bt);
@@ -249,6 +258,8 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
 
     @Override
     public void initView() {
+        rlProMessage = (RelativeLayout) findViewById(R.id.rlProMessage);
+        llPayLogoTips = (LinearLayout) findViewById(R.id.llPayLogoTips);
         tvNavLeft.setBackgroundResource(R.drawable.ic_nav_back);
         tvNavRight.setText("作废");
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
@@ -261,16 +272,33 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     @Override
     public void initData() {
         Intent intent = getIntent();
-       int payType =  intent.getIntExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,10);
-        if(ConstantUtils.PAY_TYPE_ALIPAY==payType){
-            tvNavTitle.setText("支付宝付款");
-            ivPayLogo.setBackgroundResource(R.drawable.icon_bill_alipay);
-        }else if(ConstantUtils.PAY_TYPE_WEXIN ==payType){
-            ivPayLogo.setBackgroundResource(R.drawable.icon_bill_wechat);
-            tvNavTitle.setText("微信付款");
+        payType =  intent.getIntExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,10);
+        switch (payType){
+            case ConstantUtils.PAY_TYPE_SCAN_PRO:
+                tvNavTitle.setText("商品扫码");
+                llPayLogoTips.setVisibility(View.GONE);
+                rlProMessage.setVisibility(View.GONE);
+
+                break;
+            case ConstantUtils.PAY_TYPE_ALIPAY:
+                llPayLogoTips.setVisibility(View.VISIBLE);
+                rlProMessage.setVisibility(View.GONE);
+                tvNavTitle.setText("支付宝付款");
+                ivPayLogo.setBackgroundResource(R.drawable.icon_bill_alipay);
+                float sumOfMoney = intent.getFloatExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0.00f);
+                tvSumOfMoney.setText(String.format("¥\r\r%s",sumOfMoney));
+                break;
+            case ConstantUtils.PAY_TYPE_WEXIN:
+                rlProMessage.setVisibility(View.GONE);
+                llPayLogoTips.setVisibility(View.VISIBLE);
+                ivPayLogo.setBackgroundResource(R.drawable.icon_bill_wechat);
+                tvNavTitle.setText("微信付款");
+                 sumOfMoney = intent.getFloatExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0.00f);
+                tvSumOfMoney.setText(String.format("¥\r\r%s",sumOfMoney));
+                break;
         }
-        float sumOfMoney = intent.getFloatExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0.00f);
-        tvSumOfMoney.setText(String.format("¥\r\r%s",sumOfMoney));
+
+
     }
 
     @Override
