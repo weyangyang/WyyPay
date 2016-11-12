@@ -14,7 +14,7 @@ import com.wyy.pay.utils.SubstringUtils;
 import com.wyy.pay.utils.Utils;
 
 
-public class CashierActivity extends BaseActivity implements View.OnClickListener {
+public class CashierActivity extends BaseActivity implements View.OnClickListener, View.OnLongClickListener {
     private static final int NUMBER_7 = 1;
     private static final int NUMBER_8 = 2;
     private static final int NUMBER_9 = 3;
@@ -60,6 +60,9 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
         for (int i=0;i<16;i++){
             View v = findViewById(R.id.view1 +i);
             v.setOnClickListener(this);
+            if(3==i){
+                v.setOnLongClickListener(this);
+            }
         }
     }
 
@@ -75,6 +78,14 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
         }
         builder.delete(0,builder.length());
         appendNumText(result);
+    }
+    public void clearAll(){
+        if(builder!=null){
+            builder.delete(0,builder.length());
+            appendNumText(builder.toString());
+        }else {
+            setDefaultText();
+        }
     }
     private void setDefaultText(){
         tvShowMoneyDetail.setText("");
@@ -106,7 +117,6 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        Intent intent = null;
         switch (Integer.parseInt((String)v.getTag())){
 
             case NUMBER_7:
@@ -172,10 +182,21 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
         double money = Double.parseDouble(strMoney);
         if(money<=0){
             Toast.makeText(this,"付款金额不能为0!",Toast.LENGTH_SHORT).show();
+            return;
         }
        Intent intent = new Intent(this,ScanPayActivity.class);
         intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,payType);
         intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,money);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        switch (Integer.parseInt((String)v.getTag())){
+            case DELETE:
+                clearAll();
+                return true;
+        }
+        return false;
     }
 }

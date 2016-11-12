@@ -311,8 +311,8 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 tvSumOfMoney.setVisibility(View.VISIBLE);
                 tvNavTitle.setText("支付宝付款");
                 ivPayLogo.setBackgroundResource(R.drawable.icon_bill_alipay);
-                float sumOfMoney = intent.getFloatExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0.00f);
-                tvSumOfMoney.setText(String.format("¥\r\r%s",sumOfMoney));
+                double sumOfMoney = intent.getDoubleExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0);
+                tvSumOfMoney.setText(String.format("%.2f",sumOfMoney));
                 break;
             case ConstantUtils.PAY_TYPE_WEXIN:
                 CameraManager.init(getApplication());
@@ -322,8 +322,8 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 tvSumOfMoney.setVisibility(View.VISIBLE);
                 ivPayLogo.setBackgroundResource(R.drawable.icon_bill_wechat);
                 tvNavTitle.setText("微信付款");
-                 sumOfMoney = intent.getFloatExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0.00f);
-                tvSumOfMoney.setText(String.format("¥\r\r%s",sumOfMoney));
+                 sumOfMoney = intent.getDoubleExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0);
+                tvSumOfMoney.setText(String.format("%.2f",sumOfMoney));
                 break;
         }
 
