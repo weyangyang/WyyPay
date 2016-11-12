@@ -1,0 +1,326 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray">
+    >
+
+    <include
+        android:id="@+id/navBar"
+        layout="@layout/nav_title_bar" />
+
+    <TextView
+        android:id="@+id/tvMoneyTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/navBar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="订单金额："
+        android:textColor="@color/bg_nav_bar"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvMoneySumCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvMoneyTitle"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:paddingBottom="10dp"
+        android:paddingRight="20dp"
+        android:paddingTop="5dp"
+        android:text="￥0.00"
+        android:textColor="@color/yellow"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/viewDevideTop"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/tvMoneySumCount"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/bg_main_gray" />
+
+    <TextView
+        android:id="@+id/tvShowMoneyDetail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewDevideTop"
+        android:gravity="left|top"
+        android:maxLines="10"
+        android:minLines="10"
+        android:padding="10dp"
+        android:textColor="@color/bg_nav_bar"
+        android:scrollbars="vertical"
+        android:singleLine="false" />
+
+    <View
+        android:id="@+id/viewDevideCenter"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/tvShowMoneyDetail"
+        android:background="@color/text_gray_1" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/text_gray_1"
+        android:orientation="vertical"
+        android:layout_below="@+id/viewDevideCenter"
+        >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginBottom="1px"
+            android:layout_height="fill_parent" >
+
+            <TextView
+                android:tag="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/gray"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+
+                android:layout_marginRight="1px"
+                android:text="7"
+
+                android:id="@+id/view1" />
+
+            <TextView
+                android:id="@+id/view2"
+                android:tag="2"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginRight="1px"
+                android:background="@color/gray"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="8"
+                />
+            <TextView
+                android:tag="3"
+                android:id="@+id/view3"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/gray"
+                android:layout_marginRight="1px"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="9"
+                />
+            <ImageView
+                android:id="@+id/view4"
+                android:tag="4"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/gray"
+                android:src="@drawable/icon_gathering_delete"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_marginBottom="1px"
+            android:orientation="horizontal"
+            android:layout_height="match_parent" >
+            <TextView
+                android:tag="5"
+                android:id="@+id/view5"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/gray"
+                android:layout_marginRight="1px"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+
+                android:text="4"
+                />
+            <TextView
+                android:tag="6"
+                android:id="@+id/view6"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/gray"
+                android:layout_marginRight="1px"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="5"
+                />
+            <TextView
+                android:tag="7"
+                android:id="@+id/view7"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="1px"
+                android:gravity="center"
+                android:background="@color/gray"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="6"
+                />
+            <ImageView
+                android:tag="8"
+                android:id="@+id/view8"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/red"
+                android:background="@color/gray"
+                android:src="@drawable/icon_gathering_alipay"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_marginBottom="1px"
+            android:orientation="horizontal"
+            android:layout_height="fill_parent" >
+            <TextView
+                android:tag="9"
+                android:id="@+id/view9"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/gray"
+                android:layout_marginRight="1px"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="1"
+                />
+            <TextView
+                android:tag="10"
+                android:id="@+id/view10"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginRight="1px"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:background="@color/gray"
+                android:text="2"
+                />
+            <TextView
+                android:tag="11"
+                android:id="@+id/view11"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@color/gray"
+                android:gravity="center"
+                android:layout_marginRight="1px"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="3"
+                />
+            <ImageView
+                android:tag="12"
+                android:id="@+id/view12"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/red"
+                android:background="@color/gray"
+                android:src="@drawable/icon_gathering_wechat"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginBottom="1px"
+            android:layout_height="fill_parent" >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:tag="13"
+                android:id="@+id/view13"
+                android:layout_marginRight="1px"
+                android:gravity="center"
+                android:background="@color/gray"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="0"
+                />
+            <TextView
+                android:tag="14"
+                android:id="@+id/view14"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginRight="1px"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:background="@color/gray"
+                android:text="."
+                />
+            <TextView
+                android:tag="15"
+                android:id="@+id/view15"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_marginRight="1px"
+                android:background="@color/gray"
+                android:textColor="@color/text_cashier_num"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="+"
+                />
+            <ImageView
+                android:tag="16"
+                android:id="@+id/view16"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/gray"
+                android:src="@drawable/icon_gathering_cash"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

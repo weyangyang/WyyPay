@@ -54,6 +54,8 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     private int payType;//界面类型
     private TextView tvMoneyTitle;//应收金额
     private TextView tvProAdd;//商品扫码时的添加按钮
+    private TextView tvProNum;//商品编号
+    private TextView tvCannel;//放弃
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,7 +128,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         inactivityTimer.onActivity();
         playBeepSoundAndVibrate();
         String resultString = result.getText();
-        Toast.makeText(ScanPayActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(ScanPayActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
         if (resultString.equals("")) {
             Toast.makeText(ScanPayActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
         }else {
@@ -134,6 +136,13 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 if(ConstantUtils.PAY_TYPE_SCAN_PRO == payType){
                     rlProMessage.setVisibility(View.VISIBLE);
                     //设置商品数据
+                    if(result.getText().contains("http")){
+                        Toast.makeText(ScanPayActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
+                    }else {
+                        tvProNum.setText(String.format("商品编号：%s",result.getText()));
+                    }
+                }else {
+                    Toast.makeText(ScanPayActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
                 }
                // Bitmap bt = BitmapUtils.scaleImage(barcode, 200, 200);
                // ivPayLogo.setImageBitmap(bt);
@@ -266,11 +275,13 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     @Override
     public void initView() {
         tvProAdd =(TextView)findViewById(R.id.tvProAdd);
+        tvProNum =(TextView)findViewById(R.id.tvProNum);
+        tvCannel =(TextView)findViewById(R.id.tvCannel);
         rlProMessage = (RelativeLayout) findViewById(R.id.rlProMessage);
         llPayLogoTips = (LinearLayout) findViewById(R.id.llPayLogoTips);
         tvMoneyTitle = (TextView)findViewById(R.id.tvMoneyTitle);
         tvNavLeft.setBackgroundResource(R.drawable.ic_nav_back);
-        tvNavRight.setText("作废");
+        tvNavRight.setText("完成");
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
         ivPayLogo = (ImageView) findViewById(R.id.ivPayLogo);
         tvSumOfMoney = (TextView) findViewById(R.id.tvSumOfMoney);
@@ -324,6 +335,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         tvNavLeft.setOnClickListener(this);
         tvNavRight.setOnClickListener(this);
         tvProAdd.setOnClickListener(this);
+        tvCannel.setOnClickListener(this);
     }
 
     @Override
@@ -333,10 +345,13 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 this.finish();
                 break;
             case R.id.tvNavRight:
-                Toast.makeText(this,"不要了",Toast.LENGTH_SHORT).show();
+                restartPreviewAfterDelay(100L);//重复扫码
                 break;
             case R.id.tvProAdd:
-                restartPreviewAfterDelay(2000L);//重复扫码
+                restartPreviewAfterDelay(100L);//重复扫码
+                break;
+            case R.id.tvCannel:
+                restartPreviewAfterDelay(100L);//重复扫码
                 break;
         }
     }

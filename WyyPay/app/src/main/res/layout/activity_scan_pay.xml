@@ -95,7 +95,8 @@
                 android:layout_toRightOf="@+id/ivProScanPic"
 
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
+                android:singleLine="true"
                 android:text="商品编号:653855495248"/>
             <TextView
                 android:id="@+id/tvProName"
@@ -105,7 +106,7 @@
                 android:layout_toRightOf="@+id/ivProScanPic"
                 android:layout_below="@+id/tvProNum"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:text="商品名称:天猫超市"/>
             <TextView
                 android:id="@+id/tvProPrice"
@@ -115,7 +116,7 @@
                 android:layout_toRightOf="@+id/ivProScanPic"
                 android:layout_below="@+id/tvProName"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:text="商品价格:¥ 15.00"/>
             <TextView
                 android:id="@+id/tvProBrand"
@@ -125,7 +126,8 @@
                 android:layout_toRightOf="@+id/ivProScanPic"
                 android:layout_below="@+id/tvProPrice"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
+                android:singleLine="true"
+                android:layout_marginTop="5dp"
                 android:text="商品品牌: 淘宝"/>
             <TextView
                 android:id="@+id/tvProSaveNum"
@@ -135,20 +137,44 @@
                 android:layout_toRightOf="@+id/ivProScanPic"
                 android:layout_below="@+id/tvProBrand"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:text="商品库存: 20"/>
-            <TextView
-                android:id="@+id/tvProAdd"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:textColor="@color/yellow"
                 android:layout_below="@+id/ivProScanPic"
-                android:background="@drawable/bg_btn_other"
+                android:orientation="horizontal"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="20dp"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:text="添加"/>
+                android:padding="2dp"
+                android:layout_height="44dp">
+
+
+                <TextView
+
+                    android:id="@+id/tvCannel"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/gray"
+                    android:background="@drawable/bg_btn_other"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:layout_marginRight="20dp"
+                    android:text="放弃"/>
+                <TextView
+
+                    android:id="@+id/tvProAdd"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/yellow"
+                    android:background="@drawable/bg_btn_other"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    android:text="添加"/>
+            </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
 

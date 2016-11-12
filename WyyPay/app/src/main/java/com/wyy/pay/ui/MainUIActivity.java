@@ -22,7 +22,7 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
     private TabHost.TabSpec spec;
     public static final String TAB_ID_CASHIER = "cashier";//收银
     private static final String TAB_ID_ORDER = "order";//订单
-    private static final String TAB_ID_VCHAT = "vChat";
+    private static final String TAB_ID_PRO_MANAGE = "pro_manage";
     private static final String TAB_ID_MY = "my";
     private int widgetW = 0, currIndex = 0;
     private ImageView iv_cursor;
@@ -44,7 +44,7 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
                     arg0 = 0;
                 } else if (tabId.equals(TAB_ID_CASHIER)) {
                     arg0 = 1;
-                } else if (tabId.equals(TAB_ID_VCHAT)) {
+                } else if (tabId.equals(TAB_ID_PRO_MANAGE)) {
                     arg0 = 2;
                 } else if (tabId.equals(TAB_ID_MY)) {
                     arg0 = 3;
@@ -59,9 +59,9 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
             }
         });
         addBottomTab(ProOrderActivity.class,R.drawable.tab_activity_main_ui,R.string.text_order,TAB_ID_ORDER);
-        addBottomTab(SplashActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_page,TAB_ID_CASHIER);
-        addBottomTab(RegisterActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_page,TAB_ID_VCHAT);
-        addBottomTab(MyActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_page,TAB_ID_MY);
+        addBottomTab(CashierActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_pay,TAB_ID_CASHIER);
+        addBottomTab(ProManageActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_pro_manage,TAB_ID_PRO_MANAGE);
+        addBottomTab(MyActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_my,TAB_ID_MY);
         setDefaultTab(0);
 
 
@@ -112,7 +112,7 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
             setIntTabId(1);
         } else if (TAB_ID_CASHIER.equals(tabId)) {
             setIntTabId(2);
-        } else if (TAB_ID_VCHAT.equals(tabId)) {
+        } else if (TAB_ID_PRO_MANAGE.equals(tabId)) {
             setIntTabId(3);
         } else if (TAB_ID_MY.equals(tabId)) {
             setIntTabId(4);

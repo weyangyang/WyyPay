@@ -60,12 +60,16 @@ public final class CameraManager {
    init(context,leftOffset2,topOffset2);
 
   }
+  public static void clear() {
+    if(cameraManager!=null)
+   cameraManager =null;
+  }
   public static void init(Context context,float lOffset,float tOffset) {
     CameraManager.leftOffset2 = lOffset;
     CameraManager.topOffset2 = tOffset;
-    if (cameraManager == null) {
+//    if (cameraManager == null) {
       cameraManager = new CameraManager(context);
-    }
+//    }
   }
 
   /**

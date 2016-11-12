@@ -7,6 +7,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="red">#ff0000</color>
+    <color name="text_cashier_num">#666666</color>
     <color name="bg_main_gray">#F0EFF5</color>
     <color name="bg_nav_bar">#434A5A</color>
     <color name="text_gray_1">#555555</color>

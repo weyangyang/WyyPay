@@ -41,6 +41,7 @@ import com.wyy.net.bean.GetUpgradeDataBean;
 import com.wyy.net.factory.ExternalFactory;
 import com.wyy.pay.ui.ApkUpdateActivity;
 
+import xtcore.utils.StringUtils;
 import xtcore.utils.SystemUtils;
 
 public class Utils {
@@ -70,6 +71,31 @@ public class Utils {
 		}
 	}
 
+	/**
+	 *
+	 * @param str 需要相加的字符串数字
+	 * @return  String 两位小数点的数学
+     */
+	public static String getNumSumWithString(String str) {
+		double sum = 0;
+		String strTemp = "";
+		if (!TextUtils.isEmpty(str.trim())) {
+			if(!"+".equals(str.substring(str.length()-1))){
+				str = str.trim() +"+";
+			}
+			for (int i = 0; i < str.length(); i++) {
+				if('+'!=str.charAt(i)){
+					strTemp+= str.charAt(i);
+				}
+				if('+'==str.charAt(i)){
+					sum += Double.parseDouble(strTemp);
+					strTemp ="";
+				}
+			}
+
+		}
+		return String.format("%.2f",sum);
+	}
 	public static String getUserAgent(Context context) {
 		String webUserAgent = null;
 		if (context != null) {
