@@ -1,5 +1,6 @@
 package com.wyy.pay.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,7 +35,16 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
         initListener();
 
     }
-
+//    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//        if(categoryListView != null){
+//            categoryListView.requestFocus();
+//            categoryListView.setItemChecked(0, true);
+//            categoryListView.smoothScrollToPosition(0);
+//            categoryListView.setSelection(0);
+//        }
+//    }
     @Override
     public void initView() {
         tvNavLeft.setText("订单");
@@ -64,6 +74,13 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
         }
         categoryListAdapter.setCategoryListData(beanList);
         categoryListView.setAdapter(categoryListAdapter);
+        categoryListView.setItemChecked(1,true);
+        categoryListView.setActivated(true);
+        categoryListView.setFocusable(true);
+        categoryListView.requestFocusFromTouch();
+        categoryListView.performItemClick(categoryListView.getAdapter().getView(1,null,null),1,1);
+        categoryListView.setSelection(1);
+
 }
 
     @Override
@@ -124,6 +141,7 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(this,"position=="+position,Toast.LENGTH_SHORT).show();
         categoryListAdapter.setCurrentPosition(position);
+        categoryListAdapter.notifyDataSetInvalidated();
 
     }
 

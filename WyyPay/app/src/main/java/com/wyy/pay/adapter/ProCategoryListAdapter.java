@@ -47,7 +47,6 @@ public class ProCategoryListAdapter extends BaseAdapter{
     ViewHolder holder =null;
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
         if(convertView ==null){
             convertView = View.inflate(mContext, R.layout.item_pro_category_list, null);
             holder = new ViewHolder();
@@ -67,7 +66,12 @@ public class ProCategoryListAdapter extends BaseAdapter{
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
-
+        if (position == currentPosition-1) {
+            convertView.setBackgroundResource(R.drawable.item_category_selected);
+        }
+        else {
+            convertView.setBackgroundResource(R.drawable.item_category_normal);
+        }
         return convertView;
     }
     public  interface CategoryItemOnClickListener{
