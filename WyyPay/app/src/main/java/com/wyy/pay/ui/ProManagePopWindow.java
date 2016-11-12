@@ -60,15 +60,19 @@ public class ProManagePopWindow extends PopupWindow implements View.OnClickListe
         switch (v.getId()){
             case R.id.tvPopAddPro:
                 mPopListener.tvAddProOnClick();
+                this.dismiss();
                 break;
             case R.id.tvEditPro:
                 mPopListener.tvEditProOnClick();
+                this.dismiss();
                 break;
             case R.id.tvAddCategory:
                 mPopListener.tvAddCategoryOnClick();
+                this.dismiss();
                 break;
             case R.id.tvEditCategory:
                 mPopListener.tvEditCategoryOnClick();
+                this.dismiss();
                 break;
         }
     }

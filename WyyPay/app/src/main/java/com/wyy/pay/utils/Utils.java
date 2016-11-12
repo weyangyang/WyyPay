@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -95,6 +96,49 @@ public class Utils {
 
 		}
 		return String.format("%.2f",sum);
+	}
+	 enum MD5Type{
+		MD5_32,MD5_16,MD5_6
+	}
+	public static String get6MD5WithString(String str) {
+		return createMD5WithType(str,MD5Type.MD5_6);
+	}
+	public static String createMD5WithType(String str){
+		return createMD5WithType(str,MD5Type.MD5_32);
+	}
+	public static String createMD5WithType(String str,MD5Type type) {
+		String md5 = "";
+		try {
+			//生成实现指定摘要算法的 MessageDigest 对象。
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			//使用指定的字节数组更新摘要。
+			md.update(str.getBytes());
+			//通过执行诸如填充之类的最终操作完成哈希计算。
+			byte b[] = md.digest();
+			//生成具体的md5密码到buf数组
+			int i;
+			StringBuffer buf = new StringBuffer("");
+			for (int offset = 0; offset < b.length; offset++) {
+				i = b[offset];
+				if (i < 0)
+					i += 256;
+				if (i < 16)
+					buf.append("0");
+				buf.append(Integer.toHexString(i));
+			}
+			if(MD5Type.MD5_6 ==type){
+				md5= buf.toString().substring(18, 24);//6位
+
+			}else if(MD5Type.MD5_16 ==type){
+				md5= buf.toString().substring(8,24);//16位
+			}else if(MD5Type.MD5_32 == type){
+				md5= buf.toString(); //32位
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return md5;
 	}
 	public static String getUserAgent(Context context) {
 		String webUserAgent = null;
