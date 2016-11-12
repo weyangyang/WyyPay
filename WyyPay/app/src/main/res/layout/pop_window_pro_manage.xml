@@ -1,0 +1,73 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_nav_bar"
+    >
+<TextView
+    android:id="@+id/tvPopAddPro"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/white"
+    android:text="新增商品"
+    android:gravity="center"
+    android:textSize="16sp"
+    android:padding="10dp"
+    />
+    <View
+        android:id="@+id/devide1"
+        android:layout_below="@+id/tvPopAddPro"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bg_main_gray"
+        />
+<TextView
+    android:id="@+id/tvEditPro"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/white"
+    android:text="编辑商品"
+    android:layout_below="@+id/devide1"
+    android:gravity="center"
+    android:textSize="16sp"
+    android:padding="10dp"
+    />
+    <View
+        android:id="@+id/devide2"
+        android:layout_below="@+id/tvEditPro"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bg_main_gray"
+        />
+
+<TextView
+    android:id="@+id/tvAddCategory"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/white"
+    android:text="新增分类"
+    android:layout_below="@+id/devide2"
+    android:gravity="center"
+    android:textSize="16sp"
+    android:padding="10dp"
+    />
+    <View
+        android:id="@+id/devide3"
+        android:layout_below="@+id/tvAddCategory"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bg_main_gray"
+        />
+<TextView
+    android:id="@+id/tvEditCategory"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/white"
+    android:text="编辑分类"
+    android:gravity="center"
+    android:layout_below="@+id/tvAddCategory"
+    android:textSize="16sp"
+    android:padding="10dp"
+    />
+
+
+</RelativeLayout>
