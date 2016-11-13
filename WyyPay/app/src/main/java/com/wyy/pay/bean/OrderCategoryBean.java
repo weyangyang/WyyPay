@@ -9,13 +9,13 @@ import java.io.Serializable;
 public class OrderCategoryBean implements Serializable{
     private String categoryId;//分类id (由分类名称的6位md5生成)
     private String categoryName;//分类名称
-    private String proSumCount;//先择的数量
+    private int proSumCount;//先择的数量
 
-    public String getProSumCount() {
+    public int getProSumCount() {
         return proSumCount;
     }
 
-    public void setProSumCount(String proSumCount) {
+    public void setProSumCount(int proSumCount) {
         this.proSumCount = proSumCount;
     }
 

@@ -83,7 +83,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
             String categoryName = "默认分类" + i;
             bean.setCategoryId(Utils.get6MD5WithString(categoryName));
             bean.setCategoryName(categoryName);
-            bean.setProSumCount(i * 3 + "");
+            bean.setProSumCount(i * 3 );
             beanList.add(bean);
         }
         categoryListAdapter.setCategoryListData(beanList);

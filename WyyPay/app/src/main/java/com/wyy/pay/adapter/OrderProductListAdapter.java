@@ -51,6 +51,7 @@ public class OrderProductListAdapter extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ProductBean bean  = (ProductBean) productList.get(position);
+
         if(convertView ==null){
             convertView = View.inflate(mContext, R.layout.item_order_product_list, null);
             holder = new ViewHolder();
@@ -60,11 +61,17 @@ public class OrderProductListAdapter extends BaseAdapter{
             holder.tvItemOrderCount = (TextView) convertView.findViewById(R.id.tvItemOrderCount);
             holder.tvOrderReduce = (TextView) convertView.findViewById(R.id.tvOrderReduce);
             holder.tvItemOrderPrice = (TextView) convertView.findViewById(R.id.tvItemOrderPrice);
-            convertView.setTag(holder);
+
             ImageLoader.getInstance().displayImage(bean.getImgUrl(), holder.ivOrderProImg,BaseOptions.getInstance().getProductImgOptions());
             holder.tvOrderProName.setText(bean.getProName());
             holder.tvItemOrderPrice.setText(String.valueOf(bean.getProPrice()));
+            if(bean.getAddProCount()>0){
+                holder.tvOrderReduce.setEnabled(true);
+            }else {
+                holder.tvOrderReduce.setEnabled(false);
 
+            }
+            holder.tvItemOrderCount.setText(String.valueOf(bean.getAddProCount()));
             holder.tvOrderAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -79,17 +86,20 @@ public class OrderProductListAdapter extends BaseAdapter{
                         itemOnClickListener.reduceProOnClick(position,bean);
                 }
             });
+            convertView.setTag(holder);
         }else {
+            if(bean.getAddProCount()>0){
+                holder.tvItemOrderCount.setVisibility(View.INVISIBLE);
+                holder.tvOrderReduce.setVisibility(View.INVISIBLE);
+                holder.tvItemOrderCount.setText(String.valueOf(bean.getAddProCount()));
+            }else {
+                holder.tvItemOrderCount.setVisibility(View.GONE);
+                holder.tvOrderReduce.setVisibility(View.GONE);
+
+            }
             holder = (ViewHolder) convertView.getTag();
         }
-        if(0==bean.getAddProCount()){
-            holder.tvItemOrderCount.setVisibility(View.GONE);
-            holder.tvOrderReduce.setVisibility(View.GONE);
-        }else {
-            holder.tvItemOrderCount.setVisibility(View.INVISIBLE);
-            holder.tvOrderReduce.setVisibility(View.INVISIBLE);
-            holder.tvItemOrderCount.setText(String.valueOf(bean.getAddProCount()));
-        }
+
         return convertView;
     }
     public  interface OrderProductItemOnClickListener{

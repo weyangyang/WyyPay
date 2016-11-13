@@ -55,16 +55,16 @@ public class OrderCategoryListAdapter extends BaseAdapter{
             holder = new ViewHolder();
             holder.tvOrderCategoryItemView = (TextView) convertView.findViewById(R.id.tvOrderCategoryItemView);
             holder.tvOrderSumCount = (TextView) convertView.findViewById(R.id.tvOrderSumCount);
-            convertView.setTag(holder);
+
             final OrderCategoryBean bean  = (OrderCategoryBean) categoryList.get(position);
             holder.tvOrderCategoryItemView.setText(bean.getCategoryName());
-            if(TextUtils.isEmpty(bean.getProSumCount())){
+            if(TextUtils.isEmpty(bean.getProSumCount()+"")){
                 holder.tvOrderSumCount.setVisibility(View.GONE);
-            }else if("0".equals(bean.getProSumCount().trim())){
+            }else if(0==bean.getProSumCount()){
                 holder.tvOrderSumCount.setVisibility(View.GONE);
             }else {
                 holder.tvOrderSumCount.setVisibility(View.VISIBLE);
-                holder.tvOrderSumCount.setText(bean.getProSumCount());
+                holder.tvOrderSumCount.setText(String.valueOf(bean.getProSumCount()));
 
             }
 
@@ -75,6 +75,7 @@ public class OrderCategoryListAdapter extends BaseAdapter{
 //                        itemOnClickListener.categoryItemOnClick( position,bean.getCategoryId(),bean.getCategoryName());
 //                }
 //            });
+            convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
         }

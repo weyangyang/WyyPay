@@ -98,6 +98,7 @@
         android:layout_width="match_parent"
         android:layout_above="@+id/llOrderBottom"
         android:layout_below="@+id/etProSearch"
+        android:divider="@null"
         android:layout_toRightOf="@+id/categoryListView"
         android:layout_height="match_parent"/>
     <View
