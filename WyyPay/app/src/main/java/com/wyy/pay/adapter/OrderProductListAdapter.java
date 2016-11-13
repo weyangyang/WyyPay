@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -57,9 +58,9 @@ public class OrderProductListAdapter extends BaseAdapter{
             holder = new ViewHolder();
             holder.ivOrderProImg = (ImageView) convertView.findViewById(R.id.ivOrderProImg);
             holder.tvOrderProName = (TextView) convertView.findViewById(R.id.tvOrderProName);
-            holder.tvOrderAdd = (TextView) convertView.findViewById(R.id.tvOrderAdd);
+            holder.tvOrderAdd = (Button) convertView.findViewById(R.id.tvOrderAdd);
             holder.tvItemOrderCount = (TextView) convertView.findViewById(R.id.tvItemOrderCount);
-            holder.tvOrderReduce = (TextView) convertView.findViewById(R.id.tvOrderReduce);
+            holder.tvOrderReduce = (Button) convertView.findViewById(R.id.tvOrderReduce);
             holder.tvItemOrderPrice = (TextView) convertView.findViewById(R.id.tvItemOrderPrice);
 
             ImageLoader.getInstance().displayImage(bean.getImgUrl(), holder.ivOrderProImg,BaseOptions.getInstance().getProductImgOptions());
@@ -67,8 +68,12 @@ public class OrderProductListAdapter extends BaseAdapter{
             holder.tvItemOrderPrice.setText(String.valueOf(bean.getProPrice()));
             if(bean.getAddProCount()>0){
                 holder.tvOrderReduce.setEnabled(true);
+                //设置不同的背景色
+                holder.tvOrderReduce.setBackgroundResource(R.drawable.ic_message_red_point);
             }else {
+                holder.tvOrderReduce.setBackgroundResource(R.drawable.ic_cash_feed);
                 holder.tvOrderReduce.setEnabled(false);
+                //设置不同的背景色
 
             }
             holder.tvItemOrderCount.setText(String.valueOf(bean.getAddProCount()));
@@ -88,15 +93,6 @@ public class OrderProductListAdapter extends BaseAdapter{
             });
             convertView.setTag(holder);
         }else {
-            if(bean.getAddProCount()>0){
-                holder.tvItemOrderCount.setVisibility(View.INVISIBLE);
-                holder.tvOrderReduce.setVisibility(View.INVISIBLE);
-                holder.tvItemOrderCount.setText(String.valueOf(bean.getAddProCount()));
-            }else {
-                holder.tvItemOrderCount.setVisibility(View.GONE);
-                holder.tvOrderReduce.setVisibility(View.GONE);
-
-            }
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -109,9 +105,9 @@ public class OrderProductListAdapter extends BaseAdapter{
     private static class ViewHolder{
         private ImageView ivOrderProImg;
         private TextView tvOrderProName;
-        private TextView tvOrderAdd;
+        private Button tvOrderAdd;
         private TextView tvItemOrderCount;
-        private TextView tvOrderReduce;
+        private Button tvOrderReduce;
         private TextView tvItemOrderPrice;
     }
 }

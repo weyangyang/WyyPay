@@ -96,8 +96,11 @@
     <com.wyy.pay.view.XListView
         android:id="@+id/orderProListView"
         android:layout_width="match_parent"
+        android:cacheColorHint="@android:color/transparent"
         android:layout_above="@+id/llOrderBottom"
         android:layout_below="@+id/etProSearch"
+        android:fastScrollEnabled="true"
+        android:choiceMode="singleChoice"
         android:divider="@null"
         android:layout_toRightOf="@+id/categoryListView"
         android:layout_height="match_parent"/>
