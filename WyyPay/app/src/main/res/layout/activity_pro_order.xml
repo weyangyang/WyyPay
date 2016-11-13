@@ -1,11 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_pro_order"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_main_gray"
     tools:context="com.wyy.pay.ui.ProOrderActivity">
     <include layout="@layout/nav_title_bar"
         android:id="@+id/navBar"
         />
+    <RelativeLayout
+        android:id="@+id/llOrderBottom"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bg_main_gray"
+        android:visibility="visible"
+        android:layout_height="40dp">
+        <ImageView
+            android:id="@+id/ivShopingCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:src="@drawable/ic_placeorder_cart"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            />
+        <TextView
+            android:id="@+id/tvSumShopNum"
+            android:layout_toRightOf="@+id/ivShopingCart"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:padding="2dp"
+            android:text="99"
+            android:gravity="center"
+            android:textSize="9sp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="-16dp"
+            android:visibility="gone"
+            android:background="@drawable/ic_message_red_point"
+            />
+        <TextView
+            android:id="@+id/tvOrderTotalMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/yellow"
+            android:layout_centerInParent="true"
+            android:textSize="18sp"
+            android:maxLength="16"
+            android:gravity="center"
+            android:text="合计：￥20000.00"/>
+        <TextView
+
+            android:id="@+id/tvOrderToPay"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:background="@color/yellow"
+            android:layout_alignParentRight="true"
+            android:textSize="18sp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:gravity="center"
+            android:text="去结算"/>
+    </RelativeLayout>
+    <com.wyy.pay.view.ClearEditText
+        android:id="@+id/etProSearch"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_margin="2dp"
+        android:layout_below="@+id/navBar"
+        app:isCenter="true"
+        android:hint="请输入商品名称"
+        android:textColorHint="@color/gray"
+        android:singleLine="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:textColor="#000"
+        android:drawableLeft="@drawable/search_bar_icon_normal"
+        android:background="@drawable/search_bar_edit_bg" >
+    </com.wyy.pay.view.ClearEditText>
+    <com.wyy.pay.view.XListView
+        android:id="@+id/categoryListView"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:fastScrollEnabled="true"
+        android:background="@color/gray"
+        android:layout_above="@+id/llOrderBottom"
+        android:choiceMode="singleChoice"
+        android:scrollbars="none"
+        android:layout_width="100dp"
+        android:layout_below="@+id/etProSearch"
+        android:layout_height="match_parent"/>
+    <com.wyy.pay.view.XListView
+        android:id="@+id/orderProListView"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/llOrderBottom"
+        android:layout_below="@+id/etProSearch"
+        android:layout_toRightOf="@+id/categoryListView"
+        android:layout_height="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@+id/orderProListView"
+        android:background="@color/gray"
+        android:layout_height="1px"/>
+
 </RelativeLayout>

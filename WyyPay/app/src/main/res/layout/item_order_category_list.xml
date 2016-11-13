@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="42dp"
+    android:gravity="center"
+    android:id="@+id/item_category_main_rl"
+    >
+
+    <TextView
+        android:id="@+id/tvOrderCategoryItemView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textColor="@color/text_category_item_selector"
+        android:text="默认分类"
+         />
+
+    <TextView
+        android:id="@+id/tvOrderSumCount"
+        android:layout_toRightOf="@+id/tvOrderCategoryItemView"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:padding="2dp"
+        android:text="99"
+        android:gravity="center"
+        android:textSize="9sp"
+        android:textColor="@color/white"
+        android:layout_marginLeft="-22dp"
+        android:background="@drawable/ic_message_red_point"
+        />
+</RelativeLayout>

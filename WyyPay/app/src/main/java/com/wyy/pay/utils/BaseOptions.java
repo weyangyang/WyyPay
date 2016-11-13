@@ -8,8 +8,8 @@ import com.wyy.pay.R;
 public class BaseOptions {
     private static BaseOptions instance;
     private DisplayImageOptions avaterOption;
-    private int strokeColor = 0x26000000;
-    private float strokeWidth = 3.0f;
+    private DisplayImageOptions productImgOption;
+
 
     private BaseOptions() {
 
@@ -19,14 +19,21 @@ public class BaseOptions {
                 .showImageOnFail(R.drawable.ic_default_user)
                 .cacheInMemory(true).bitmapConfig(Bitmap.Config.RGB_565)
                 .cacheOnDisk(true).build();
-        int round = 4;
-        int strokeWidth = 3;
+        productImgOption = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.image_empty)
+                .showImageForEmptyUri(R.drawable.image_empty)
+                .showImageOnFail(R.drawable.image_error)
+                .cacheInMemory(true).bitmapConfig(Bitmap.Config.RGB_565)
+                .cacheOnDisk(true).build();
 
     }
 
 
     public DisplayImageOptions getAvaterOptions() {
         return avaterOption;
+    }
+    public DisplayImageOptions getProductImgOptions() {
+        return productImgOption;
     }
 
 
