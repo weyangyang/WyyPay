@@ -9,8 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wyy.pay.R;
+import com.wyy.pay.adapter.OrderProductListAdapter;
 import com.wyy.pay.adapter.ProCategoryListAdapter;
+import com.wyy.pay.adapter.ProductListAdapter;
 import com.wyy.pay.bean.ProCategoryBean;
+import com.wyy.pay.bean.ProductBean;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.XListView;
 
@@ -18,14 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ProManageActivity extends BaseActivity implements View.OnClickListener, ProManagePopWindow.ProMpopWindowOnClickListener, AdapterView.OnItemClickListener {
+public class ProManageActivity extends BaseActivity implements View.OnClickListener, ProManagePopWindow.ProMpopWindowOnClickListener, AdapterView.OnItemClickListener, ProductListAdapter.ProductItemOnClickListener {
     private LinearLayout llProManageBottom;
     private TextView tvProMcancel;
     private TextView tvProMcomplete;
     private TextView tvProMDelete;
     private XListView categoryListView;
+    private XListView proListView;
     private ProCategoryListAdapter categoryListAdapter;
-
+    private ProductListAdapter mProductListAdapter;
+    private List<ProductBean> proList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_product_manage);
@@ -59,6 +64,10 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
         categoryListView.setPullRefreshEnable(false);
         categoryListView.setOnItemClickListener(this);
 
+        proListView = (XListView) findViewById(R.id.proListView);
+        proListView.setPullLoadEnable(true);
+        proListView.setPullRefreshEnable(true);
+
     }
 
     @Override
@@ -81,6 +90,26 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
         categoryListView.performItemClick(categoryListView.getAdapter().getView(1,null,null),1,1);
         categoryListView.setSelection(1);
 
+        mProductListAdapter = new ProductListAdapter(this);
+        proList = new ArrayList<ProductBean>();
+        for (int i = 0; i < 10; i++) {
+            ProductBean bean = new ProductBean();
+            bean.setCategoryId("categoryId" + i);
+            if (i<5) {
+                bean.setProStockCount(10*i);
+            } else {
+                bean.setProStockCount(20*i);
+            }
+
+            bean.setImgUrl("http://www.baidu.com");
+            bean.setProName("商品" + i);
+            bean.setProNo("No" + i * 9);
+            bean.setProPrice(18.00);
+            proList.add(bean);
+        }
+        mProductListAdapter.setProductListData(proList);
+        proListView.setAdapter(mProductListAdapter);
+        mProductListAdapter.setProductItemOnClickListener(this);
 }
 
     @Override
@@ -146,4 +175,8 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
     }
 
 
+    @Override
+    public void onItemClick(int position, ProductBean bean) {
+        Toast.makeText(this,"position=="+position+"::bean=="+bean.toString(),Toast.LENGTH_SHORT).show();
+    }
 }

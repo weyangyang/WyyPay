@@ -13,6 +13,15 @@ public class ProductBean implements Serializable{
     private String proNo;//商品编号
     private String categoryId;//产品所属分类id
     private int addProCount;//添加的商品数量
+    private int proStockCount;//商品库存
+
+    public int getProStockCount() {
+        return proStockCount;
+    }
+
+    public void setProStockCount(int proStockCount) {
+        this.proStockCount = proStockCount;
+    }
 
     public String getProName() {
         return proName;
@@ -71,6 +80,7 @@ public class ProductBean implements Serializable{
                 ", proNo='" + proNo + '\'' +
                 ", categoryId='" + categoryId + '\'' +
                 ", addProCount=" + addProCount +
+                ", proStockCount=" + proStockCount +
                 '}';
     }
 }

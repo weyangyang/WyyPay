@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/item_category_main_rl"
+    android:paddingTop="5dp"
+    android:paddingRight="5dp"
+    android:paddingLeft="10dp"
+    android:background="@color/bg_main_gray"
+    >
+<ImageView
+    android:id="@+id/ivProImg"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:layout_alignParentLeft="true"
+    android:layout_marginRight="5dp"
+    android:background="@drawable/ic_launcher"
+    android:layout_marginBottom="5dp"
+    />
+    <TextView
+        android:id="@+id/tvProName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/ivProImg"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="苹果5S手机壳"
+         />
+
+
+    <TextView
+        android:id="@+id/tvProPrice"
+        android:layout_toRightOf="@+id/ivProImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvProName"
+        android:layout_alignBottom="@+id/ivProImg"
+        android:padding="2dp"
+        android:text="￥99.00"
+        android:gravity="center"
+        android:textColor="@color/yellow"
+        />
+    <TextView
+        android:id="@+id/tvProStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivProImg"
+        android:layout_alignParentRight="true"
+        android:text="库存 50"
+        android:layout_marginRight="10dp"
+        android:padding="5dp"
+        android:gravity="center"
+        android:textColor="@color/bg_nav_bar"
+        />
+<View
+    android:layout_width="match_parent"
+    android:layout_alignParentBottom="true"
+    android:background="@color/gray"
+    android:layout_height="1px"/>
+
+</RelativeLayout>

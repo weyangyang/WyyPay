@@ -67,9 +67,12 @@
         android:layout_below="@+id/navBar"
         android:layout_above="@+id/llProManageBottom"
         android:layout_height="match_parent"/>
-    <ListView
-        android:id="@+id/proList"
+    <com.wyy.pay.view.XListView
+        android:id="@+id/proListView"
         android:layout_width="match_parent"
+        android:divider="@null"
+        android:choiceMode="singleChoice"
+        android:fastScrollEnabled="true"
         android:layout_below="@+id/navBar"
         android:layout_above="@+id/llProManageBottom"
         android:layout_toRightOf="@+id/categoryList"
