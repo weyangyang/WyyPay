@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 
 public class ProductBean implements Serializable{
+    private String proId;//商品id
     private String imgUrl;//商品图片
     private String proName;//商品名称
     private double proPrice;//商品价格
@@ -15,6 +16,14 @@ public class ProductBean implements Serializable{
     private int addProCount;//添加的商品数量
     private int proStockCount;//商品库存
     private String categoryName;//产品所属的分类名称
+
+    public String getProId() {
+        return proId;
+    }
+
+    public void setProId(String proId) {
+        this.proId = proId;
+    }
 
     public String getCategoryName() {
         return categoryName;
@@ -83,7 +92,8 @@ public class ProductBean implements Serializable{
     @Override
     public String toString() {
         return "ProductBean{" +
-                "imgUrl='" + imgUrl + '\'' +
+                "proId='" + proId + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
                 ", proName='" + proName + '\'' +
                 ", proPrice=" + proPrice +
                 ", proNo='" + proNo + '\'' +

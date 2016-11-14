@@ -26,6 +26,11 @@ import com.wyy.pay.view.ClearEditText;
 import java.io.File;
 import java.io.IOException;
 
+import netutils.engine.NetReqCallBack;
+import netutils.http.HttpHeader;
+import netutils.httpclient.core.ParameterList;
+import xtcore.utils.ZipUtils;
+
 import static xtcore.utils.FileUtils.chmod;
 
 
@@ -54,6 +59,64 @@ private ClearEditText editProPrice;//输入商品价格
 
     }
 
+    /**
+     * 上传用户实名认证资料.
+     *
+    public void postUserVerify(HttpHeader header, UserVerifyRequestBean bean, NetReqCallBack mNetReqCallBack) {
+        ParameterList paramsList = setHeaderParameter(header);
+        paramsList.add(new ParameterList.StringParameter("id_category", bean.getIdCategory()));
+        paramsList.add(new ParameterList.StringParameter("id_number", bean.getIdNumber()));
+        paramsList.add(new ParameterList.StringParameter("real_name", bean.getRealName()));
+        paramsList.add(new ParameterList.StringParameter("english_name", bean.getEnName()));
+        paramsList.add(new ParameterList.StringParameter("face_image", ZipUtils.base64File(bean.getFileFace()
+                .getAbsolutePath())));
+        paramsList.add(new ParameterList.StringParameter("photo_id_image", ZipUtils.base64File(bean.getFileID()
+                .getAbsolutePath())));
+        super.post(Urls.BASE_URL + Urls.USER_VERIFY,paramsList, mNetReqCallBack);
+
+
+
+    private void postUserVerify(String idPhotoPath, String userPhotoPath) {
+    if (!SystemUtils.checkAllNet(this)) {
+    DefaultToast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
+    return;
+    }
+    UserVerifyRequestBean requestBean = new UserVerifyRequestBean();
+    requestBean.setRealName(tvNameInput.getText().toString().trim());
+    requestBean.setEnName(tvEnNameInput.getText().toString().trim());
+    requestBean.setIdNumber(edtInputIdnum.getText().toString().trim());
+    requestBean.setIdCategory(strCardType);
+    requestBean.setFileFace(new File(userPhotoPath));
+    requestBean.setFileID(new File(idPhotoPath));
+    if (dialog == null) {
+    dialog = CustomProgressDialog.createLoadingDialog(this, getString(R.string.uploading_verify_data), false);
+    }
+    ExternalFactory
+    .getInstance()
+    .createUserVerify()
+    .postVerifyStatus(UserUtils.getAccessTokenHeader(), dialog, requestBean,
+    new AbsGetUserVerifyStatusData() {
+
+    @Override
+    public void getSuccData(UserVerifyStatusBean bean, String strUrl) {
+    TableUser user = new TableUser();
+    user.setUserID(UserUtils.getUid());
+    user.setUnionKey();
+    user.setVerifiStatus(bean.getStrVerifyStatus());
+    user.insert(true, TableUser.COLUMN_UNION_KEY, user.unionKey);
+    EventBus.getDefault().post(bean);
+    runOnUiThread(new Runnable() {
+    @Override
+    public void run() {
+    DefaultToast.makeText(VerifyActivity.this,
+    getString(R.string.upload_verify_success), Toast.LENGTH_SHORT).show();
+    finish();
+    }
+    });
+    }
+
+    }
+     */
     @Override
     public void initView() {
         tvNavLeft.setBackgroundResource(R.drawable.ic_nav_back);
@@ -248,3 +311,39 @@ private ClearEditText editProPrice;//输入商品价格
         }
     }
 }
+/**
+ * case R.id.btnFinish:// 点击完成，提交参数到服务器
+ addLogBean(true);
+ if (TextUtils.isEmpty(tvNameInput.getText().toString().trim())) {
+ // 没有输入真实姓名
+ Toast.makeText(VerifyActivity.this, "请输入真实姓名！", Toast.LENGTH_SHORT).show();
+ return;
+ } else if (TextUtils.isEmpty(tvEnNameInput.getText().toString().trim())) {
+ Toast.makeText(VerifyActivity.this, "请输入英文名！", Toast.LENGTH_SHORT).show();
+ return;
+ } else {
+
+ String idcardNum = edtInputIdnum.getText().toString().trim();
+
+ if (!TextUtils.isEmpty(idcardNum)) {
+ if (rgChangeCard.getCheckedRadioButtonId() == R.id.rbIdcard && idcardNum.length() != 18) {
+ DefaultToast.makeText(VerifyActivity.this, "您的身份证件号码长度不合法", Toast.LENGTH_SHORT).show();
+ return;
+ }
+ // 所有输入合法
+ // 检查照片
+ String idcardPicPath = xtcore.utils.PreferenceUtils.getPrefString(this, SP_IDCARD_PIC_PATH, "");
+ String userPIcPath = xtcore.utils.PreferenceUtils.getPrefString(this, SP_USER_PIC_PATH, "");
+ if (checkPhotoFile(idcardPicPath, getString(R.string.id_photo_not_exist))
+ && checkPhotoFile(userPIcPath, getString(R.string.user_photo_not_exist))) {
+ // 照片存在
+ postUserVerify(idcardPicPath, userPIcPath);
+ }
+
+ } else {
+ DefaultToast.makeText(VerifyActivity.this, "请输入证件号码！", Toast.LENGTH_SHORT).show();
+ return;
+ }
+ }
+ break;
+ */
