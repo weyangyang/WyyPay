@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" 
+    android:background="#9652514f"
+    >
+
+    <Button
+        android:id="@+id/cancle"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:text="取消"
+        android:textColor="@android:color/black"
+        android:textSize="15sp" />
+  
+
+    <Button
+        android:id="@+id/head_camera"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_above="@id/cancle"
+        android:background="@android:color/white"
+        android:text="拍照"
+        android:textColor="@android:color/black"
+        android:textSize="15sp" />
+     <View 
+       android:id="@+id/view1"
+       android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@id/head_camera"
+       />
+
+    <Button
+        android:id="@+id/head_picture"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_above="@id/head_camera"
+        android:background="@android:color/white"
+        android:text="用户相册"
+        android:textColor="@android:color/black"
+        android:textSize="15sp" />
+     <View 
+       android:id="@+id/view2"
+       android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@id/head_picture"
+       />
+
+</RelativeLayout>

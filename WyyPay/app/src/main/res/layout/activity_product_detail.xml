@@ -6,19 +6,11 @@
 <include layout="@layout/nav_title_bar"
     android:id="@+id/navBar"
     />
-  <LinearLayout
-      android:layout_below="@+id/navBar"
-      android:id="@+id/linearLayout_focus"
-      android:focusable="true"
-      android:focusableInTouchMode="true"
-      android:layout_width="0px"
-      android:layout_height="0px">
-  </LinearLayout>
   <TextView
       android:id="@+id/tvBarCode"
       android:layout_width="wrap_content"
       android:layout_height="25dp"
-      android:layout_marginTop="30dp"
+      android:layout_marginTop="34dp"
       android:layout_below="@+id/navBar"
       android:text="商品条码"
       android:textColor="@color/bg_nav_bar"
@@ -53,13 +45,13 @@
       android:gravity="center"
       android:layout_below="@+id/navBar"
       android:layout_marginRight="20dp"
-      android:layout_marginLeft="10dp"
       android:background="@drawable/ic_scan_blue"
       android:layout_height="40dp" />
   <View
       android:id="@+id/viewBarCode"
       android:layout_width="match_parent"
       android:layout_height="1dp"
+      android:layout_marginRight="20dp"
       android:background="@color/text_gray_3"
       android:layout_toLeftOf="@+id/btnScanBarCode"
       android:layout_below="@+id/editBarCode"
@@ -69,7 +61,7 @@
         android:id="@+id/tvProName"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/tvBarCode"
         android:layout_alignParentLeft="true"
         android:textColor="@color/bg_nav_bar"
@@ -93,7 +85,7 @@
         android:textColor="@color/bg_nav_bar"
         android:textColorHint="@color/text_gray_3"
         android:background="@null"
-        android:inputType="phone"
+        android:inputType="text"
         />
     <View
         android:id="@+id/viewProName"
@@ -108,7 +100,7 @@
         android:id="@+id/tvProCategory1"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/viewProName"
         android:layout_alignParentLeft="true"
         android:text="商品分类"
@@ -148,7 +140,7 @@
         android:id="@+id/tvProPrice"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/viewProCategory"
         android:layout_alignParentLeft="true"
         android:text="商品价格"
@@ -172,6 +164,7 @@
         android:textColor="@color/bg_nav_bar"
         android:textColorHint="@color/text_gray_3"
         android:background="@null"
+        android:inputType="phone"
         />
     <View
         android:id="@+id/viewProPrice"

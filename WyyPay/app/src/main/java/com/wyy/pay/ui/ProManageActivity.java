@@ -107,6 +107,7 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
             bean.setProName("商品" + i);
             bean.setProNo("No" + i * 9);
             bean.setProPrice(18.00);
+            bean.setCategoryName("商品分类"+i);
             proList.add(bean);
         }
         mProductListAdapter.setProductListData(proList);
@@ -149,7 +150,9 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void tvAddProOnClick() {
-        Toast.makeText(this,"11",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,ProDetailActivity.class);
+        intent.putExtra(ConstantUtils.INTENT_KEY_FROM_ACTIVITY_TYPE,ConstantUtils.FROM_POPUP_WINDOW_ADD_PRODUCT);
+        startActivity(intent);
 
     }
 

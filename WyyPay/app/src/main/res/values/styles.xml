@@ -34,7 +34,19 @@
     <attr name="showTop" format="boolean" />
     <attr name="showBottom" format="boolean" />
     <attr name="showCircle" format="boolean" />
-<declare-styleable name="ClearEditText">
+    <style name="Dialog_Fullscreen_Wrap" parent="Theme.AppCompat.Light">
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+    <declare-styleable name="ClearEditText">
         <attr name="deleteDrawable" format="reference"/>
         <attr name="passwordDrawable" format="reference"/>
         <attr name="passwordDrawableInvisible" format="reference"/>

@@ -10,6 +10,7 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Don't require camera, as this requires a rear camera. This allows it to work on the Nexus 7 -->
     <uses-feature
@@ -115,6 +116,15 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".tackphoto.CameraActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".tackphoto.ClipImageActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
