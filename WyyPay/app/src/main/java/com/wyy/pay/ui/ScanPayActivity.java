@@ -57,6 +57,8 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     private TextView tvProAdd;//商品扫码时的添加按钮
     private TextView tvProNum;//商品编号
     private TextView tvCannel;//放弃
+    private TextView tvScanTips;//扫描提示
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,6 +113,11 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         }
     }
     public void restartPreviewAfterDelay(long delayMS) {
+        if(payType == ConstantUtils.PAY_TYPE_SCAN_PRO){
+            llPayLogoTips.setVisibility(View.VISIBLE);
+            ivPayLogo.setVisibility(View.GONE);
+            tvScanTips.setText(ScanPayActivity.this.getString(R.string.text_barcode_scan_tips));
+        }
         if (handler != null) {
             handler.sendEmptyMessageDelayed(R.id.restart_preview, delayMS);
         }
@@ -139,6 +146,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         }else {
             if(barcode!=null){
                 if(ConstantUtils.PAY_TYPE_SCAN_PRO == payType){
+                    llPayLogoTips.setVisibility(View.GONE);
                     rlProMessage.setVisibility(View.VISIBLE);
                     //设置商品数据
                     if(result.getText().contains("http")){
@@ -288,6 +296,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         tvProAdd =(TextView)findViewById(R.id.tvProAdd);
         tvProNum =(TextView)findViewById(R.id.tvProNum);
         tvCannel =(TextView)findViewById(R.id.tvCannel);
+        tvScanTips =(TextView)findViewById(R.id.tvScanTips);
         rlProMessage = (RelativeLayout) findViewById(R.id.rlProMessage);
         llPayLogoTips = (LinearLayout) findViewById(R.id.llPayLogoTips);
         tvMoneyTitle = (TextView)findViewById(R.id.tvMoneyTitle);
@@ -308,14 +317,16 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
             case ConstantUtils.PAY_TYPE_SCAN_PRO:
                 CameraManager.init(getApplication(),40.0f,100.0f);
                 tvNavTitle.setText("商品扫码");
-                llPayLogoTips.setVisibility(View.GONE);
+                llPayLogoTips.setVisibility(View.VISIBLE);
+                ivPayLogo.setVisibility(View.GONE);
                 rlProMessage.setVisibility(View.GONE);
                 tvMoneyTitle.setVisibility(View.GONE);
                 tvSumOfMoney.setVisibility(View.GONE);
                 tvProAdd.setVisibility(View.VISIBLE);
+                tvScanTips.setText(ScanPayActivity.this.getString(R.string.text_barcode_scan_tips));
                 break;
             case ConstantUtils.PAY_TYPE_SCAN_PRO_FOR_BARCODE:
-                CameraManager.init(getApplication(),40.0f,100.0f);
+                CameraManager.init(getApplication());
                 tvNavTitle.setText("商品扫码");
                 llPayLogoTips.setVisibility(View.VISIBLE);
                 ivPayLogo.setVisibility(View.GONE);
@@ -323,6 +334,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 tvMoneyTitle.setVisibility(View.GONE);
                 tvSumOfMoney.setVisibility(View.GONE);
                 tvProAdd.setVisibility(View.GONE);
+                tvScanTips.setText(ScanPayActivity.this.getString(R.string.text_barcode_scan_tips));
                 break;
             case ConstantUtils.PAY_TYPE_ALIPAY:
                 CameraManager.init(getApplication());
@@ -369,6 +381,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 restartPreviewAfterDelay(100L);//重复扫码
                 break;
             case R.id.tvProAdd:
+
                 restartPreviewAfterDelay(100L);//重复扫码
                 break;
             case R.id.tvCannel:
