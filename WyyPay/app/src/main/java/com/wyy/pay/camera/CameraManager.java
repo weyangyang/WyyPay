@@ -57,18 +57,17 @@ public final class CameraManager {
    * @param context The Activity which wants to use the camera.
    */
   public static void init(Context context) {
-   init(context,leftOffset2,topOffset2);
-
+   init(context,0,0);
   }
   public static void clear() {
     if(cameraManager!=null)
    cameraManager =null;
   }
   public static void init(Context context,float lOffset,float tOffset) {
-    CameraManager.leftOffset2 = lOffset;
-    CameraManager.topOffset2 = tOffset;
 //    if (cameraManager == null) {
       cameraManager = new CameraManager(context);
+    cameraManager.setPicLeftOffset(lOffset);
+    cameraManager.setPicTopOffset(tOffset);
 //    }
   }
 
@@ -202,6 +201,32 @@ public final class CameraManager {
   }
 
   private static float leftOffset2=40.0f,topOffset2=200.0f;
+  private float picLeftOffset;
+  private float picTopOffset;
+
+
+  public float getPicLeftOffset() {
+    if(0==picLeftOffset){
+      return leftOffset2;
+    }
+    return picLeftOffset;
+  }
+
+  public void setPicLeftOffset(float picLeftOffset) {
+    this.picLeftOffset = picLeftOffset;
+  }
+
+  public float getPicTopOffset() {
+    if(0==picTopOffset){
+      return topOffset2;
+    }
+    return picTopOffset;
+  }
+
+  public void setPicTopOffset(float picTopOffset) {
+    this.picTopOffset = picTopOffset;
+  }
+
   /**
    * Calculates the framing rect which the UI should draw to show the user where to place the
    * barcode. This target helps with alignment as well as forces the user to hold the device
@@ -210,15 +235,24 @@ public final class CameraManager {
    * @return The rectangle to draw on screen in window coordinates.
    */
   public Rect getFramingRect() {
+//    Point screenResolution = configManager.getScreenResolution();
+//    if (framingRect == null) {
+//      if (camera == null) {
+//        return null;
+//      }
+//      int width = screenResolution.x * 3 / 4;
+//      int height = screenResolution.y * 3 / 4;
+//      int leftOffset = (screenResolution.x - width+dip2px(getContext(),leftOffset2)) / 2;
+//      int topOffset = (screenResolution.y - height+dip2px(getContext(),topOffset2)) / 2;
     Point screenResolution = configManager.getScreenResolution();
+    int width = screenResolution.x * 3 / 4;
+    int height = screenResolution.y * 3 / 4;
+    int leftOffset = (screenResolution.x - width+dip2px(getContext(),getPicLeftOffset())) / 2;
+    int topOffset = (screenResolution.y - height+dip2px(getContext(),getPicTopOffset())) / 2;
     if (framingRect == null) {
       if (camera == null) {
         return null;
       }
-      int width = screenResolution.x * 3 / 4;
-      int height = screenResolution.y * 3 / 4;
-      int leftOffset = (screenResolution.x - width+dip2px(getContext(),leftOffset2)) / 2;
-      int topOffset = (screenResolution.y - height+dip2px(getContext(),topOffset2)) / 2;
       if (width < MIN_FRAME_WIDTH) {
     	  width = dip2px(getContext(), MIN_FRAME_WIDTH);
       } else if (width > MAX_FRAME_WIDTH) {

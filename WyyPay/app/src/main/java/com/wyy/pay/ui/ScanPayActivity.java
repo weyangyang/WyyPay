@@ -90,6 +90,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
 
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -98,6 +99,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
             handler = null;
         }
         CameraManager.get().closeDriver();
+
     }
     public void setProLayoutShow(boolean isShow){
         if(isShow){
@@ -116,7 +118,9 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     @Override
     protected void onDestroy() {
         inactivityTimer.shutdown();
+        CameraManager.clear();
         super.onDestroy();
+
     }
 
     /**
