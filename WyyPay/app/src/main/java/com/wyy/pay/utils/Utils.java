@@ -100,13 +100,34 @@ public class Utils {
 	 enum MD5Type{
 		MD5_32,MD5_16,MD5_6
 	}
+
+	/**
+	 * 从32位MD5里截取18-24 中的6位
+	 * @param str
+	 * @return
+     */
 	public static String get6MD5WithString(String str) {
+		if(TextUtils.isEmpty(str)){
+			return "";
+		}
 		return createMD5WithType(str,MD5Type.MD5_6);
 	}
+
+	/**
+	 * 返回32位MD5
+	 * @param str
+	 * @return
+     */
 	public static String createMD5WithType(String str){
+		if(TextUtils.isEmpty(str)){
+			return "";
+		}
 		return createMD5WithType(str,MD5Type.MD5_32);
 	}
 	public static String createMD5WithType(String str,MD5Type type) {
+		if(TextUtils.isEmpty(str)){
+			return "";
+		}
 		String md5 = "";
 		try {
 			//生成实现指定摘要算法的 MessageDigest 对象。

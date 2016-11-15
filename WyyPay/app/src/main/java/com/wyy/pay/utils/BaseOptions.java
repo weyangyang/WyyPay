@@ -3,12 +3,14 @@ package com.wyy.pay.utils;
 import android.graphics.Bitmap;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.wyy.pay.R;
 
 public class BaseOptions {
     private static BaseOptions instance;
     private DisplayImageOptions avaterOption;
     private DisplayImageOptions productImgOption;
+    private DisplayImageOptions productClipImgOption;
 
 
     private BaseOptions() {
@@ -25,6 +27,13 @@ public class BaseOptions {
                 .showImageOnFail(R.drawable.image_error)
                 .cacheInMemory(true).bitmapConfig(Bitmap.Config.RGB_565)
                 .cacheOnDisk(true).build();
+        productClipImgOption = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.image_empty)
+                .showImageForEmptyUri(R.drawable.image_empty)
+                .showImageOnFail(R.drawable.image_error)
+                .delayBeforeLoading(300).bitmapConfig(Bitmap.Config.RGB_565)
+                .displayer(new RoundedBitmapDisplayer(30))
+                .cacheInMemory(false).cacheOnDisk(false).build();
 
     }
 
@@ -34,6 +43,9 @@ public class BaseOptions {
     }
     public DisplayImageOptions getProductImgOptions() {
         return productImgOption;
+    }
+    public DisplayImageOptions getProductClipImgOptions() {
+        return productClipImgOption;
     }
 
 

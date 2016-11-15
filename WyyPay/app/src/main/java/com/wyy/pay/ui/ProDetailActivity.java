@@ -2,6 +2,8 @@ package com.wyy.pay.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
@@ -141,7 +143,14 @@ private ClearEditText editProPrice;//输入商品价格
                 editBarCode.setText(mProductBean.getProNo());
                 tvProCategory.setText(mProductBean.getCategoryName());
                 editProPrice.setText(String.valueOf(mProductBean.getProPrice()));
-                ImageLoader.getInstance().displayImage(mProductBean.getImgUrl(),ivProImg, BaseOptions.getInstance().getProductImgOptions());
+                String imgPath = xtcore.utils.PreferenceUtils.getPrefString(this, SP_PRODUCT_PIC_PATH+Utils.get6MD5WithString(mProductBean.getProName()), "");
+                if(TextUtils.isEmpty(imgPath)){
+
+                    ImageLoader.getInstance().displayImage(mProductBean.getImgUrl(),ivProImg, BaseOptions.getInstance().getProductClipImgOptions());
+                }else {
+
+                    ImageLoader.getInstance().displayImage(String.format("file://%s",imgPath),ivProImg, BaseOptions.getInstance().getProductClipImgOptions());
+                }
 
             }
 
@@ -173,13 +182,13 @@ private ClearEditText editProPrice;//输入商品价格
         mTakePhoto = new TakePhoto(this, new TakePhoto.PhotoResult() {
             @Override
             public void onPhotoResult(File outputPath) {
-                // String strPath = "file://" + outputPath.getAbsolutePath();
+//                 String strPath = "file://" + outputPath.getAbsolutePath();
                 String strPath = outputPath.getAbsolutePath();
-                // Bitmap bitmap = BitmapFactory.decodeFile(strPath);
-                // showView.setImageBitmap(bitmap);
+                 Bitmap bitmap = BitmapFactory.decodeFile(strPath);
+                 showView.setImageBitmap(bitmap);
                 xtcore.utils.PreferenceUtils.setPrefString(ProDetailActivity.this, spKey, strPath);
-                ImageLoader.getInstance().displayImage("file://" + strPath, showView,
-                        BaseOptions.getInstance().getProductImgOptions());
+//                ImageLoader.getInstance().displayImage("file://" + strPath, showView,
+//                        BaseOptions.getInstance().getProductClipImgOptions());
             }
         }, cardPicFile);
         int h = Utils.dip2px(this, picHeight);
