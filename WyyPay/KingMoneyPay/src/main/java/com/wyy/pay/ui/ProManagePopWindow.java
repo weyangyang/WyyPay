@@ -19,11 +19,12 @@ import com.wyy.pay.utils.Utils;
 public class ProManagePopWindow extends PopupWindow implements View.OnClickListener {
     private Activity mActivity;
     private ProMpopWindowOnClickListener mPopListener;
+    private  int screenW;
    public ProManagePopWindow(Activity activity){
        this.mActivity = activity;
        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
        View view = inflater.inflate(R.layout.pop_window_pro_manage,null);
-       int screenW = mActivity.getWindowManager().getDefaultDisplay().getWidth();
+        screenW = mActivity.getWindowManager().getDefaultDisplay().getWidth();
        setContentView(view);
        TextView tvAddPro = (TextView) view.findViewById(R.id.tvPopAddPro);
        tvAddPro.setOnClickListener(this);

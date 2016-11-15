@@ -17,7 +17,7 @@ import com.wyy.pay.view.XListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProCategoryActivity extends BaseActivity implements View.OnClickListener, ProCategoryManageListAdapter.CManageItemOnClickListener {
+public class ProCategoryActivity extends BaseActivity implements View.OnClickListener, ProCategoryManageListAdapter.CManageItemOnClickListener, AddCategoryPopWindow.AddCgOnClickListener {
     private XListView categoryListView;
     private List<ProCategoryBean> proCategoryList;//商品分类list
     private Button btnAddCategory;//新增分类按钮
@@ -104,9 +104,15 @@ public class ProCategoryActivity extends BaseActivity implements View.OnClickLis
                ProCategoryActivity.this.finish();
                 break;
             case R.id.btnAddCategory://新增分类
-                Toast.makeText(this, "新增分类", Toast.LENGTH_SHORT).show();
+                addCategoryPopWindow(23);
                 break;
         }
+    }
+
+    private void addCategoryPopWindow(int fromType) {
+        AddCategoryPopWindow popupWindow = new AddCategoryPopWindow(ProCategoryActivity.this,fromType);
+        popupWindow.showPopupWindow(btnAddCategory);
+        popupWindow.setAddCgOnClickListener(this);
     }
 
 
@@ -140,5 +146,11 @@ public class ProCategoryActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void btnEditOnClick(int position, ProCategoryBean bean) {
         //弹出框ß
+        addCategoryPopWindow(25);
+    }
+
+    @Override
+    public void btnOKOnClick(String categoryName,int fromType) {
+        Toast.makeText(this,"categoryName == "+categoryName,Toast.LENGTH_SHORT).show();
     }
 }

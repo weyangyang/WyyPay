@@ -27,7 +27,7 @@
         android:layout_marginLeft="13dp"
         android:padding="10dp"
         android:gravity="center"
-        android:textColor="@color/text_category_item_selector"
+        android:textColor="@color/bg_nav_bar"
         android:text="默认分类"
          />
 <Button
