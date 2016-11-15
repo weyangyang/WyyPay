@@ -31,8 +31,6 @@ public class ProManagePopWindow extends PopupWindow implements View.OnClickListe
        tvEditPro.setOnClickListener(this);
        TextView tvAddCategory = (TextView) view.findViewById(R.id.tvAddCategory);
        tvAddCategory.setOnClickListener(this);
-       TextView tvEditCategory = (TextView) view.findViewById(R.id.tvEditCategory);
-       tvEditCategory.setOnClickListener(this);
        this.setWidth(screenW/2- Utils.dip2px(mActivity,50.0f));
        this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
        this.setFocusable(true);
@@ -67,11 +65,7 @@ public class ProManagePopWindow extends PopupWindow implements View.OnClickListe
                 this.dismiss();
                 break;
             case R.id.tvAddCategory:
-                mPopListener.tvAddCategoryOnClick();
-                this.dismiss();
-                break;
-            case R.id.tvEditCategory:
-                mPopListener.tvEditCategoryOnClick();
+                mPopListener.tvCategoryManageOnClick();
                 this.dismiss();
                 break;
         }
@@ -82,7 +76,6 @@ public class ProManagePopWindow extends PopupWindow implements View.OnClickListe
     public interface ProMpopWindowOnClickListener{
         public void tvAddProOnClick();
         public void tvEditProOnClick();
-        public void tvAddCategoryOnClick();
-        public void tvEditCategoryOnClick();
+        public void tvCategoryManageOnClick();
     }
 }

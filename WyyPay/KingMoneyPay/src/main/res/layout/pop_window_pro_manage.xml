@@ -44,7 +44,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textColor="@color/white"
-    android:text="新增分类"
+    android:text="分类管理"
     android:layout_below="@+id/devide2"
     android:gravity="center"
     android:textSize="16sp"
@@ -57,17 +57,6 @@
         android:layout_height="1px"
         android:background="@color/bg_main_gray"
         />
-<TextView
-    android:id="@+id/tvEditCategory"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textColor="@color/white"
-    android:text="编辑分类"
-    android:gravity="center"
-    android:layout_below="@+id/tvAddCategory"
-    android:textSize="16sp"
-    android:padding="10dp"
-    />
 
 
 </RelativeLayout>

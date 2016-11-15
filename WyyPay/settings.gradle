@@ -1,4 +1,4 @@
-include ':app'
-include ':WyyCore'
-include ':WyyNetReq'
-include ':WyyScan'
+include ':KingMoneyPay'
+include ':SgeCore'
+include ':SgeNetReq'
+include ':SgeScan'

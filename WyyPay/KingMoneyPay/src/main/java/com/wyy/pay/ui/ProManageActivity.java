@@ -162,14 +162,12 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
-    public void tvAddCategoryOnClick() {
-        Toast.makeText(this,"13",Toast.LENGTH_SHORT).show();
+    public void tvCategoryManageOnClick() {
+        Intent intent = new Intent(this,ProCategoryActivity.class);
+        intent.putExtra(ConstantUtils.INTENT_KEY_FROM_ACTIVITY_TYPE,ConstantUtils.FROM_POPUP_WINDOW_CATEGORY_MANAGE);
+        startActivity(intent);
     }
 
-    @Override
-    public void tvEditCategoryOnClick() {
-        Toast.makeText(this,"14",Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

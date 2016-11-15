@@ -111,6 +111,11 @@
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.DeviceDefault.Dialog.NoActionBar" />
         <activity
+            android:name=".ui.ProCategoryActivity"
+            android:label="分类管理"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Black.NoTitleBar"/>
+        <activity
             android:name=".ui.ScanPayActivity"
             android:label="扫码付款界面"
             android:screenOrientation="portrait"

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_pro_order"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main_gray"
+    tools:context="com.wyy.pay.ui.ProOrderActivity">
+    <include layout="@layout/nav_title_bar"
+        android:id="@+id/navBar"
+        />
+
+
+        <Button
+            android:id="@+id/btnAddCategory"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_btn_normal"
+            android:textSize="18sp"
+            android:layout_margin="6dp"
+            android:gravity="center"
+            android:text="新增分类"/>
+    <com.wyy.pay.view.XListView
+        android:id="@+id/categoryMainListView"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:fastScrollEnabled="true"
+        android:background="@color/gray"
+        android:layout_above="@+id/btnAddCategory"
+        android:choiceMode="singleChoice"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/navBar"
+        android:layout_height="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_below="@+id/categoryMainListView"
+        android:background="@color/gray"
+        android:layout_height="1px"/>
+
+</RelativeLayout>

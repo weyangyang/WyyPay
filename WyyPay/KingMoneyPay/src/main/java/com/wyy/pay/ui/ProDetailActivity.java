@@ -273,14 +273,24 @@ private ClearEditText editProPrice;//输入商品价格
         tvNavRight.setOnClickListener(this);
     }
     private static final int TO_SCANPAYACTIVITY_REQUEST_CODE =99;
+    private static final int TO_PRO_CATEGORY_ACTIVITY_REQUEST_CODE =98;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK&& TO_SCANPAYACTIVITY_REQUEST_CODE == requestCode){
-            String proNo = data.getStringExtra(ConstantUtils.INTENT_KEY_PRODUCT_NO);
-            editBarCode.setText(proNo);
+        if(resultCode!=RESULT_OK){
             return;
         }
+        switch (requestCode){
+            case TO_SCANPAYACTIVITY_REQUEST_CODE:
+                String proNo = data.getStringExtra(ConstantUtils.INTENT_KEY_PRODUCT_NO);
+                editBarCode.setText(proNo);
+                return;
+            case TO_PRO_CATEGORY_ACTIVITY_REQUEST_CODE:
+                String categoryName = data.getStringExtra(ConstantUtils.INTENT_KEY_PRODUCT_CATEGORY);
+                tvProCategory.setText(categoryName);
+                return;
+        }
+
         if (mTakePhoto != null) {
             mTakePhoto.onActivityResult(requestCode, resultCode, data);
         }
@@ -288,6 +298,7 @@ private ClearEditText editProPrice;//输入商品价格
 
     @Override
     public void onClick(View v) {
+        Intent  intent= null;
         switch (v.getId()){
             case R.id.tvNavLeft://返回
                 ProDetailActivity.this.finish();
@@ -307,9 +318,13 @@ private ClearEditText editProPrice;//输入商品价格
                 break;
             case R.id.tvProCategory: //选择分类
                 hideSoftInputFromWindow();
+                  intent = new Intent(ProDetailActivity.this, ProCategoryActivity.class);
+                intent.putExtra(ConstantUtils.INTENT_KEY_FROM_ACTIVITY_TYPE,ConstantUtils.FROM_PRO_DETAIL_ACTIVITY);
+                startActivityForResult(intent,TO_PRO_CATEGORY_ACTIVITY_REQUEST_CODE);
                 break;
             case R.id.btnScanBarCode: //扫码获取条码
-              Intent  intent = new Intent(ProDetailActivity.this, ScanPayActivity.class);
+                hideSoftInputFromWindow();
+                intent = new Intent(ProDetailActivity.this, ScanPayActivity.class);
                 intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE, ConstantUtils.PAY_TYPE_SCAN_PRO_FOR_BARCODE);
                 startActivityForResult(intent,TO_SCANPAYACTIVITY_REQUEST_CODE);
                 break;
