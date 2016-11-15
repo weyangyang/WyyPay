@@ -9,6 +9,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -131,9 +132,9 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     public void handleDecode(Result result, Bitmap barcode) {
         inactivityTimer.onActivity();
         playBeepSoundAndVibrate();
-        String resultString = result.getText();
+        String resultString = result.getText().trim();
        // Toast.makeText(ScanPayActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
-        if (resultString.equals("")) {
+        if (TextUtils.isEmpty(resultString)) {
             Toast.makeText(ScanPayActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
         }else {
             if(barcode!=null){
@@ -145,8 +146,14 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                     }else {
                         tvProNum.setText(String.format("商品编号：%s",result.getText()));
                     }
+                }else if(ConstantUtils.PAY_TYPE_SCAN_PRO_FOR_BARCODE ==payType){
+                    Intent intent = new Intent();
+                    intent.putExtra(ConstantUtils.INTENT_KEY_PRODUCT_NO,resultString);
+                    ScanPayActivity.this.setResult(RESULT_OK,intent);
+                    ScanPayActivity.this.finish();
                 }else {
                     Toast.makeText(ScanPayActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
+
                 }
                // Bitmap bt = BitmapUtils.scaleImage(barcode, 200, 200);
                // ivPayLogo.setImageBitmap(bt);
@@ -296,7 +303,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     @Override
     public void initData() {
         Intent intent = getIntent();
-        payType =  intent.getIntExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,10);
+        payType =  intent.getIntExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,ConstantUtils.PAY_TYPE_SCAN_PRO_FOR_BARCODE);
         switch (payType){
             case ConstantUtils.PAY_TYPE_SCAN_PRO:
                 CameraManager.init(getApplication(),40.0f,100.0f);
@@ -306,6 +313,16 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 tvMoneyTitle.setVisibility(View.GONE);
                 tvSumOfMoney.setVisibility(View.GONE);
                 tvProAdd.setVisibility(View.VISIBLE);
+                break;
+            case ConstantUtils.PAY_TYPE_SCAN_PRO_FOR_BARCODE:
+                CameraManager.init(getApplication(),40.0f,100.0f);
+                tvNavTitle.setText("商品扫码");
+                llPayLogoTips.setVisibility(View.VISIBLE);
+                ivPayLogo.setVisibility(View.GONE);
+                rlProMessage.setVisibility(View.GONE);
+                tvMoneyTitle.setVisibility(View.GONE);
+                tvSumOfMoney.setVisibility(View.GONE);
+                tvProAdd.setVisibility(View.GONE);
                 break;
             case ConstantUtils.PAY_TYPE_ALIPAY:
                 CameraManager.init(getApplication());

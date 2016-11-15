@@ -272,10 +272,15 @@ private ClearEditText editProPrice;//输入商品价格
         btnScanBarCode.setOnClickListener(this);
         tvNavRight.setOnClickListener(this);
     }
-
+    private static final int TO_SCANPAYACTIVITY_REQUEST_CODE =99;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK&& TO_SCANPAYACTIVITY_REQUEST_CODE == requestCode){
+            String proNo = data.getStringExtra(ConstantUtils.INTENT_KEY_PRODUCT_NO);
+            editBarCode.setText(proNo);
+            return;
+        }
         if (mTakePhoto != null) {
             mTakePhoto.onActivityResult(requestCode, resultCode, data);
         }
@@ -304,6 +309,9 @@ private ClearEditText editProPrice;//输入商品价格
                 hideSoftInputFromWindow();
                 break;
             case R.id.btnScanBarCode: //扫码获取条码
+              Intent  intent = new Intent(ProDetailActivity.this, ScanPayActivity.class);
+                intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE, ConstantUtils.PAY_TYPE_SCAN_PRO_FOR_BARCODE);
+                startActivityForResult(intent,TO_SCANPAYACTIVITY_REQUEST_CODE);
                 break;
             case R.id.tvNavRight: //编辑
                 isEdit =!isEdit;
