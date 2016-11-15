@@ -112,7 +112,7 @@ public class ProCategoryActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onItemViewClick(int position, ProCategoryBean bean) {
-        if(isCanClick){
+        if(isCanClick&&!isEdit){
             Intent intent = new Intent();
             intent.putExtra(ConstantUtils.INTENT_KEY_PRODUCT_CATEGORY,bean.getCategoryName());
             setResult(RESULT_OK,intent);
@@ -126,18 +126,10 @@ public class ProCategoryActivity extends BaseActivity implements View.OnClickLis
             return;
         }
         if(beanList!=null&&beanList.size()>0){
-            for(int i=0;i<beanList.size();i++){
-                ProCategoryBean cBean = beanList.get(i);
-                if(bean.getCategoryName().equals(cBean.getCategoryName())){
-                    beanList.remove(i);
-                    break;
-                }
-            }
+            beanList.remove(position);
             if(adapter==null){
                 adapter = new ProCategoryManageListAdapter(ProCategoryActivity.this);
             }
-            adapter.setCategoryListData(new ArrayList<ProCategoryBean>());
-            adapter.notifyDataSetChanged();
             adapter.setCategoryListData(beanList);
             adapter.notifyDataSetChanged();
             //更新数据库

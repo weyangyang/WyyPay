@@ -61,34 +61,37 @@ public class ProCategoryManageListAdapter extends BaseAdapter{
             holder.tvCategoryName = (TextView) convertView.findViewById(R.id.tvCategoryName);
             holder.btnEditCategory = (Button) convertView.findViewById(R.id.btnEditCategory);
             holder.btnDeleteCategory = (Button) convertView.findViewById(R.id.btnDeleteCategory);
-
-            final ProCategoryBean bean  = (ProCategoryBean) categoryList.get(position);
-            holder.btnDeleteCategory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener!=null)
-                        listener.btnDeleteOnClick(position,bean);
-                }
-            });
-            holder.btnEditCategory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener!=null)
-                        listener.btnEditOnClick(position,bean);
-                }
-            });
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener!=null)
-                        listener.onItemViewClick(position,bean);
-                }
-            });
-            holder.tvCategoryName.setText(bean.getCategoryName());
             convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
+        final ProCategoryBean bean  = (ProCategoryBean) categoryList.get(position);
+        holder.btnDeleteCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener!=null)
+                    listener.btnDeleteOnClick(position,bean);
+//                   ProCategoryBean bb = (ProCategoryBean) categoryList.get(position);
+//                    String str =bb.toString();
+//                categoryList.remove(position);
+//                ProCategoryManageListAdapter.this.notifyDataSetChanged();
+            }
+        });
+        holder.btnEditCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener!=null)
+                    listener.btnEditOnClick(position,bean);
+            }
+        });
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener!=null)
+                    listener.onItemViewClick(position,bean);
+            }
+        });
+        holder.tvCategoryName.setText(bean.getCategoryName());
         if(isEdit && position!=0){
             holder.btnEditCategory.setVisibility(View.VISIBLE);
             holder.btnDeleteCategory.setVisibility(View.VISIBLE);
