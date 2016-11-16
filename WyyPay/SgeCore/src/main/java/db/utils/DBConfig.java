@@ -13,10 +13,10 @@ import android.text.TextUtils;
  */
 public class DBConfig implements Serializable {
 	private static final long serialVersionUID = -7682826928063213894L;
-	private static final String DB_NAME = "xuetangx.db";
+	private static final String DB_NAME = "kingmoney.db";
 	private static final int DB_VERSION = 1;
     private static DBConfig mDBConfig;
-    public static final String TABLE_BEAN_DEFAULT_VALUE = "xtAndroidDB";
+    public static final String TABLE_BEAN_DEFAULT_VALUE = "kmpAndroidDB";
     protected HashMap<Integer, List<Object>> upgradeExec = new HashMap<Integer, List<Object>>();
     private DBConfig() {
 

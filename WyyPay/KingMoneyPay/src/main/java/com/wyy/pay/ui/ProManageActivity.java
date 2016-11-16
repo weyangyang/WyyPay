@@ -1,7 +1,6 @@
 package com.wyy.pay.ui;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,10 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wyy.pay.R;
-import com.wyy.pay.adapter.OrderProductListAdapter;
 import com.wyy.pay.adapter.ProCategoryListAdapter;
 import com.wyy.pay.adapter.ProductListAdapter;
-import com.wyy.pay.bean.ProCategoryBean;
+import com.wyy.pay.bean.TableCategoryBean;
 import com.wyy.pay.bean.ProductBean;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.Utils;
@@ -75,14 +73,10 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void initData() {
          categoryListAdapter = new ProCategoryListAdapter(this);
-        List<ProCategoryBean> beanList = new ArrayList<ProCategoryBean>();
-        for (int i=0;i<6;i++){
-            ProCategoryBean bean = new ProCategoryBean();
-            String categoryName = "默认分类"+i;
-            bean.setCategoryId(Utils.get6MD5WithString(categoryName));
-            bean.setCategoryName(categoryName);
-            beanList.add(bean);
-        }
+        TableCategoryBean tableCategoryBean = new TableCategoryBean();
+        String orderBy = TableCategoryBean.COLUMN_CREATE_CATEGORY_TIEM+" ASC";
+        List<TableCategoryBean> beanList =  tableCategoryBean.query(null,TableCategoryBean.COLUMN_USER_ID +"=?",new String[]{Utils.get6MD5WithString("18501053570")},null,null,orderBy);
+
         categoryListAdapter.setCategoryListData(beanList);
         categoryListView.setAdapter(categoryListAdapter);
         categoryListView.setItemChecked(1,true);

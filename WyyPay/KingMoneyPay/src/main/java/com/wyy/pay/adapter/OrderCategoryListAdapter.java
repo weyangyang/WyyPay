@@ -5,14 +5,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wyy.pay.R;
-import com.wyy.pay.bean.OrderCategoryBean;
-import com.wyy.pay.bean.ProCategoryBean;
-
-import org.w3c.dom.Text;
+import com.wyy.pay.bean.TableCategoryBean;
 
 import java.util.List;
 
@@ -30,7 +26,7 @@ public class OrderCategoryListAdapter extends BaseAdapter{
     public OrderCategoryListAdapter(Context context){
         this.mContext = context;
     }
-    public void setCategoryListData(List<OrderCategoryBean> beanList){
+    public void setCategoryListData(List<TableCategoryBean> beanList){
         this.categoryList = beanList;
     }
     @Override
@@ -56,7 +52,7 @@ public class OrderCategoryListAdapter extends BaseAdapter{
             holder.tvOrderCategoryItemView = (TextView) convertView.findViewById(R.id.tvOrderCategoryItemView);
             holder.tvOrderSumCount = (TextView) convertView.findViewById(R.id.tvOrderSumCount);
 
-            final OrderCategoryBean bean  = (OrderCategoryBean) categoryList.get(position);
+            final TableCategoryBean bean  = (TableCategoryBean) categoryList.get(position);
             holder.tvOrderCategoryItemView.setText(bean.getCategoryName());
             if(TextUtils.isEmpty(bean.getProSumCount()+"")){
                 holder.tvOrderSumCount.setVisibility(View.GONE);

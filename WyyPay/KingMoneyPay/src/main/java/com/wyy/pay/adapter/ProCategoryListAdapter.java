@@ -1,7 +1,6 @@
 package com.wyy.pay.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wyy.pay.R;
-import com.wyy.pay.bean.ProCategoryBean;
+import com.wyy.pay.bean.TableCategoryBean;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class ProCategoryListAdapter extends BaseAdapter{
     public ProCategoryListAdapter(Context context){
         this.mContext = context;
     }
-    public void setCategoryListData(List<ProCategoryBean> beanList){
+    public void setCategoryListData(List<TableCategoryBean> beanList){
         this.categoryList = beanList;
     }
     @Override
@@ -53,7 +52,7 @@ public class ProCategoryListAdapter extends BaseAdapter{
             holder.itemCategoryView = (TextView) convertView.findViewById(R.id.tvCategoryItemView);
             holder.item_category_main_rl = (RelativeLayout) convertView.findViewById(R.id.item_category_main_rl);
             convertView.setTag(holder);
-            final ProCategoryBean bean  = (ProCategoryBean) categoryList.get(position);
+            final TableCategoryBean bean  = (TableCategoryBean) categoryList.get(position);
             holder.itemCategoryView.setText(bean.getCategoryName());
 
 //            holder.itemCategoryView.setOnClickListener(new View.OnClickListener() {

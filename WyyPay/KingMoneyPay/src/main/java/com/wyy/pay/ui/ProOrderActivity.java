@@ -17,16 +17,12 @@ import android.widget.Toast;
 import com.wyy.pay.R;
 import com.wyy.pay.adapter.OrderCategoryListAdapter;
 import com.wyy.pay.adapter.OrderProductListAdapter;
-import com.wyy.pay.adapter.ProCategoryListAdapter;
-import com.wyy.pay.bean.OrderCategoryBean;
-import com.wyy.pay.bean.ProCategoryBean;
 import com.wyy.pay.bean.ProductBean;
+import com.wyy.pay.bean.TableCategoryBean;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.ClearEditText;
 import com.wyy.pay.view.XListView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,16 +72,9 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void initData() {
         categoryListAdapter = new OrderCategoryListAdapter(this);
-        List<OrderCategoryBean> beanList = new ArrayList<OrderCategoryBean>();
-        for (int i = 0; i < 6; i++) {
-            totalShopingNum += i * 3;
-            OrderCategoryBean bean = new OrderCategoryBean();
-            String categoryName = "默认分类" + i;
-            bean.setCategoryId(Utils.get6MD5WithString(categoryName));
-            bean.setCategoryName(categoryName);
-            bean.setProSumCount(i * 3 );
-            beanList.add(bean);
-        }
+        TableCategoryBean bean = new TableCategoryBean();
+        String orderBy = TableCategoryBean.COLUMN_CREATE_CATEGORY_TIEM+" ASC";
+        List<TableCategoryBean> beanList =  bean.query(null,TableCategoryBean.COLUMN_USER_ID +"=?",new String[]{Utils.get6MD5WithString("18501053570")},null,null,orderBy);
         categoryListAdapter.setCategoryListData(beanList);
         categoryListView.setAdapter(categoryListAdapter);
         categoryListView.setItemChecked(1, true);
@@ -103,19 +92,19 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         proListAdapter = new OrderProductListAdapter(this);
         proList = new ArrayList<ProductBean>();
         for (int i = 0; i < 10; i++) {
-            ProductBean bean = new ProductBean();
-            bean.setCategoryId("categoryId" + i);
+            ProductBean mProductBean = new ProductBean();
+            mProductBean.setCategoryId("categoryId" + i);
             if (i == 1 || i == 5) {
-                bean.setAddProCount(0);
+                mProductBean.setAddProCount(0);
             } else {
-                bean.setAddProCount(2 * i);
+                mProductBean.setAddProCount(2 * i);
             }
 
-            bean.setImgUrl("http://www.baidu.com");
-            bean.setProName("商品" + i);
-            bean.setProNo("No" + i * 9);
-            bean.setProPrice(18.00);
-            proList.add(bean);
+            mProductBean.setImgUrl("http://www.baidu.com");
+            mProductBean.setProName("商品" + i);
+            mProductBean.setProNo("No" + i * 9);
+            mProductBean.setProPrice(18.00);
+            proList.add(mProductBean);
         }
         proListAdapter.setProductListData(proList);
         orderProListView.setAdapter(proListAdapter);

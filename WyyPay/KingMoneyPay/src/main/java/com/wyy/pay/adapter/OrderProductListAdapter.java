@@ -1,7 +1,6 @@
 package com.wyy.pay.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.wyy.pay.R;
-import com.wyy.pay.bean.OrderCategoryBean;
 import com.wyy.pay.bean.ProductBean;
 import com.wyy.pay.utils.BaseOptions;
 

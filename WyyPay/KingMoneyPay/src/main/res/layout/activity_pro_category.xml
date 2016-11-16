@@ -27,7 +27,6 @@
         android:cacheColorHint="@android:color/transparent"
         android:divider="@null"
         android:fastScrollEnabled="true"
-        android:background="@color/gray"
         android:layout_above="@+id/btnAddCategory"
         android:choiceMode="singleChoice"
         android:scrollbars="none"

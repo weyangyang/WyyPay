@@ -7,6 +7,7 @@ import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.wyy.pay.upgrade.DBManager;
 import com.wyy.pay.utils.BaseOptions;
 import com.wyy.pay.utils.Utils;
 
@@ -25,7 +26,6 @@ public class BaseApplication extends Application {
 		Utils.isEmulator();
 		mContext = this.getApplicationContext();
 		initImageLoader();
-
 		XTCoreConfig.initConfig(mContext);
 		initDB();
 	}
@@ -46,8 +46,8 @@ public class BaseApplication extends Application {
 	}
 
 	public void initDB() {
-		//DBManager db = new DBManager();
-		//db.initTables(getApplicationContext());
+		DBManager db = new DBManager();
+		db.initTables(getApplicationContext());
 	}
 	public static String getUid() {
 		return uid;

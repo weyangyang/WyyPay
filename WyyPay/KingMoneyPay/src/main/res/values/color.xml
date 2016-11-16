@@ -19,7 +19,7 @@
     <color name="possible_result_points">#c0ffff00</color>
     <color name="green">#00ff00</color>
 
-
+    <color name="toast_black_background">#9E000000</color>
     <color name="unfocused">#cccccccc</color>
     <color name="pressed">#fff22fff</color>
     <color name="selected">#fff33fff</color>

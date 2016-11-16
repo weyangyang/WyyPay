@@ -15,6 +15,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.wyy.pay.R;
+import com.wyy.pay.bean.TableCategoryBean;
+import com.wyy.pay.utils.Utils;
 
 
 public class MainUIActivity extends TabActivity implements View.OnClickListener {
@@ -31,6 +33,7 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
         initView();
+        initData();
         mTabHost = getTabHost();
         mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
@@ -66,6 +69,27 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
 
 
     }
+
+    private void initData() {
+        TableCategoryBean bean = new TableCategoryBean();
+        String categoryName = "默认分类";
+        String categoryId = Utils.get6MD5WithString(categoryName);
+        bean.setCategoryId(categoryId);
+        bean.setCategoryName(categoryName);
+        bean.setUserId(Utils.get6MD5WithString("18501053570"));
+        bean.setCreateTime(1479139200L);//2016/11/15 0:0:0
+        bean.insert(true,TableCategoryBean.COLUMN_CATEGORY_ID,categoryId);
+
+        TableCategoryBean bean1 = new TableCategoryBean();
+        String categoryName1 = "测试分类";
+        String categoryId1 = Utils.get6MD5WithString(categoryName1);
+        bean1.setCategoryId(categoryId1);
+        bean1.setCategoryName(categoryName1);
+        bean1.setUserId(Utils.get6MD5WithString("18501053570"));
+        bean1.setCreateTime(System.currentTimeMillis());
+        bean1.insert(true,TableCategoryBean.COLUMN_CATEGORY_ID,categoryId1);
+    }
+
     private void addBottomTab(Class<?> cls,int imgId,int strId,String tabId) {
         Intent intentCount = new Intent(this, cls);
         Drawable countDrawable = getResources().getDrawable(

@@ -5,11 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wyy.pay.R;
-import com.wyy.pay.bean.ProCategoryBean;
+import com.wyy.pay.bean.TableCategoryBean;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class ProCategoryManageListAdapter extends BaseAdapter{
     public ProCategoryManageListAdapter(Context context){
         this.mContext = context;
     }
-    public void setCategoryListData(List<ProCategoryBean> beanList){
+    public void setCategoryListData(List<TableCategoryBean> beanList){
         this.categoryList = beanList;
     }
     @Override
@@ -65,7 +64,7 @@ public class ProCategoryManageListAdapter extends BaseAdapter{
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
-        final ProCategoryBean bean  = (ProCategoryBean) categoryList.get(position);
+        final TableCategoryBean bean  = (TableCategoryBean) categoryList.get(position);
         holder.btnDeleteCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,9 +101,9 @@ public class ProCategoryManageListAdapter extends BaseAdapter{
         return convertView;
     }
     public  interface CManageItemOnClickListener{
-         void onItemViewClick(int position, ProCategoryBean bean);
-        void  btnDeleteOnClick(int position,ProCategoryBean bean);
-        void  btnEditOnClick(int position,ProCategoryBean bean);
+         void onItemViewClick(int position, TableCategoryBean bean);
+        void  btnDeleteOnClick(int position,TableCategoryBean bean);
+        void  btnEditOnClick(int position,TableCategoryBean bean);
     }
     private static class ViewHolder{
         private TextView tvCategoryName;

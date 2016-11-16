@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wyy.pay.R;
+import com.wyy.pay.bean.TableCategoryBean;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.ClearEditText;
 
@@ -26,7 +27,7 @@ public class AddCategoryPopWindow extends PopupWindow implements View.OnClickLis
     private ClearEditText editCategory;
     private int fromType=0;
     private int screenW=0;
-   public AddCategoryPopWindow(Activity activity,int fromType){
+   public AddCategoryPopWindow(Activity activity, int fromType){
        this.mActivity = activity;
        this.fromType = fromType;
        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
