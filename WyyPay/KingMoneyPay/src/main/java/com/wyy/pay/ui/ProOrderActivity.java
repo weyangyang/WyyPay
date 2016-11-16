@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.wyy.pay.R;
 import com.wyy.pay.adapter.OrderCategoryListAdapter;
 import com.wyy.pay.adapter.OrderProductListAdapter;
-import com.wyy.pay.bean.ProductBean;
+import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.bean.TableCategoryBean;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.Utils;
@@ -38,7 +38,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
     private int totalShopingNum = 0;
     private TextView tvOrderTotalMoney;//合计：￥100.00
     private TextView tvOrderToPay;//去结算
-    private List<ProductBean> proList;//商品list
+    private List<TableGoodsDetailBean> proList;//商品list
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,22 +90,22 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         tvOrderTotalMoney.setText(String.format("合计：￥%s", "0.00"));
 
         proListAdapter = new OrderProductListAdapter(this);
-        proList = new ArrayList<ProductBean>();
-        for (int i = 0; i < 10; i++) {
-            ProductBean mProductBean = new ProductBean();
-            mProductBean.setCategoryId("categoryId" + i);
-            if (i == 1 || i == 5) {
-                mProductBean.setAddProCount(0);
-            } else {
-                mProductBean.setAddProCount(2 * i);
-            }
-
-            mProductBean.setImgUrl("http://www.baidu.com");
-            mProductBean.setProName("商品" + i);
-            mProductBean.setProNo("No" + i * 9);
-            mProductBean.setProPrice(18.00);
-            proList.add(mProductBean);
-        }
+        proList = new ArrayList<TableGoodsDetailBean>();
+//        for (int i = 0; i < 10; i++) {
+//            TableGoodsDetailBean mTableGoodsDetailBean = new TableGoodsDetailBean();
+//            mTableGoodsDetailBean.setCategoryId("categoryId" + i);
+//            if (i == 1 || i == 5) {
+//                mTableGoodsDetailBean.setAddProCount(0);
+//            } else {
+//                mTableGoodsDetailBean.setAddProCount(2 * i);
+//            }
+//
+//            mTableGoodsDetailBean.setImgUrl("http://www.baidu.com");
+//            mTableGoodsDetailBean.setProName("商品" + i);
+//            mTableGoodsDetailBean.setProNo("No" + i * 9);
+//            mTableGoodsDetailBean.setProPrice(18.00);
+//            proList.add(mTableGoodsDetailBean);
+//        }
         proListAdapter.setProductListData(proList);
         orderProListView.setAdapter(proListAdapter);
         proListAdapter.setOrderProductItemOnClickListener(this);
@@ -213,13 +213,13 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void addProOnClick(int position, ProductBean bean) {
+    public void addProOnClick(int position, TableGoodsDetailBean bean) {
         Toast.makeText(this, "点击position==" + position + "::bean==" + bean.toString(), Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
-    public void reduceProOnClick(int position, ProductBean bean) {
+    public void reduceProOnClick(int position, TableGoodsDetailBean bean) {
         Toast.makeText(this, "点击position==" + position + "::bean==" + bean.toString(), Toast.LENGTH_SHORT).show();
     }
 }

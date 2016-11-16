@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.wyy.pay.R;
-import com.wyy.pay.bean.ProductBean;
+import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.utils.BaseOptions;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 public class OrderProductListAdapter extends BaseAdapter{
-    private List <ProductBean>productList;
+    private List <TableGoodsDetailBean>productList;
     private Context mContext;
     private OrderProductItemOnClickListener itemOnClickListener;
     public void setOrderProductItemOnClickListener(OrderProductItemOnClickListener listener){
@@ -29,7 +29,7 @@ public class OrderProductListAdapter extends BaseAdapter{
     public OrderProductListAdapter(Context context){
         this.mContext = context;
     }
-    public void setProductListData(List<ProductBean> beanList){
+    public void setProductListData(List<TableGoodsDetailBean> beanList){
         this.productList = beanList;
     }
     @Override
@@ -49,7 +49,7 @@ public class OrderProductListAdapter extends BaseAdapter{
     ViewHolder holder =null;
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final ProductBean bean  = (ProductBean) productList.get(position);
+        final TableGoodsDetailBean bean  = (TableGoodsDetailBean) productList.get(position);
 
         if(convertView ==null){
             convertView = View.inflate(mContext, R.layout.item_order_product_list, null);
@@ -61,10 +61,10 @@ public class OrderProductListAdapter extends BaseAdapter{
             holder.tvOrderReduce = (Button) convertView.findViewById(R.id.tvOrderReduce);
             holder.tvItemOrderPrice = (TextView) convertView.findViewById(R.id.tvItemOrderPrice);
 
-            ImageLoader.getInstance().displayImage(bean.getImgUrl(), holder.ivOrderProImg,BaseOptions.getInstance().getProductImgOptions());
-            holder.tvOrderProName.setText(bean.getProName());
-            holder.tvItemOrderPrice.setText(String.valueOf(bean.getProPrice()));
-            if(bean.getAddProCount()>0){
+            ImageLoader.getInstance().displayImage(bean.getGoodsImgUrl(), holder.ivOrderProImg,BaseOptions.getInstance().getProductImgOptions());
+            holder.tvOrderProName.setText(bean.getGoodsName());
+            holder.tvItemOrderPrice.setText(String.valueOf(bean.getGoodsPrice()));
+            if(bean.getAddGoodsCount()>0){
                 holder.tvOrderReduce.setEnabled(true);
                 //设置不同的背景色
                 holder.tvOrderReduce.setBackgroundResource(R.drawable.ic_message_red_point);
@@ -74,7 +74,7 @@ public class OrderProductListAdapter extends BaseAdapter{
                 //设置不同的背景色
 
             }
-            holder.tvItemOrderCount.setText(String.valueOf(bean.getAddProCount()));
+            holder.tvItemOrderCount.setText(String.valueOf(bean.getAddGoodsCount()));
             holder.tvOrderAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,8 +97,8 @@ public class OrderProductListAdapter extends BaseAdapter{
         return convertView;
     }
     public  interface OrderProductItemOnClickListener{
-        void addProOnClick(int position,ProductBean bean);
-        void reduceProOnClick(int position,ProductBean bean);
+        void addProOnClick(int position,TableGoodsDetailBean bean);
+        void reduceProOnClick(int position,TableGoodsDetailBean bean);
     }
     private static class ViewHolder{
         private ImageView ivOrderProImg;

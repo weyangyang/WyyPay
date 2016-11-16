@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.wyy.pay.R;
-import com.wyy.pay.bean.ProductBean;
+import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.tackphoto.TakePhoto;
 import com.wyy.pay.utils.BaseOptions;
 import com.wyy.pay.utils.ConstantUtils;
@@ -28,10 +28,7 @@ import com.wyy.pay.view.ClearEditText;
 import java.io.File;
 import java.io.IOException;
 
-import netutils.engine.NetReqCallBack;
-import netutils.http.HttpHeader;
-import netutils.httpclient.core.ParameterList;
-import xtcore.utils.ZipUtils;
+import xtcore.utils.PreferenceUtils;
 
 import static xtcore.utils.FileUtils.chmod;
 
@@ -44,7 +41,7 @@ private ClearEditText editProPrice;//输入商品价格
     private TextView tvProCategory;//选择分类
     private ImageView ivProImg;//商品图片
     private Button btnProSave;//保存商品
-    private ProductBean mProductBean;//商品数据bean
+    private TableGoodsDetailBean mTableGoodsDetailBean;//商品数据bean
     private boolean isEdit = false;
     private TakePhoto mTakePhoto;
     private String SP_PRODUCT_PIC_PATH = "product_pic";
@@ -133,20 +130,20 @@ private ClearEditText editProPrice;//输入商品价格
        int from =  intent.getIntExtra(ConstantUtils.INTENT_KEY_FROM_ACTIVITY_TYPE,ConstantUtils.FROM_POPUP_WINDOW_ADD_PRODUCT);
         if(ConstantUtils.FROM_PRODUCT_MANAGE_ACTIVITY_PRODUCT_LIST_ITEM == from){
             //来自pro list item 点击
-            mProductBean = (ProductBean) intent.getSerializableExtra(ConstantUtils.INTENT_KEY_PRODUCT_BEAN);
+            mTableGoodsDetailBean = (TableGoodsDetailBean) intent.getSerializableExtra(ConstantUtils.INTENT_KEY_PRODUCT_BEAN);
             tvNavTitle.setText("商品详情");
             tvNavRight.setVisibility(View.VISIBLE);
             tvNavRight.setText("编辑");
             setViewState(false);
-            if(mProductBean!=null){
-                editProName.setText(mProductBean.getProName());
-                editBarCode.setText(mProductBean.getProNo());
-                tvProCategory.setText(mProductBean.getCategoryName());
-                editProPrice.setText(String.valueOf(mProductBean.getProPrice()));
-                String imgPath = xtcore.utils.PreferenceUtils.getPrefString(this, SP_PRODUCT_PIC_PATH+Utils.get6MD5WithString(mProductBean.getProName()), "");
+            if(mTableGoodsDetailBean !=null){
+                editProName.setText(mTableGoodsDetailBean.getGoodsName());
+                editBarCode.setText(mTableGoodsDetailBean.getGoodsBarcode());
+                tvProCategory.setText(mTableGoodsDetailBean.getGoodsCName());
+                editProPrice.setText(String.valueOf(mTableGoodsDetailBean.getGoodsPrice()));
+                String imgPath = xtcore.utils.PreferenceUtils.getPrefString(this, SP_PRODUCT_PIC_PATH+Utils.get6MD5WithString(mTableGoodsDetailBean.getGoodsName()), "");
                 if(TextUtils.isEmpty(imgPath)){
 
-                    ImageLoader.getInstance().displayImage(mProductBean.getImgUrl(),ivProImg, BaseOptions.getInstance().getProductClipImgOptions());
+                    ImageLoader.getInstance().displayImage(mTableGoodsDetailBean.getGoodsImgUrl(),ivProImg, BaseOptions.getInstance().getProductClipImgOptions());
                 }else {
 
                     ImageLoader.getInstance().displayImage(String.format("file://%s",imgPath),ivProImg, BaseOptions.getInstance().getProductClipImgOptions());
@@ -304,8 +301,9 @@ private ClearEditText editProPrice;//输入商品价格
                 ProDetailActivity.this.finish();
                 break;
             case R.id.btnProSave://保存商品
-                //更新数据库
-                ProDetailActivity.this.finish();
+                //更新数据
+                saveData2DB();
+
                 break;
             case R.id.ivProImg: //设置商品图片
                 String proName = editProName.getText().toString().trim();
@@ -315,6 +313,7 @@ private ClearEditText editProPrice;//输入商品价格
                 }
                 String tempMd5 = Utils.get6MD5WithString(proName);
                 showPic(SP_PRODUCT_PIC_PATH+tempMd5,tempMd5+PRODUCT_PIC_NAME, ivProImg, 200, 200);
+
                 break;
             case R.id.tvProCategory: //选择分类
                 hideSoftInputFromWindow();
@@ -341,6 +340,49 @@ private ClearEditText editProPrice;//输入商品价格
                 }
                 break;
         }
+    }
+
+    private void saveData2DB() {
+        String barCode = editBarCode.getText().toString().trim();
+        if(TextUtils.isEmpty(barCode)){
+            Toast.makeText(ProDetailActivity.this,"商品条码信息不能为空，请重新输入！！",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String goodsName = editProName.getText().toString().trim();
+        if(TextUtils.isEmpty(goodsName)){
+            Toast.makeText(ProDetailActivity.this,"商品名称不能为空，请先输入商品名称！",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String goodsId = Utils.get6MD5WithString(goodsName);
+        String goodsCName = tvProCategory.getText().toString().trim();
+        String goodsCid = Utils.get6MD5WithString(goodsCName);
+        String  price = editProPrice.getText().toString().trim();
+        if(TextUtils.isEmpty(price)){
+            Toast.makeText(ProDetailActivity.this,"商品价格不能为空，请先输入商品名称！",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        double goodsPrice = Double.parseDouble(price);
+        String spKey = SP_PRODUCT_PIC_PATH +Utils.get6MD5WithString(goodsName);
+        String imgUrlPath = PreferenceUtils.getPrefString(ProDetailActivity.this,spKey,"");
+        Long createTime = System.currentTimeMillis();
+        TableGoodsDetailBean bean = new TableGoodsDetailBean();
+        bean.setUserId(Utils.get6MD5WithString("18501053570"));
+        bean.setGoodsBarcode(barCode);
+        bean.setGoodsId(goodsId);
+        bean.setGoodsName(goodsName);
+        bean.setGoodsCid(goodsCid);
+        bean.setGoodsCName(goodsCName);
+        bean.setGoodsCreateTime(createTime);
+        bean.setGoodsImgUrl(imgUrlPath);
+        bean.setGoodsPrice(goodsPrice);
+        bean.setGoodsStockCount(10);
+        boolean isSucc = bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,goodsId);
+        if(isSucc){
+            ProDetailActivity.this.finish();
+        }else {
+            Toast.makeText(ProDetailActivity.this,"保存商品数据失败!",Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
 /**

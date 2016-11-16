@@ -4,13 +4,12 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.wyy.pay.R;
-import com.wyy.pay.bean.ProductBean;
+import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.utils.BaseOptions;
 
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.List;
  */
 
 public class ProductListAdapter extends BaseAdapter{
-    private List <ProductBean>productList;
+    private List <TableGoodsDetailBean>productList;
     private Context mContext;
     private ProductItemOnClickListener itemOnClickListener;
     public void setProductItemOnClickListener(ProductItemOnClickListener listener){
@@ -29,7 +28,7 @@ public class ProductListAdapter extends BaseAdapter{
     public ProductListAdapter(Context context){
         this.mContext = context;
     }
-    public void setProductListData(List<ProductBean> beanList){
+    public void setProductListData(List<TableGoodsDetailBean> beanList){
         this.productList = beanList;
     }
     @Override
@@ -49,7 +48,7 @@ public class ProductListAdapter extends BaseAdapter{
     ViewHolder holder =null;
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final ProductBean bean  = (ProductBean) productList.get(position);
+        final TableGoodsDetailBean bean  = (TableGoodsDetailBean) productList.get(position);
 
         if(convertView ==null){
             convertView = View.inflate(mContext, R.layout.item_product_list, null);
@@ -59,11 +58,11 @@ public class ProductListAdapter extends BaseAdapter{
             holder.tvStockCount = (TextView) convertView.findViewById(R.id.tvProStock);
             holder.tvProPrice = (TextView) convertView.findViewById(R.id.tvProPrice);
 
-            ImageLoader.getInstance().displayImage(bean.getImgUrl(), holder.ivProImg,BaseOptions.getInstance().getProductImgOptions());
-            holder.tvProName.setText(bean.getProName());
-            holder.tvProPrice.setText(String.valueOf(bean.getProPrice()));
+            ImageLoader.getInstance().displayImage("file://"+bean.getGoodsImgUrl(), holder.ivProImg,BaseOptions.getInstance().getProductImgOptions());
+            holder.tvProName.setText(bean.getGoodsName());
+            holder.tvProPrice.setText(String.valueOf(bean.getGoodsPrice()));
 
-            holder.tvStockCount.setText(String.valueOf(bean.getProStockCount()));
+            holder.tvStockCount.setText(String.valueOf(bean.getGoodsStockCount()));
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -80,7 +79,7 @@ public class ProductListAdapter extends BaseAdapter{
         return convertView;
     }
     public  interface ProductItemOnClickListener{
-        void onItemClick(int position, ProductBean bean);
+        void onItemClick(int position, TableGoodsDetailBean bean);
     }
     private static class ViewHolder{
         private ImageView ivProImg;

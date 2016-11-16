@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.wyy.pay.R;
 import com.wyy.pay.adapter.ProCategoryManageListAdapter;
 import com.wyy.pay.bean.TableCategoryBean;
+import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.ui.dialog.CustomProgressDialog;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.Utils;
@@ -22,6 +23,7 @@ import com.wyy.pay.view.XListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import db.utils.BaseDbBean;
 import db.utils.TableDataListener;
 
 public class ProCategoryActivity extends BaseActivity implements View.OnClickListener, ProCategoryManageListAdapter.CManageItemOnClickListener, AddCategoryPopWindow.AddCgOnClickListener {
@@ -94,6 +96,14 @@ public class ProCategoryActivity extends BaseActivity implements View.OnClickLis
             }
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        BaseDbBean.unregisterContentObserver(TableCategoryBean.TABLE_NAME,
+                dataListener);
+        super.onDestroy();
+    }
+
     @Override
     public void initListener() {
         tvNavRight.setOnClickListener(this);
@@ -222,6 +232,7 @@ public class ProCategoryActivity extends BaseActivity implements View.OnClickLis
                 if(isSucc){
                     Toast.makeText(this,ProCategoryActivity.this.getString(R.string.text_update_category_name_succ),Toast.LENGTH_SHORT).show();
                 }
+                oldCategoryName ="";
                 break;
         }
 
