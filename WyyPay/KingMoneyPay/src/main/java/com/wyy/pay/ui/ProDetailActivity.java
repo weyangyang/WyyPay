@@ -38,6 +38,7 @@ private ClearEditText editBarCode;//输入条码
 private ClearEditText editProName;//输入商品名称
 private Button btnScanBarCode;//扫码按钮
 private ClearEditText editProPrice;//输入商品价格
+private ClearEditText editProStock;//输入商品库存数量
     private TextView tvProCategory;//选择分类
     private ImageView ivProImg;//商品图片
     private Button btnProSave;//保存商品
@@ -46,6 +47,7 @@ private ClearEditText editProPrice;//输入商品价格
     private TakePhoto mTakePhoto;
     private String SP_PRODUCT_PIC_PATH = "product_pic";
     private static String PRODUCT_PIC_NAME = "product_pic.jpg";
+    private  int fromPage;//来自哪个界面
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_product_detail);
@@ -121,14 +123,15 @@ private ClearEditText editProPrice;//输入商品价格
         tvNavLeft.setBackgroundResource(R.drawable.ic_nav_back);
         editBarCode = (ClearEditText) findViewById(R.id.editBarCode);
         editProName = (ClearEditText) findViewById(R.id.editProName);
+        editProStock = (ClearEditText) findViewById(R.id.editProStock);
         btnScanBarCode = (Button) findViewById(R.id.btnScanBarCode);
         tvProCategory = (TextView) findViewById(R.id.tvProCategory);
         editProPrice = (ClearEditText) findViewById(R.id.editProPrice);
         ivProImg = (ImageView) findViewById(R.id.ivProImg);
         btnProSave = (Button) findViewById(R.id.btnProSave);
         Intent intent = getIntent();
-       int from =  intent.getIntExtra(ConstantUtils.INTENT_KEY_FROM_ACTIVITY_TYPE,ConstantUtils.FROM_POPUP_WINDOW_ADD_PRODUCT);
-        if(ConstantUtils.FROM_PRODUCT_MANAGE_ACTIVITY_PRODUCT_LIST_ITEM == from){
+        fromPage =  intent.getIntExtra(ConstantUtils.INTENT_KEY_FROM_ACTIVITY_TYPE,ConstantUtils.FROM_POPUP_WINDOW_ADD_PRODUCT);
+        if(ConstantUtils.FROM_PRODUCT_MANAGE_ACTIVITY_PRODUCT_LIST_ITEM == fromPage){
             //来自pro list item 点击
             mTableGoodsDetailBean = (TableGoodsDetailBean) intent.getSerializableExtra(ConstantUtils.INTENT_KEY_PRODUCT_BEAN);
             tvNavTitle.setText("商品详情");
@@ -138,20 +141,18 @@ private ClearEditText editProPrice;//输入商品价格
             if(mTableGoodsDetailBean !=null){
                 editProName.setText(mTableGoodsDetailBean.getGoodsName());
                 editBarCode.setText(mTableGoodsDetailBean.getGoodsBarcode());
+                editProStock.setText(String.valueOf(mTableGoodsDetailBean.getGoodsStockCount()));
                 tvProCategory.setText(mTableGoodsDetailBean.getGoodsCName());
                 editProPrice.setText(String.valueOf(mTableGoodsDetailBean.getGoodsPrice()));
                 String imgPath = xtcore.utils.PreferenceUtils.getPrefString(this, SP_PRODUCT_PIC_PATH+Utils.get6MD5WithString(mTableGoodsDetailBean.getGoodsName()), "");
-                if(TextUtils.isEmpty(imgPath)){
-
+                if(TextUtils.isEmpty(imgPath)||imgPath.contains("http:")){
                     ImageLoader.getInstance().displayImage(mTableGoodsDetailBean.getGoodsImgUrl(),ivProImg, BaseOptions.getInstance().getProductClipImgOptions());
                 }else {
-
                     ImageLoader.getInstance().displayImage(String.format("file://%s",imgPath),ivProImg, BaseOptions.getInstance().getProductClipImgOptions());
                 }
-
             }
 
-        }else if(ConstantUtils.FROM_POPUP_WINDOW_ADD_PRODUCT == from){
+        }else if(ConstantUtils.FROM_POPUP_WINDOW_ADD_PRODUCT == fromPage){
             //来自popupwindow add button 点击
             tvNavTitle.setText("新增商品");
             tvNavRight.setVisibility(View.GONE);
@@ -350,18 +351,24 @@ private ClearEditText editProPrice;//输入商品价格
         }
         String goodsName = editProName.getText().toString().trim();
         if(TextUtils.isEmpty(goodsName)){
-            Toast.makeText(ProDetailActivity.this,"商品名称不能为空，请先输入商品名称！",Toast.LENGTH_SHORT).show();
+            Toast.makeText(ProDetailActivity.this,"商品名称不能为空，请重新输入！",Toast.LENGTH_SHORT).show();
             return;
         }
         String goodsId = Utils.get6MD5WithString(goodsName);
         String goodsCName = tvProCategory.getText().toString().trim();
         String goodsCid = Utils.get6MD5WithString(goodsCName);
         String  price = editProPrice.getText().toString().trim();
-        if(TextUtils.isEmpty(price)){
-            Toast.makeText(ProDetailActivity.this,"商品价格不能为空，请先输入商品名称！",Toast.LENGTH_SHORT).show();
+        if(TextUtils.isEmpty(price)||!Utils.isZfNumber(price)){
+            Toast.makeText(ProDetailActivity.this,"商品价格不能为空，请重新输入！",Toast.LENGTH_SHORT).show();
             return;
         }
         double goodsPrice = Double.parseDouble(price);
+        String  proStockCount = editProStock.getText().toString().trim();
+        if(TextUtils.isEmpty(price)||!Utils.isZhengNumber(proStockCount)){
+            Toast.makeText(ProDetailActivity.this,"商品库存不能为0，请重新输入！",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int stockCount = Integer.parseInt(proStockCount);
         String spKey = SP_PRODUCT_PIC_PATH +Utils.get6MD5WithString(goodsName);
         String imgUrlPath = PreferenceUtils.getPrefString(ProDetailActivity.this,spKey,"");
         Long createTime = System.currentTimeMillis();
@@ -375,10 +382,19 @@ private ClearEditText editProPrice;//输入商品价格
         bean.setGoodsCreateTime(createTime);
         bean.setGoodsImgUrl(imgUrlPath);
         bean.setGoodsPrice(goodsPrice);
-        bean.setGoodsStockCount(10);
+        bean.setGoodsStockCount(stockCount);
         boolean isSucc = bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,goodsId);
         if(isSucc){
-            ProDetailActivity.this.finish();
+            if(fromPage ==ConstantUtils.FROM_POPUP_WINDOW_ADD_PRODUCT){
+                    //清空数据
+                    editBarCode.setText("");
+                    editProName.setText("");
+                    tvProCategory.setText("默认分类");
+                    editProPrice.setText("");
+                    editProStock.setText("");
+            }else {
+                ProDetailActivity.this.finish();
+            }
         }else {
             Toast.makeText(ProDetailActivity.this,"保存商品数据失败!",Toast.LENGTH_SHORT).show();
         }

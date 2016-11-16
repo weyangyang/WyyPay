@@ -160,8 +160,8 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
 //            bean.setCategoryName("商品分类"+i);
 //            proList.add(bean);
 //        }
-//        mProductListAdapter.setProductListData(proList);
-//        proListView.setAdapter(mProductListAdapter);
+        mProductListAdapter.setProductListData(proList);
+        proListView.setAdapter(mProductListAdapter);
         mProductListAdapter.setProductItemOnClickListener(this);
 }
 

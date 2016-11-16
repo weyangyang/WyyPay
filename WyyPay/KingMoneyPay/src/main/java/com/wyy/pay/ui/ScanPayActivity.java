@@ -23,11 +23,15 @@ import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.wyy.pay.R;
+import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.camera.CameraManager;
 import com.wyy.pay.decoding.CaptureActivityHandler;
 import com.wyy.pay.decoding.InactivityTimer;
+import com.wyy.pay.utils.BaseOptions;
 import com.wyy.pay.utils.ConstantUtils;
+import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.ViewfinderView;
 
 import java.io.IOException;
@@ -58,6 +62,10 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     private TextView tvProNum;//商品编号
     private TextView tvCannel;//放弃
     private TextView tvScanTips;//扫描提示
+    private TextView tvProName;//商品名称
+    private TextView tvProPrice;//商品价格
+    private TextView tvProSaveNum;//商品库存
+    private ImageView ivProScanPic;//显示扫码后的商品图片
 
     /** Called when the activity is first created. */
     @Override
@@ -152,7 +160,21 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                     if(result.getText().contains("http")){
                         Toast.makeText(ScanPayActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
                     }else {
+                        String goodsNo = result.getText().trim();
+                        TableGoodsDetailBean bean = new TableGoodsDetailBean();
+                        bean = (TableGoodsDetailBean) bean.querySingle(null,TableGoodsDetailBean.COLUMN_USER_ID +"=? AND "+TableGoodsDetailBean.COLUMN_GOODS_BARCODE+" =?",new String[]{Utils.get6MD5WithString("18501053570"),goodsNo},null,null,null);
+                        tvProName.setText(String.format("商品名称：%s",bean.getGoodsName()));
+                        tvProPrice.setText(String.format("商品价格：￥%s",bean.getGoodsPrice()));
+                        //ivProScanPic
+                        String imgPath = bean.getGoodsImgUrl();
+                        if(TextUtils.isEmpty(imgPath)||imgPath.contains("http:")){
+                            ImageLoader.getInstance().displayImage(imgPath,ivProScanPic, BaseOptions.getInstance().getProductClipImgOptions());
+                        }else {
+                            ImageLoader.getInstance().displayImage(String.format("file://%s",imgPath),ivProScanPic, BaseOptions.getInstance().getProductClipImgOptions());
+                        }
+                        tvProSaveNum.setText(String.format("商品库存：%s",bean.getGoodsStockCount()));
                         tvProNum.setText(String.format("商品编号：%s",result.getText()));
+
                     }
                 }else if(ConstantUtils.PAY_TYPE_SCAN_PRO_FOR_BARCODE ==payType){
                     Intent intent = new Intent();
@@ -295,6 +317,10 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     public void initView() {
         tvProAdd =(TextView)findViewById(R.id.tvProAdd);
         tvProNum =(TextView)findViewById(R.id.tvProNum);
+        tvProSaveNum =(TextView)findViewById(R.id.tvProSaveNum);
+        tvProName =(TextView)findViewById(R.id.tvProName);
+        tvProPrice =(TextView)findViewById(R.id.tvProPrice);
+        ivProScanPic =(ImageView)findViewById(R.id.ivProScanPic);
         tvCannel =(TextView)findViewById(R.id.tvCannel);
         tvScanTips =(TextView)findViewById(R.id.tvScanTips);
         rlProMessage = (RelativeLayout) findViewById(R.id.rlProMessage);

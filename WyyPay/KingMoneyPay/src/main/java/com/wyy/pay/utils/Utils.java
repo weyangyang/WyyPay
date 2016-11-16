@@ -322,6 +322,52 @@ public class Utils {
 		return matcher.matches();
 	}
 
+
+	/**
+	 *
+	 *"^\\d+$"　　//非负整数（正整数   +   0）
+	 "^[0-9]*[1-9][0-9]*$"　　//正整数
+	 "^((-\\d+)|(0+))$"　　//非正整数（负整数   +   0）
+	 "^-[0-9]*[1-9][0-9]*$"　　//负整数
+	 "^-?\\d+$"　　　　//整数
+	 "^\\d+(\\.\\d+)?$"　　//非负浮点数（正浮点数   +   0）
+	 "^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$"　　//正浮点数
+	 "^((-\\d+(\\.\\d+)?)|(0+(\\.0+)?))$"　　//非正浮点数（负浮点数   +   0）
+	 "^(-(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*)))$"　　//负浮点数
+	 "^(-?\\d+)(\\.\\d+)?$"　　//浮点数
+     */
+
+
+	/**
+	 * 非负整数（正整数   +   0）
+	 * @param number
+	 * @return
+     */
+	public static boolean isZhengNumber(String number) {
+
+		if (TextUtils.isEmpty(number))
+			return false;
+
+		Pattern pattern = Pattern.compile("^[0-9]*[1-9][0-9]*$");
+		Matcher matcher = pattern.matcher(number);
+		return matcher.matches();
+	}
+
+	/**
+	 * 非负浮点数（正浮点数   +   0）
+	 * @param number
+	 * @return
+     */
+	public static boolean isZfNumber(String number) {
+
+		if (TextUtils.isEmpty(number))
+			return false;
+
+		Pattern pattern = Pattern.compile("^\\d+(\\.\\d+)?$");
+		Matcher matcher = pattern.matcher(number);
+		return matcher.matches();
+	}
+
 	public static int dip2px(Context context, float dipValue) {
 		final float scale = context.getResources().getDisplayMetrics().density;
 		return (int) (dipValue * scale + 0.5f);
