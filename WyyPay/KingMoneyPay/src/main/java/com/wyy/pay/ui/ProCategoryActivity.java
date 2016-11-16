@@ -232,7 +232,7 @@ public class ProCategoryActivity extends BaseActivity implements View.OnClickLis
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if(isEdit){
                 isEdit = !isEdit;
-                    tvNavRight.setText("完成");
+                    tvNavRight.setText("编辑");
                 if(adapter!=null){
                     adapter.setEdit(isEdit);
                     adapter.notifyDataSetChanged();
