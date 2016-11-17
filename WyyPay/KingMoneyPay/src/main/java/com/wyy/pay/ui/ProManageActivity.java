@@ -37,8 +37,11 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
     private ProCategoryListAdapter categoryListAdapter;
     private ProductListAdapter mProductListAdapter;
     private List<TableGoodsDetailBean> proList;
+    private List<TableCategoryBean> categoryList;
     private TableDataListener<TableGoodsDetailBean> dataListener;
+    private TableDataListener<TableCategoryBean> categoryDataListener;
     private CustomProgressDialog initDialog;
+    private static final int REQUEST_CATEGORY_MANAGE_CODE = 66;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,14 +83,16 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
     }
     private String currentCName ="默认分类";//当前分类名称
     private static final int TABLE_CATEGORY_CHANGED = 0;
-    private static final int INIT_COMPLETE = 1;
+    private static final int INIT_CATEGORY_COMPLETE = 1;
+    private static final int TABLE_GOODS_CHANGED = 2;
+    private static final int INIT_GOODS_COMPLETE = 3;
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what){
-                case TABLE_CATEGORY_CHANGED:
-                    getDataFromDB(currentCName);
+                case TABLE_GOODS_CHANGED:
+                    getGoodsDataFromDB(currentCName);
                     break;
-                case INIT_COMPLETE:
+                case INIT_GOODS_COMPLETE:
                     if(initDialog!=null){
                         initDialog.dismiss();
                     }
@@ -98,15 +103,50 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
                     mProductListAdapter.setProductListData(proList);
                     mProductListAdapter.notifyDataSetChanged();
                     break;
+                case TABLE_CATEGORY_CHANGED:
+                    getCategoryDataFromDB();
+                    break;
+                case INIT_CATEGORY_COMPLETE:
+                    if(initDialog!=null){
+                        initDialog.dismiss();
+                    }
+                    if(categoryList==null){
+                        categoryList = new ArrayList<>();
+                        //显示商品数据为空界面
+                    }
+                    categoryListAdapter.setCategoryListData(categoryList);
+                    categoryListAdapter.notifyDataSetChanged();
+                    break;
             }
         }
     };
+
+    private void getCategoryDataFromDB() {
+        if (initDialog == null) {
+            initDialog = CustomProgressDialog.createLoadingDialog(this);
+        }
+        if (!initDialog.isShowing()) {
+            initDialog.show();
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(categoryList!=null&&categoryList.size()>0){
+                    categoryList.clear();
+                }
+                TableCategoryBean tableCategoryBean = new TableCategoryBean();
+                String orderBy = TableCategoryBean.COLUMN_CREATE_CATEGORY_TIEM+" ASC";
+                categoryList =  tableCategoryBean.query(null,TableCategoryBean.COLUMN_USER_ID +"=?",new String[]{Utils.get6MD5WithString("18501053570")},null,null,orderBy);
+                handler.sendEmptyMessage(INIT_CATEGORY_COMPLETE);
+            }
+        }).start();
+    }
 
     /**
      * 从数据库获取数据
      * @param goodsCname 商品分类名称
      */
-    private void getDataFromDB(final String goodsCname) {
+    private void getGoodsDataFromDB(final String goodsCname) {
         if (initDialog == null) {
             initDialog = CustomProgressDialog.createLoadingDialog(this);
         }
@@ -119,7 +159,7 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
                 TableGoodsDetailBean bean = new TableGoodsDetailBean();
                 String orderBy = TableGoodsDetailBean.COLUMN_GOODS_CREATE_TIME+" ASC";
                 proList =  bean.query(null,TableGoodsDetailBean.COLUMN_USER_ID +"=? AND "+TableGoodsDetailBean.COLUMN_GOODS_CATEGORY_NAME+" =?",new String[]{Utils.get6MD5WithString("18501053570"),goodsCname},null,null,orderBy);
-                handler.sendEmptyMessage(INIT_COMPLETE);
+                handler.sendEmptyMessage(INIT_GOODS_COMPLETE);
             }
         }).start();
     }
@@ -127,11 +167,9 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void initData() {
          categoryListAdapter = new ProCategoryListAdapter(this);
-        TableCategoryBean tableCategoryBean = new TableCategoryBean();
-        String orderBy = TableCategoryBean.COLUMN_CREATE_CATEGORY_TIEM+" ASC";
-        List<TableCategoryBean> beanList =  tableCategoryBean.query(null,TableCategoryBean.COLUMN_USER_ID +"=?",new String[]{Utils.get6MD5WithString("18501053570")},null,null,orderBy);
-
-        categoryListAdapter.setCategoryListData(beanList);
+        categoryList = new ArrayList<>();
+        getCategoryDataFromDB();
+        categoryListAdapter.setCategoryListData(categoryList);
         categoryListView.setAdapter(categoryListAdapter);
         categoryListView.setItemChecked(1,true);
         categoryListView.setActivated(true);
@@ -142,33 +180,24 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
 
         mProductListAdapter = new ProductListAdapter(this);
         proList = new ArrayList<TableGoodsDetailBean>();
-        getDataFromDB(currentCName);
-
-//        for (int i = 0; i < 10; i++) {
-//            TableGoodsDetailBean bean = new TableGoodsDetailBean();
-//            bean.setCategoryId("categoryId" + i);
-//            if (i<5) {
-//                bean.setProStockCount(10*i);
-//            } else {
-//                bean.setProStockCount(20*i);
-//            }
-//
-//            bean.setImgUrl("http://www.baidu.com");
-//            bean.setProName("商品" + i);
-//            bean.setProNo("No" + i * 9);
-//            bean.setProPrice(18.00);
-//            bean.setCategoryName("商品分类"+i);
-//            proList.add(bean);
-//        }
+        getGoodsDataFromDB(currentCName);
         mProductListAdapter.setProductListData(proList);
         proListView.setAdapter(mProductListAdapter);
         mProductListAdapter.setProductItemOnClickListener(this);
 }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==RESULT_OK&& requestCode == REQUEST_CATEGORY_MANAGE_CODE){
+          //  handler.sendEmptyMessage(TABLE_CATEGORY_CHANGED);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
-        BaseDbBean.unregisterContentObserver(TableGoodsDetailBean.TABLE_NAME,
-                dataListener);
+        BaseDbBean.unregisterContentObserver(TableGoodsDetailBean.TABLE_NAME, dataListener);
+        BaseDbBean.unregisterContentObserver(TableCategoryBean.TABLE_NAME, dataListener);
         super.onDestroy();
     }
 
@@ -179,9 +208,9 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
         tvProMcancel.setOnClickListener(this);
         tvProMcomplete.setOnClickListener(this);
         tvProMDelete.setOnClickListener(this);
-        dataListener = new TableDataListener<TableGoodsDetailBean>(handler) {
+        categoryDataListener = new TableDataListener<TableCategoryBean>(handler) {
             @Override
-            public void onDataChanged(int type, TableGoodsDetailBean obj) {
+            public void onDataChanged(int type, TableCategoryBean obj) {
                 if (type == TableDataListener.TYPE_UPDATE) {
                     handler.sendEmptyMessage(TABLE_CATEGORY_CHANGED);
                 }
@@ -194,7 +223,23 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
                 }
             }
         };
-        TableCategoryBean.registerContentObserver(TableGoodsDetailBean.TABLE_NAME,dataListener);
+        dataListener = new TableDataListener<TableGoodsDetailBean>(handler) {
+            @Override
+            public void onDataChanged(int type, TableGoodsDetailBean obj) {
+                if (type == TableDataListener.TYPE_UPDATE) {
+                    handler.sendEmptyMessage(TABLE_GOODS_CHANGED);
+                }
+                if (type == TableDataListener.TYPE_ADD) {
+                    handler.sendEmptyMessage(TABLE_GOODS_CHANGED);
+                }
+                if (type == TableDataListener.TYPE_DELETE
+                        || type == TableDataListener.TYPE_RAW_DELETE) {
+                    return;
+                }
+            }
+        };
+        TableCategoryBean.registerContentObserver(TableCategoryBean.TABLE_NAME,categoryDataListener);
+        TableGoodsDetailBean.registerContentObserver(TableGoodsDetailBean.TABLE_NAME,dataListener);
 
     }
 
@@ -238,7 +283,8 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
     public void tvCategoryManageOnClick() {
         Intent intent = new Intent(this,ProCategoryActivity.class);
         intent.putExtra(ConstantUtils.INTENT_KEY_FROM_ACTIVITY_TYPE,ConstantUtils.FROM_POPUP_WINDOW_CATEGORY_MANAGE);
-        startActivity(intent);
+        startActivityForResult(intent,REQUEST_CATEGORY_MANAGE_CODE);
+//        startActivity(intent);
     }
 
 

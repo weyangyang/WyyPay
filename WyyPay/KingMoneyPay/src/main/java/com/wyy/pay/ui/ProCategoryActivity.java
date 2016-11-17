@@ -99,8 +99,7 @@ public class ProCategoryActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void onDestroy() {
-        BaseDbBean.unregisterContentObserver(TableCategoryBean.TABLE_NAME,
-                dataListener);
+//        BaseDbBean.unregisterContentObserver(TableCategoryBean.TABLE_NAME, dataListener);
         super.onDestroy();
     }
 
@@ -160,6 +159,7 @@ public class ProCategoryActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.tvNavLeft:
+                setResult(RESULT_OK);
                ProCategoryActivity.this.finish();
                 break;
             case R.id.btnAddCategory://新增分类
@@ -250,6 +250,7 @@ public class ProCategoryActivity extends BaseActivity implements View.OnClickLis
                 }
                return true;
             }
+            setResult(RESULT_OK);
             ProCategoryActivity.this.finish();
             return true;
         }

@@ -21,8 +21,8 @@ public class TableCategoryBean extends BaseDbBean implements Serializable{
 
     @ColumnAnnotation(column = COLUMN_CATEGORY_ID)
     public String categoryId;//分类id (由分类名称的6位md5生成)
-    @ColumnAnnotation(column = COLUMN_CREATE_CATEGORY_TIEM,info ="Long",defaultValue = "-1")
-    public Long createTime;//创建分类的时间戳
+    @ColumnAnnotation(column = COLUMN_CREATE_CATEGORY_TIEM,info ="long",defaultValue = "-1")
+    public long createTime;//创建分类的时间戳
     @ColumnAnnotation(column = COLUMN_CATEGORY_NAME)
     public String categoryName;//分类名称
     @ColumnAnnotation(column = COLUMN_USER_ID)
@@ -38,7 +38,7 @@ public class TableCategoryBean extends BaseDbBean implements Serializable{
         this.proSumCount = proSumCount;
     }
 
-    public Long getCreateTime() {
+    public long getCreateTime() {
         return createTime;
     }
     public void setCreateTime(Long createTime) {

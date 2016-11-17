@@ -30,20 +30,20 @@ public class TableGoodsDetailBean extends BaseDbBean implements Serializable{
     public String goodsImgUrl;//商品图片
     @ColumnAnnotation(column = COLUMN_GOODS_NAME)
     public String goodsName;//商品名称
-    @ColumnAnnotation(column = COLUMN_GOODS_PRICE,info = "Double",defaultValue = "-1")
+    @ColumnAnnotation(column = COLUMN_GOODS_PRICE,info = "double",defaultValue = "-1")
     public double goodsPrice;//商品价格
     @ColumnAnnotation(column = COLUMN_GOODS_BARCODE)
     public String goodsBarcode;//商品编号
     @ColumnAnnotation(column = COLUMN_GOODS_CATEGORY_ID)
     public String goodsCid;//产品所属分类id
-    @ColumnAnnotation(column = COLUMN_GOODS_STOCK_COUNT,info = "Integer",defaultValue = "-1")
+    @ColumnAnnotation(column = COLUMN_GOODS_STOCK_COUNT,info = "int",defaultValue = "-1")
     public int goodsStockCount;//商品库存
     @ColumnAnnotation(column = COLUMN_GOODS_CATEGORY_NAME)
     public String goodsCName;//产品所属的分类名称
     @ColumnAnnotation(column = COLUMN_USER_ID)
     public  String userId;//用户id
-    @ColumnAnnotation(column = COLUMN_GOODS_CREATE_TIME,info = "Long",defaultValue = "-1")
-    public Long goodsCreateTime;//商品创建的时间
+    @ColumnAnnotation(column = COLUMN_GOODS_CREATE_TIME,info = "long",defaultValue = "-1")
+    public long goodsCreateTime;//商品创建的时间
 
     public int addGoodsCount;//添加的商品数量
 
@@ -119,7 +119,7 @@ public class TableGoodsDetailBean extends BaseDbBean implements Serializable{
         this.userId = userId;
     }
 
-    public Long getGoodsCreateTime() {
+    public long getGoodsCreateTime() {
         return goodsCreateTime;
     }
 

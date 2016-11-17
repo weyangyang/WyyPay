@@ -392,7 +392,9 @@ private ClearEditText editProStock;//输入商品库存数量
                     tvProCategory.setText("默认分类");
                     editProPrice.setText("");
                     editProStock.setText("");
+                Toast.makeText(ProDetailActivity.this,"保存商品数据成功!",Toast.LENGTH_SHORT).show();
             }else {
+                Toast.makeText(ProDetailActivity.this,"保存商品数据成功!",Toast.LENGTH_SHORT).show();
                 ProDetailActivity.this.finish();
             }
         }else {
