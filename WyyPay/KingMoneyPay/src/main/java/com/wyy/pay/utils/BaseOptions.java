@@ -20,11 +20,13 @@ public class BaseOptions {
                 .showImageForEmptyUri(R.drawable.ic_default_user)
                 .showImageOnFail(R.drawable.ic_default_user)
                 .cacheInMemory(true).bitmapConfig(Bitmap.Config.RGB_565)
+                .delayBeforeLoading(300)
                 .cacheOnDisk(true).build();
         productImgOption = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.image_empty)
                 .showImageForEmptyUri(R.drawable.image_empty)
                 .showImageOnFail(R.drawable.image_error)
+                .delayBeforeLoading(300)
                 .cacheInMemory(true).bitmapConfig(Bitmap.Config.RGB_565)
                 .cacheOnDisk(true).build();
         productClipImgOption = new DisplayImageOptions.Builder()
@@ -32,7 +34,7 @@ public class BaseOptions {
                 .showImageForEmptyUri(R.drawable.image_empty)
                 .showImageOnFail(R.drawable.image_error)
                 .delayBeforeLoading(300).bitmapConfig(Bitmap.Config.RGB_565)
-                .displayer(new RoundedBitmapDisplayer(30))
+               // .displayer(new RoundedBitmapDisplayer(30))
                 .cacheInMemory(false).cacheOnDisk(false).build();
 
     }

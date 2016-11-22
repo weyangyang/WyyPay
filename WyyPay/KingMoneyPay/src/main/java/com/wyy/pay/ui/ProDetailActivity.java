@@ -27,6 +27,7 @@ import com.wyy.pay.view.ClearEditText;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import xtcore.utils.PreferenceUtils;
 
@@ -180,13 +181,13 @@ private ClearEditText editProStock;//输入商品库存数量
         mTakePhoto = new TakePhoto(this, new TakePhoto.PhotoResult() {
             @Override
             public void onPhotoResult(File outputPath) {
-//                 String strPath = "file://" + outputPath.getAbsolutePath();
-                String strPath = outputPath.getAbsolutePath();
-                 Bitmap bitmap = BitmapFactory.decodeFile(strPath);
-                 showView.setImageBitmap(bitmap);
+                 String strPath = "file://" + outputPath.getAbsolutePath();
+//                String strPath = outputPath.getAbsolutePath();
+//                 Bitmap bitmap = BitmapFactory.decodeFile(strPath);
+//                 showView.setImageBitmap(bitmap);
+                ImageLoader.getInstance().displayImage(strPath,showView,BaseOptions.getInstance().getProductClipImgOptions());
+
                 xtcore.utils.PreferenceUtils.setPrefString(ProDetailActivity.this, spKey, strPath);
-//                ImageLoader.getInstance().displayImage("file://" + strPath, showView,
-//                        BaseOptions.getInstance().getProductClipImgOptions());
             }
         }, cardPicFile);
         int h = Utils.dip2px(this, picHeight);
@@ -348,6 +349,16 @@ private ClearEditText editProStock;//输入商品库存数量
         if(TextUtils.isEmpty(barCode)){
             Toast.makeText(ProDetailActivity.this,"商品条码信息不能为空，请重新输入！！",Toast.LENGTH_SHORT).show();
             return;
+        }else {
+            if(fromPage ==ConstantUtils.FROM_POPUP_WINDOW_ADD_PRODUCT){
+                TableGoodsDetailBean bean = new TableGoodsDetailBean();
+                List  goodsList = bean.query(null,TableGoodsDetailBean.COLUMN_USER_ID +"=? AND "+TableGoodsDetailBean.COLUMN_GOODS_BARCODE+" =?",new String[]{Utils.get6MD5WithString("18501053570"),barCode},null,null,null);
+                if(goodsList!=null && goodsList.size()>0){
+                    Toast.makeText(ProDetailActivity.this,"您要添加的商品已存在，请重新输入！",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+            }
         }
         String goodsName = editProName.getText().toString().trim();
         if(TextUtils.isEmpty(goodsName)){
@@ -392,6 +403,7 @@ private ClearEditText editProStock;//输入商品库存数量
                     tvProCategory.setText("默认分类");
                     editProPrice.setText("");
                     editProStock.setText("");
+                showPic(SP_PRODUCT_PIC_PATH,"dd", ivProImg, 200, 200);
                 Toast.makeText(ProDetailActivity.this,"保存商品数据成功!",Toast.LENGTH_SHORT).show();
             }else {
                 Toast.makeText(ProDetailActivity.this,"保存商品数据成功!",Toast.LENGTH_SHORT).show();
