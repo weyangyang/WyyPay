@@ -146,7 +146,7 @@ private ClearEditText editProStock;//输入商品库存数量
                 tvProCategory.setText(mTableGoodsDetailBean.getGoodsCName());
                 editProPrice.setText(String.valueOf(mTableGoodsDetailBean.getGoodsPrice()));
                 String imgPath = xtcore.utils.PreferenceUtils.getPrefString(this, SP_PRODUCT_PIC_PATH+Utils.get6MD5WithString(mTableGoodsDetailBean.getGoodsName()), "");
-                if(TextUtils.isEmpty(imgPath)||imgPath.contains("http:")){
+                if(imgPath.contains("http:")){
                     ImageLoader.getInstance().displayImage(mTableGoodsDetailBean.getGoodsImgUrl(),ivProImg, BaseOptions.getInstance().getProductClipImgOptions());
                 }else {
                     ImageLoader.getInstance().displayImage(String.format("file://%s",imgPath),ivProImg, BaseOptions.getInstance().getProductClipImgOptions());
@@ -403,7 +403,8 @@ private ClearEditText editProStock;//输入商品库存数量
                     tvProCategory.setText("默认分类");
                     editProPrice.setText("");
                     editProStock.setText("");
-                showPic(SP_PRODUCT_PIC_PATH,"dd", ivProImg, 200, 200);
+                ImageLoader.getInstance().displayImage("http://noimage",ivProImg,BaseOptions.getInstance().getProductClipImgOptions());
+
                 Toast.makeText(ProDetailActivity.this,"保存商品数据成功!",Toast.LENGTH_SHORT).show();
             }else {
                 Toast.makeText(ProDetailActivity.this,"保存商品数据成功!",Toast.LENGTH_SHORT).show();

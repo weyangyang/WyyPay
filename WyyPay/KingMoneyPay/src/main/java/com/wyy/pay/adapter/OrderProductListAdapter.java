@@ -60,10 +60,9 @@ public class OrderProductListAdapter extends BaseAdapter{
             holder.tvItemOrderCount = (TextView) convertView.findViewById(R.id.tvItemOrderCount);
             holder.tvOrderReduce = (Button) convertView.findViewById(R.id.tvOrderReduce);
             holder.tvItemOrderPrice = (TextView) convertView.findViewById(R.id.tvItemOrderPrice);
-            if(bean.getGoodsImgUrl().contains("http:")){
+            if(bean.getGoodsImgUrl().contains("http:")||bean.getGoodsImgUrl().contains("file://")){
                 ImageLoader.getInstance().displayImage(bean.getGoodsImgUrl(), holder.ivOrderProImg,BaseOptions.getInstance().getProductImgOptions());
             }else {
-
                 ImageLoader.getInstance().displayImage("file://"+bean.getGoodsImgUrl(), holder.ivOrderProImg,BaseOptions.getInstance().getProductImgOptions());
             }
             holder.tvOrderProName.setText(bean.getGoodsName());

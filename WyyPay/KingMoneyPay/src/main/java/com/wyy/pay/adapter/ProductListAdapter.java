@@ -61,7 +61,7 @@ public class ProductListAdapter extends BaseAdapter{
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if(bean.getGoodsImgUrl().contains("http:")){
+        if(bean.getGoodsImgUrl().contains("http:")||bean.getGoodsImgUrl().contains("file://")){
 
             ImageLoader.getInstance().displayImage(bean.getGoodsImgUrl(), holder.ivProImg,BaseOptions.getInstance().getProductImgOptions());
         }else {
