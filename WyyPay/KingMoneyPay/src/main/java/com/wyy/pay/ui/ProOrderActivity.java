@@ -310,22 +310,6 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         return true;
     }
 
-//    @Override
-//    public boolean onTouch(View v, MotionEvent event) {
-//        categoryListView.setFocusable(true);
-//        categoryListView.setFocusableInTouchMode(true);
-//        categoryListView.requestFocus();
-//        return false;
-//    }
-
-//    @Override
-//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        Toast.makeText(this, "position==" + position, Toast.LENGTH_SHORT).show();
-//        categoryListAdapter.setCurrentPosition(position);
-//        categoryListAdapter.notifyDataSetInvalidated();
-//        hideSoftInputFromWindow();
-//
-//    }
 
     private void hideSoftInputFromWindow() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

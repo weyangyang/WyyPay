@@ -58,23 +58,29 @@ public class ProductListAdapter extends BaseAdapter{
             holder.tvStockCount = (TextView) convertView.findViewById(R.id.tvProStock);
             holder.tvProPrice = (TextView) convertView.findViewById(R.id.tvProPrice);
 
-            ImageLoader.getInstance().displayImage("file://"+bean.getGoodsImgUrl(), holder.ivProImg,BaseOptions.getInstance().getProductImgOptions());
-            holder.tvProName.setText(bean.getGoodsName());
-            holder.tvProPrice.setText(String.valueOf(bean.getGoodsPrice()));
-
-            holder.tvStockCount.setText(String.valueOf(bean.getGoodsStockCount()));
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(itemOnClickListener!=null){
-                        itemOnClickListener.onItemClick(position,bean);
-                    }
-                }
-            });
-            convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
+        if(bean.getGoodsImgUrl().contains("http:")){
+
+            ImageLoader.getInstance().displayImage(bean.getGoodsImgUrl(), holder.ivProImg,BaseOptions.getInstance().getProductImgOptions());
+        }else {
+            ImageLoader.getInstance().displayImage("file://"+bean.getGoodsImgUrl(), holder.ivProImg,BaseOptions.getInstance().getProductImgOptions());
+
+        }
+        holder.tvProName.setText(bean.getGoodsName());
+        holder.tvProPrice.setText(String.valueOf(bean.getGoodsPrice()));
+
+        holder.tvStockCount.setText(String.valueOf(bean.getGoodsStockCount()));
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemOnClickListener!=null){
+                    itemOnClickListener.onItemClick(position,bean);
+                }
+            }
+        });
+        convertView.setTag(holder);
 
         return convertView;
     }

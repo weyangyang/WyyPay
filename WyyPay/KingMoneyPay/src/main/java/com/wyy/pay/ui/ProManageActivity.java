@@ -284,17 +284,8 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
         Intent intent = new Intent(this,ProCategoryActivity.class);
         intent.putExtra(ConstantUtils.INTENT_KEY_FROM_ACTIVITY_TYPE,ConstantUtils.FROM_POPUP_WINDOW_CATEGORY_MANAGE);
         startActivityForResult(intent,REQUEST_CATEGORY_MANAGE_CODE);
-//        startActivity(intent);
     }
 
-
-//    @Override
-//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        Toast.makeText(this,"position=="+position,Toast.LENGTH_SHORT).show();
-//        categoryListAdapter.setCurrentPosition(position);
-//        categoryListAdapter.notifyDataSetInvalidated();
-//
-//    }
 
 
     @Override
