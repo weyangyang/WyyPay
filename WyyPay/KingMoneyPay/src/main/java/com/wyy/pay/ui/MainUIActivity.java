@@ -77,7 +77,8 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
         bean.setCategoryId(categoryId);
         bean.setCategoryName(categoryName);
         bean.setUserId(Utils.get6MD5WithString("18501053570"));
-        bean.setCreateTime(System.currentTimeMillis());//2016/11/15 0:0:0
+        long cTime = 1462381810;
+        bean.setCreateTime(cTime);//2016/11/15 0:0:0
         bean.insert(true,TableCategoryBean.COLUMN_CATEGORY_ID,categoryId);
 
     }

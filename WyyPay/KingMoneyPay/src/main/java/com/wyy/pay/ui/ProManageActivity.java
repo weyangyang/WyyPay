@@ -27,7 +27,7 @@ import db.utils.BaseDbBean;
 import db.utils.TableDataListener;
 
 
-public class ProManageActivity extends BaseActivity implements View.OnClickListener, ProManagePopWindow.ProMpopWindowOnClickListener, AdapterView.OnItemClickListener, ProductListAdapter.ProductItemOnClickListener {
+public class ProManageActivity extends BaseActivity implements View.OnClickListener, ProManagePopWindow.ProMpopWindowOnClickListener, ProductListAdapter.ProductItemOnClickListener, ProCategoryListAdapter.CategoryItemOnClickListener {
     private LinearLayout llProManageBottom;
     private TextView tvProMcancel;
     private TextView tvProMcomplete;
@@ -74,7 +74,6 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
         categoryListView = (XListView) findViewById(R.id.categoryList);
         categoryListView.setPullLoadEnable(false);
         categoryListView.setPullRefreshEnable(false);
-        categoryListView.setOnItemClickListener(this);
 
         proListView = (XListView) findViewById(R.id.proListView);
         proListView.setPullLoadEnable(true);
@@ -167,6 +166,7 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void initData() {
          categoryListAdapter = new ProCategoryListAdapter(this);
+        categoryListAdapter.setItemOnClickListener(this);
         categoryList = new ArrayList<>();
         getCategoryDataFromDB();
         categoryListAdapter.setCategoryListData(categoryList);
@@ -288,13 +288,13 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
     }
 
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this,"position=="+position,Toast.LENGTH_SHORT).show();
-        categoryListAdapter.setCurrentPosition(position);
-        categoryListAdapter.notifyDataSetInvalidated();
-
-    }
+//    @Override
+//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        Toast.makeText(this,"position=="+position,Toast.LENGTH_SHORT).show();
+//        categoryListAdapter.setCurrentPosition(position);
+//        categoryListAdapter.notifyDataSetInvalidated();
+//
+//    }
 
 
     @Override
@@ -303,5 +303,14 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
         intent.putExtra(ConstantUtils.INTENT_KEY_FROM_ACTIVITY_TYPE,ConstantUtils.FROM_PRODUCT_MANAGE_ACTIVITY_PRODUCT_LIST_ITEM);
         intent.putExtra(ConstantUtils.INTENT_KEY_PRODUCT_BEAN,bean);
         startActivity(intent);
+    }
+
+    @Override
+    public void categoryItemOnClick(int position, String categoryId, String categoryName) {
+        this.currentCName = categoryName;
+        categoryListAdapter.setCurrentPosition(position);
+        categoryListAdapter.notifyDataSetInvalidated();
+        getGoodsDataFromDB(categoryName);
+
     }
 }

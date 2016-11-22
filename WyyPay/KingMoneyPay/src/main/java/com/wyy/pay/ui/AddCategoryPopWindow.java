@@ -43,17 +43,17 @@ public class AddCategoryPopWindow extends PopupWindow implements View.OnClickLis
        this.setWidth(screenW/2+Utils.dip2px(mActivity,70.0f));
        this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
        this.setFocusable(true);
-       this.setOutsideTouchable(true);
+       this.setOutsideTouchable(false);
        this.update();//刷新状态
        ColorDrawable dw = new ColorDrawable(0000000000);
-       this.setBackgroundDrawable(dw);//点击back或其他地方消失，onDismissListener
+//       this.setBackgroundDrawable(dw);//点击back或其他地方消失，onDismissListener
        this.setAnimationStyle(R.style.AnimationPreview);
 
    }
     public void showPopupWindow(View parent) {
         if (!this.isShowing()) {
-            int xoff = (screenW -screenW/2 -Utils.dip2px(mActivity,70.0f))/2+Utils.dip2px(mActivity,10.0f);
-            this.showAsDropDown(parent, xoff, -Utils.dip2px(mActivity,400.0f));
+            int xoff = Utils.dip2px(mActivity,40.0f);
+            this.showAsDropDown(parent, xoff, Utils.dip2px(mActivity,50.0f));
         } else {
             this.dismiss();
         }

@@ -20,6 +20,10 @@ public class ProCategoryListAdapter extends BaseAdapter{
     private List categoryList;
     private Context mContext;
     private int currentPosition;
+    private CategoryItemOnClickListener itemOnClickListener;
+    public void setItemOnClickListener(CategoryItemOnClickListener itemOnClickListener){
+        this.itemOnClickListener = itemOnClickListener;
+    }
     public void setCurrentPosition(int position){
         this.currentPosition = position;
     }
@@ -51,26 +55,26 @@ public class ProCategoryListAdapter extends BaseAdapter{
             holder = new ViewHolder();
             holder.itemCategoryView = (TextView) convertView.findViewById(R.id.tvCategoryItemView);
             holder.item_category_main_rl = (RelativeLayout) convertView.findViewById(R.id.item_category_main_rl);
-            convertView.setTag(holder);
-            final TableCategoryBean bean  = (TableCategoryBean) categoryList.get(position);
-            holder.itemCategoryView.setText(bean.getCategoryName());
-
-//            holder.itemCategoryView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if(itemOnClickListener!=null)
-//                        itemOnClickListener.categoryItemOnClick( position,bean.getCategoryId(),bean.getCategoryName());
-//                }
-//            });
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (position == currentPosition-1) {
+
+         final TableCategoryBean bean  = (TableCategoryBean) categoryList.get(position);
+        holder.itemCategoryView.setText(bean.getCategoryName());
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemOnClickListener!=null)
+                    itemOnClickListener.categoryItemOnClick( position,bean.getCategoryId(),bean.getCategoryName());
+            }
+        });
+        if (position == currentPosition) {
             convertView.setBackgroundResource(R.drawable.item_category_selected);
         }
         else {
             convertView.setBackgroundResource(R.drawable.item_category_normal);
         }
+        convertView.setTag(holder);
         return convertView;
     }
     public  interface CategoryItemOnClickListener{

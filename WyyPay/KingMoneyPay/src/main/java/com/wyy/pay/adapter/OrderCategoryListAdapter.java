@@ -20,6 +20,10 @@ public class OrderCategoryListAdapter extends BaseAdapter{
     private List categoryList;
     private Context mContext;
     private int currentPosition;
+    private ProCategoryListAdapter.CategoryItemOnClickListener itemOnClickListener;
+    public void setItemOnClickListener(ProCategoryListAdapter.CategoryItemOnClickListener itemOnClickListener){
+        this.itemOnClickListener = itemOnClickListener;
+    }
     public void setCurrentPosition(int position){
         this.currentPosition = position;
     }
@@ -51,36 +55,34 @@ public class OrderCategoryListAdapter extends BaseAdapter{
             holder = new ViewHolder();
             holder.tvOrderCategoryItemView = (TextView) convertView.findViewById(R.id.tvOrderCategoryItemView);
             holder.tvOrderSumCount = (TextView) convertView.findViewById(R.id.tvOrderSumCount);
-
-            final TableCategoryBean bean  = (TableCategoryBean) categoryList.get(position);
-            holder.tvOrderCategoryItemView.setText(bean.getCategoryName());
-            if(TextUtils.isEmpty(bean.getProSumCount()+"")){
-                holder.tvOrderSumCount.setVisibility(View.GONE);
-            }else if(0==bean.getProSumCount()){
-                holder.tvOrderSumCount.setVisibility(View.GONE);
-            }else {
-                holder.tvOrderSumCount.setVisibility(View.VISIBLE);
-                holder.tvOrderSumCount.setText(String.valueOf(bean.getProSumCount()));
-
-            }
-
-//            holder.itemCategoryView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if(itemOnClickListener!=null)
-//                        itemOnClickListener.categoryItemOnClick( position,bean.getCategoryId(),bean.getCategoryName());
-//                }
-//            });
-            convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (position == currentPosition-1) {
+        final TableCategoryBean bean  = (TableCategoryBean) categoryList.get(position);
+        holder.tvOrderCategoryItemView.setText(bean.getCategoryName());
+        if(TextUtils.isEmpty(bean.getProSumCount()+"")){
+            holder.tvOrderSumCount.setVisibility(View.GONE);
+        }else if(0==bean.getProSumCount()){
+            holder.tvOrderSumCount.setVisibility(View.GONE);
+        }else {
+            holder.tvOrderSumCount.setVisibility(View.VISIBLE);
+            holder.tvOrderSumCount.setText(String.valueOf(bean.getProSumCount()));
+
+        }
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemOnClickListener!=null)
+                    itemOnClickListener.categoryItemOnClick( position,bean.getCategoryId(),bean.getCategoryName());
+            }
+        });
+        if (position == currentPosition) {
             convertView.setBackgroundResource(R.drawable.item_category_selected);
         }
         else {
             convertView.setBackgroundResource(R.drawable.item_category_normal);
         }
+        convertView.setTag(holder);
         return convertView;
     }
     public  interface CategoryItemOnClickListener{

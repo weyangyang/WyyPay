@@ -170,7 +170,7 @@ public class ProCategoryActivity extends BaseActivity implements View.OnClickLis
 
     private void addCategoryPopWindow(int fromType) {
         AddCategoryPopWindow popupWindow = new AddCategoryPopWindow(ProCategoryActivity.this,fromType);
-        popupWindow.showPopupWindow(btnAddCategory);
+        popupWindow.showPopupWindow(tvNavLeft);
         popupWindow.setAddCgOnClickListener(this);
     }
 
