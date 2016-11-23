@@ -60,43 +60,46 @@ public class OrderProductListAdapter extends BaseAdapter{
             holder.tvItemOrderCount = (TextView) convertView.findViewById(R.id.tvItemOrderCount);
             holder.tvOrderReduce = (Button) convertView.findViewById(R.id.tvOrderReduce);
             holder.tvItemOrderPrice = (TextView) convertView.findViewById(R.id.tvItemOrderPrice);
-            if(bean.getGoodsImgUrl().contains("http:")||bean.getGoodsImgUrl().contains("file://")){
-                ImageLoader.getInstance().displayImage(bean.getGoodsImgUrl(), holder.ivOrderProImg,BaseOptions.getInstance().getProductImgOptions());
-            }else {
-                ImageLoader.getInstance().displayImage("file://"+bean.getGoodsImgUrl(), holder.ivOrderProImg,BaseOptions.getInstance().getProductImgOptions());
-            }
-            holder.tvOrderProName.setText(bean.getGoodsName());
-            holder.tvItemOrderPrice.setText(String.valueOf(bean.getGoodsPrice()));
-            if(bean.getAddGoodsCount()>0){
-                holder.tvOrderReduce.setEnabled(true);
-                //设置不同的背景色
-                holder.tvOrderReduce.setBackgroundResource(R.drawable.ic_message_red_point);
-            }else {
-                holder.tvOrderReduce.setBackgroundResource(R.drawable.ic_cash_feed);
-                holder.tvOrderReduce.setEnabled(false);
-                //设置不同的背景色
 
-            }
-            holder.tvItemOrderCount.setText(String.valueOf(bean.getAddGoodsCount()));
-            holder.tvOrderAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(itemOnClickListener!=null)
-                        itemOnClickListener.addProOnClick(position,bean);
-                }
-            });
-            holder.tvOrderReduce.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(itemOnClickListener!=null)
-                        itemOnClickListener.reduceProOnClick(position,bean);
-                }
-            });
-            convertView.setTag(holder);
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        if(bean.getGoodsImgUrl().contains("http:")||bean.getGoodsImgUrl().contains("file://")){
+            ImageLoader.getInstance().displayImage(bean.getGoodsImgUrl(), holder.ivOrderProImg,BaseOptions.getInstance().getProductImgOptions());
+        }else {
+            ImageLoader.getInstance().displayImage("file://"+bean.getGoodsImgUrl(), holder.ivOrderProImg,BaseOptions.getInstance().getProductImgOptions());
+        }
+        holder.tvOrderProName.setText(bean.getGoodsName());
+        holder.tvItemOrderPrice.setText(String.valueOf(bean.getGoodsPrice()));
+        if(bean.getAddGoodsCount()>0){
+            holder.tvOrderReduce.setEnabled(true);
+            //设置不同的背景色
+            holder.tvOrderReduce.setBackgroundResource(R.drawable.ic_message_red_point);
+        }else {
+            holder.tvOrderReduce.setBackgroundResource(R.drawable.ic_cash_feed);
+            holder.tvOrderReduce.setEnabled(false);
+            //设置不同的背景色
+
+        }
+        holder.tvItemOrderCount.setText(String.valueOf(bean.getAddGoodsCount()));
+        holder.tvOrderAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemOnClickListener!=null)
+//                    bean.setAddGoodsCount(goodsCount);
+                    itemOnClickListener.addProOnClick(position,bean);
+            }
+        });
+        holder.tvOrderReduce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemOnClickListener!=null)
+//                    bean.setAddGoodsCount(goodsCount);
+                    itemOnClickListener.reduceProOnClick(position,bean);
+            }
+        });
+        convertView.setTag(holder);
         return convertView;
     }
     public  interface OrderProductItemOnClickListener{

@@ -315,15 +315,31 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(etProSearch.getWindowToken(), 0);
     }
-
+    private int tempGoodsCount=0;
     @Override
     public void addProOnClick(int position, TableGoodsDetailBean bean) {
+        tempGoodsCount+=1;
+        if(proList!=null&&proList.size()>0){
+            proList.get(position).setAddGoodsCount(tempGoodsCount);
+        }
+        proListAdapter.setProductListData(proList);
+        proListAdapter.notifyDataSetChanged();
+
         Toast.makeText(this, "点击position==" + position + "::bean==" + bean.toString(), Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void reduceProOnClick(int position, TableGoodsDetailBean bean) {
+        if(tempGoodsCount>0){
+            tempGoodsCount-=1;
+
+            if(proList!=null&&proList.size()>0){
+                proList.get(position).setAddGoodsCount(tempGoodsCount);
+            }
+            proListAdapter.setProductListData(proList);
+            proListAdapter.notifyDataSetChanged();
+        }
         Toast.makeText(this, "点击position==" + position + "::bean==" + bean.toString(), Toast.LENGTH_SHORT).show();
     }
 

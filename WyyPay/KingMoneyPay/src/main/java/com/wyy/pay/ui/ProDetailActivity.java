@@ -181,11 +181,11 @@ private ClearEditText editProStock;//输入商品库存数量
         mTakePhoto = new TakePhoto(this, new TakePhoto.PhotoResult() {
             @Override
             public void onPhotoResult(File outputPath) {
-                 String strPath = "file://" + outputPath.getAbsolutePath();
+                 String strPath =  outputPath.getAbsolutePath();
 //                String strPath = outputPath.getAbsolutePath();
 //                 Bitmap bitmap = BitmapFactory.decodeFile(strPath);
 //                 showView.setImageBitmap(bitmap);
-                ImageLoader.getInstance().displayImage(strPath,showView,BaseOptions.getInstance().getProductClipImgOptions());
+                ImageLoader.getInstance().displayImage("file://" +strPath,showView,BaseOptions.getInstance().getProductClipImgOptions());
 
                 xtcore.utils.PreferenceUtils.setPrefString(ProDetailActivity.this, spKey, strPath);
             }
