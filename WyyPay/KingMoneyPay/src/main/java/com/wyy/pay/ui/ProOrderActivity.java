@@ -50,6 +50,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
     private List<TableCategoryBean> categoryList;
     private TableDataListener<TableGoodsDetailBean> dataListener;
     private TableDataListener<TableCategoryBean> categoryDataListener;
+    private  ArrayList<TableGoodsDetailBean> shopingCartList;//购物车
     private String currentCName ="默认分类";//当前分类名称
     private static final int TABLE_CATEGORY_CHANGED = 0;
     private static final int INIT_CATEGORY_COMPLETE = 1;
@@ -125,6 +126,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
     public void initData() {
         proList = new ArrayList<>();
         categoryList = new ArrayList<>();
+        shopingCartList = new ArrayList<>();
         categoryListAdapter = new OrderCategoryListAdapter(this);
         categoryListAdapter.setItemOnClickListener(this);
         getCategoryDataFromDB();
@@ -136,10 +138,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         categoryListView.requestFocusFromTouch();
         categoryListView.performItemClick(categoryListView.getAdapter().getView(1, null, null), 1, 1);
         categoryListView.setSelection(1);
-        if (totalShopingNum > 0) {
-            tvSumShopNum.setVisibility(View.VISIBLE);
-            tvSumShopNum.setText(String.valueOf(totalShopingNum));
-        }
+
         tvOrderTotalMoney.setText(String.format("合计：￥%s", "0.00"));
 
         proListAdapter = new OrderProductListAdapter(this);
@@ -315,6 +314,36 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(etProSearch.getWindowToken(), 0);
     }
+    private void setShopingListSumCount(TableGoodsDetailBean bean){
+        if(shopingCartList==null){
+            shopingCartList = new ArrayList<>();
+        }
+        if(shopingCartList.size()>0){
+            ArrayList<TableGoodsDetailBean> tempList = new ArrayList<>();
+            for (TableGoodsDetailBean goodsDetailBean:shopingCartList){
+                totalShopingNum+=goodsDetailBean.getAddGoodsCount();
+                if(goodsDetailBean.getGoodsId().equals(bean.getGoodsId())){
+                    goodsDetailBean.setAddGoodsCount(bean.getAddGoodsCount());
+                    tempList.add(goodsDetailBean);
+                }else {
+                    tempList.add(goodsDetailBean);
+                }
+            }
+            shopingCartList.clear();
+            shopingCartList.addAll(tempList);
+            tempList.clear();
+        }else {
+            shopingCartList.add(bean);
+            totalShopingNum+=bean.getAddGoodsCount();
+        }
+        if (totalShopingNum > 0) {
+            tvSumShopNum.setVisibility(View.VISIBLE);
+            tvSumShopNum.setText(String.valueOf(totalShopingNum));
+        }else {
+            tvSumShopNum.setVisibility(View.GONE);
+        }
+        totalShopingNum=0;
+    }
     private int tempGoodsCount=0;
     @Override
     public void addProOnClick(int position, TableGoodsDetailBean bean) {
@@ -324,7 +353,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         }
         proListAdapter.setProductListData(proList);
         proListAdapter.notifyDataSetChanged();
-
+        setShopingListSumCount(bean);
         Toast.makeText(this, "点击position==" + position + "::bean==" + bean.toString(), Toast.LENGTH_SHORT).show();
 
     }
@@ -339,6 +368,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
             }
             proListAdapter.setProductListData(proList);
             proListAdapter.notifyDataSetChanged();
+            setShopingListSumCount(bean);
         }
         Toast.makeText(this, "点击position==" + position + "::bean==" + bean.toString(), Toast.LENGTH_SHORT).show();
     }
