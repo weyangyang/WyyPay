@@ -262,7 +262,13 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
                 startActivity(intent);
                 break;
             case R.id.ivShopingCart://去购物车
-                Toast.makeText(this, "去购物车", Toast.LENGTH_SHORT).show();
+                if(shopingCartList!=null&&shopingCartList.size()>0){
+                    StringBuilder builder = new StringBuilder();
+                    for (TableGoodsDetailBean goodsDetailBean:shopingCartList){
+                        builder.append(goodsDetailBean.toString());
+                    }
+                    Toast.makeText(this, "去购物车"+builder.toString(), Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.tvOrderToPay://去结算
                 Toast.makeText(this, "去结算", Toast.LENGTH_SHORT).show();
