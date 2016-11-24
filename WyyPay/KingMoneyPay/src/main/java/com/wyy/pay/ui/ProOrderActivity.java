@@ -2,6 +2,7 @@ package com.wyy.pay.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,6 +29,7 @@ import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.ClearEditText;
 import com.wyy.pay.view.XListView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -128,6 +130,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void initData() {
+        clearAddGoodsCount4DB();
         proList = new ArrayList<>();
         categoryList = new ArrayList<>();
         shopingCartList = new ArrayList<>();
@@ -249,6 +252,48 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         BaseDbBean.unregisterContentObserver(TableCategoryBean.TABLE_NAME, dataListener);
         super.onDestroy();
     }
+private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK && TO_SCAN_ADD_SHOPING_REQUEST_CODE ==requestCode){
+            if(data!=null){
+                if(shopingCartList!=null&&shopingCartList.size()>0){
+                    shopingCartList.clear();
+                }else {
+                    shopingCartList = new ArrayList<>();
+                }
+               shopingCartList = (ArrayList<TableGoodsDetailBean>) data.getSerializableExtra(ConstantUtils.INTENT_KEY_SHOPING_CART_LIST);
+                if(shopingCartList.size()>0){
+                    int totalShopingNum =0;
+                    for (TableGoodsDetailBean cartBean :shopingCartList){
+                        totalShopingNum += cartBean.getAddGoodsCount();
+                    }
+                    if (totalShopingNum > 0) {
+                        tvSumShopNum.setVisibility(View.VISIBLE);
+                        tvSumShopNum.setText(String.valueOf(totalShopingNum));
+                    }else {
+                        tvSumShopNum.setVisibility(View.GONE);
+                    }
+                    //updateProListData(shopingCartList);
+                    for (TableGoodsDetailBean bean:shopingCartList){
+                        bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
+                    }
+                    if(cartPopWindow!=null){
+                        cartPopWindow.setGoodsListData(shopingCartList);
+                    }
+
+//                    else {
+//                        cartPopWindow = new ShopingCartPopWindow(ProOrderActivity.this);
+//                        cartPopWindow.showPopupWindow(viewBD);
+//                        cartPopWindow.setGoodsListData(shopingCartList);
+//                    }
+                }
+
+            }
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -257,7 +302,11 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
             case R.id.tvNavRight:
                 intent = new Intent(ProOrderActivity.this, ScanPayActivity.class);
                 intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE, ConstantUtils.PAY_TYPE_SCAN_PRO);
-                startActivity(intent);
+                if(shopingCartList==null){
+                    shopingCartList = new ArrayList<>();
+                }
+                intent.putExtra(ConstantUtils.INTENT_KEY_SHOPING_CART_LIST,(Serializable)shopingCartList);
+                startActivityForResult(intent,TO_SCAN_ADD_SHOPING_REQUEST_CODE);
                 break;
             case R.id.tvNavLeft:
                 intent = new Intent(ProOrderActivity.this, ScanPayActivity.class);
@@ -266,6 +315,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
                 startActivity(intent);
                 break;
             case R.id.ivShopingCart://去购物车
+                updatShopingCartList4DB();
                 if(shopingCartList!=null&&shopingCartList.size()>0){
                      cartPopWindow = new ShopingCartPopWindow(this);
                     cartPopWindow.setGoodsListData(shopingCartList);
@@ -279,6 +329,23 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
                 Toast.makeText(this, "去结算", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    private void updatShopingCartList4DB() {
+        if(shopingCartList==null){
+            shopingCartList = new ArrayList<>();
+        }else {
+            shopingCartList.clear();
+        }
+        ArrayList<TableGoodsDetailBean> beenList =  new TableGoodsDetailBean().query(null,null,null,null,null,null);
+        if(beenList!=null&&beenList.size()>0){
+            for (TableGoodsDetailBean bean :beenList){
+                if(bean.getAddGoodsCount()>0){
+                    shopingCartList.add(bean);
+                }
+            }
+        }
+
     }
 
     @Override
@@ -325,28 +392,28 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(etProSearch.getWindowToken(), 0);
     }
-    private void setShopingListSumCount(TableGoodsDetailBean bean){
-        if(shopingCartList==null){
-            shopingCartList = new ArrayList<>();
-        }else {
-            shopingCartList.clear();
-        }
-        int totalShopingNum =0;
-        if(proList!=null &&proList.size()>0){
-            for (TableGoodsDetailBean goodsDetailBean:proList){
-                if(goodsDetailBean.getAddGoodsCount()>0){
-                    shopingCartList.add(goodsDetailBean);
-                    totalShopingNum+=goodsDetailBean.getAddGoodsCount();
-                }
-            }
-        }
-        if (totalShopingNum > 0) {
-            tvSumShopNum.setVisibility(View.VISIBLE);
-            tvSumShopNum.setText(String.valueOf(totalShopingNum));
-        }else {
-            tvSumShopNum.setVisibility(View.GONE);
-        }
-    }
+//    private void setShopingListSumCount(TableGoodsDetailBean bean){
+//        if(shopingCartList==null){
+//            shopingCartList = new ArrayList<>();
+//        }else {
+//            shopingCartList.clear();
+//        }
+//        int totalShopingNum =0;
+//        if(proList!=null &&proList.size()>0){
+//            for (TableGoodsDetailBean goodsDetailBean:proList){
+//                if(goodsDetailBean.getAddGoodsCount()>0){
+//                    shopingCartList.add(goodsDetailBean);
+//                    totalShopingNum+=goodsDetailBean.getAddGoodsCount();
+//                }
+//            }
+//        }
+//        if (totalShopingNum > 0) {
+//            tvSumShopNum.setVisibility(View.VISIBLE);
+//            tvSumShopNum.setText(String.valueOf(totalShopingNum));
+//        }else {
+//            tvSumShopNum.setVisibility(View.GONE);
+//        }
+//    }
     @Override
     public void addProOnClick(int position, TableGoodsDetailBean bean) {
         int goodsCount = bean.getAddGoodsCount();
@@ -357,7 +424,9 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         proListAdapter.setProductListData(proList);
         proListAdapter.notifyDataSetChanged();
         bean.setAddGoodsCount(goodsCount);
-        setShopingListSumCount(bean);
+        bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
+        updateCartCount4DB();
+//        setShopingListSumCount(bean);
 
     }
 
@@ -373,7 +442,9 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
             proListAdapter.setProductListData(proList);
             proListAdapter.notifyDataSetChanged();
             bean.setAddGoodsCount(goodsCount);
-            setShopingListSumCount(bean);
+            bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
+            updateCartCount4DB();
+           // setShopingListSumCount(bean);
         }
     }
 
@@ -384,58 +455,87 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         categoryListAdapter.notifyDataSetInvalidated();
         hideSoftInputFromWindow();
         getGoodsDataFromDB(categoryName);
+
     }
 
     @Override
     public void onCartWindowDismiss() {
+//        showCart();
         ivShopingCart.setVisibility(View.VISIBLE);
-        int totalShopingNum =0;
-        if(proList!=null&&proList.size()>0){
-            for (TableGoodsDetailBean bean :proList){
-                totalShopingNum+= bean.getAddGoodsCount();
-            }
-        }
-        if (totalShopingNum > 0) {
-            tvSumShopNum.setVisibility(View.VISIBLE);
-            tvSumShopNum.setText(String.valueOf(totalShopingNum));
-        }else {
-            tvSumShopNum.setVisibility(View.GONE);
-        }
+        updateCartCount4DB();
     }
 
-    private void updateProListData(TableGoodsDetailBean goodsDetailBean) {
-        if(shopingCartList!=null&&shopingCartList.size()>0){
-            if(proList!=null&&proList.size()>0){
-                ArrayList<TableGoodsDetailBean> tempProList = new ArrayList<>();
+//    private void showCart() {
+//        ivShopingCart.setVisibility(View.VISIBLE);
+//        int totalShopingNum =0;
+//        if(proList!=null&&proList.size()>0){
+//            for (TableGoodsDetailBean bean :proList){
+//                totalShopingNum+= bean.getAddGoodsCount();
+//            }
+//        }
+//        if (totalShopingNum > 0) {
+//            tvSumShopNum.setVisibility(View.VISIBLE);
+//            tvSumShopNum.setText(String.valueOf(totalShopingNum));
+//        }else {
+//            tvSumShopNum.setVisibility(View.GONE);
+//        }
+//    }
 
-                for (TableGoodsDetailBean goodsBean:proList){
-                    if(goodsBean.getGoodsId().equals(goodsDetailBean.getGoodsId())){
-                        goodsBean.setAddGoodsCount(goodsDetailBean.getAddGoodsCount());
-                        tempProList.add(goodsBean);
-                    }else {
-                        tempProList.add(goodsBean);
-                    }
-                }
-                proList.clear();
-                proList.addAll(tempProList);
-                tempProList.clear();
-                proListAdapter.setProductListData(proList);
-                proListAdapter.notifyDataSetChanged();
-            }
-        }else {
-            if(proList!=null&&proList.size()>0){
-                ArrayList<TableGoodsDetailBean> tempList = new ArrayList<>();
-                for (TableGoodsDetailBean bean:proList){
-                    bean.setAddGoodsCount(0);
-                    tempList.add(bean);
-                }
-                proList.clear();
-                proList.addAll(tempList);
-                proListAdapter.setProductListData(proList);
-                proListAdapter.notifyDataSetChanged();
-            }
-        }
-    }
+//    private void updateProListData(ArrayList<TableGoodsDetailBean> cartList){
+//    if(cartList!=null&& cartList.size()>0){
+//        for(TableGoodsDetailBean goodsDetailBean:cartList){
+//            ArrayList<TableGoodsDetailBean> tempProList = new ArrayList<>();
+//            for (TableGoodsDetailBean goodsBean:proList){
+//                if(goodsBean.getGoodsId().equals(goodsDetailBean.getGoodsId())){
+//                    goodsBean.setAddGoodsCount(goodsDetailBean.getAddGoodsCount());
+//                    tempProList.add(goodsBean);
+//                }else {
+//                    tempProList.add(goodsBean);
+//                }
+//            }
+//            proList.clear();
+//            proList.addAll(tempProList);
+//            tempProList.clear();
+//        }
+//        proListAdapter.setProductListData(proList);
+//        proListAdapter.notifyDataSetChanged();
+//        showCart();
+//    }
+
+//}
+//    private void updateProListData(TableGoodsDetailBean goodsDetailBean) {
+//        if(shopingCartList!=null&&shopingCartList.size()>0){
+//            if(proList!=null&&proList.size()>0){
+//                ArrayList<TableGoodsDetailBean> tempProList = new ArrayList<>();
+//
+//                for (TableGoodsDetailBean goodsBean:proList){
+//                    if(goodsBean.getGoodsId().equals(goodsDetailBean.getGoodsId())){
+//                        goodsBean.setAddGoodsCount(goodsDetailBean.getAddGoodsCount());
+//                        tempProList.add(goodsBean);
+//                    }else {
+//                        tempProList.add(goodsBean);
+//                    }
+//                }
+//                proList.clear();
+//                proList.addAll(tempProList);
+//                tempProList.clear();
+//                proListAdapter.setProductListData(proList);
+//                proListAdapter.notifyDataSetChanged();
+//            }
+//        }else {
+//            if(proList!=null&&proList.size()>0){
+//                ArrayList<TableGoodsDetailBean> tempList = new ArrayList<>();
+//                for (TableGoodsDetailBean bean:proList){
+//                    bean.setAddGoodsCount(0);
+//                    tempList.add(bean);
+//                }
+//                proList.clear();
+//                proList.addAll(tempList);
+//                proListAdapter.setProductListData(proList);
+//                proListAdapter.notifyDataSetChanged();
+//            }
+//        }
+//    }
 
     @Override
     public void cartItemAddOnClick(int position, TableGoodsDetailBean bean) {
@@ -443,7 +543,9 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
             shopingCartList.get(position).setAddGoodsCount(bean.getAddGoodsCount());
             cartPopWindow.setGoodsListData(shopingCartList);
         }
-        updateProListData(bean);
+        bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
+        updateCartCount4DB();
+        //updateProListData(bean);
     }
 
     @Override
@@ -461,14 +563,57 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         }else {
             cartPopWindow.dismiss();
         }
-        updateProListData(bean);
+        bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
+        // updateProListData(bean);
+        updateCartCount4DB();
     }
 
     @Override
     public void clearCartList() {
         if(shopingCartList!=null&&shopingCartList.size()>0){
             shopingCartList.clear();
-            updateProListData(null);
+            clearAddGoodsCount4DB();
+            updateCartCount4DB();
+            //updateProListData(new TableGoodsDetailBean());
+        }
+    }
+private void updateCartCount4DB(){
+    Cursor cursor =  new TableGoodsDetailBean().queryCursor(new String[]{TableGoodsDetailBean.COLUMN_GOODS_ADD_COUNT},null,null,null,null,null);
+    int totalGoodsCount =0;
+    if(cursor!=null){
+        try {
+
+            while (cursor.moveToNext()) {
+              int index =  cursor.getColumnIndex(TableGoodsDetailBean.COLUMN_GOODS_ADD_COUNT);
+               int goodsCount =  cursor.getInt(index);
+                totalGoodsCount+=goodsCount;
+            }
+
+        } catch (Exception e) {
+        }finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    if (totalGoodsCount > 0) {
+        tvSumShopNum.setVisibility(View.VISIBLE);
+        tvSumShopNum.setText(String.valueOf(totalGoodsCount));
+    }else {
+        tvSumShopNum.setVisibility(View.GONE);
+    }
+
+
+
+}
+    private void clearAddGoodsCount4DB() {
+        ArrayList<TableGoodsDetailBean> beenList =  new TableGoodsDetailBean().query(null,null,null,null,null,null);
+        if(beenList!=null &&beenList.size()>0){
+            for (TableGoodsDetailBean bean:beenList){
+                bean.setAddGoodsCount(0);
+                bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
+            }
         }
     }
 }

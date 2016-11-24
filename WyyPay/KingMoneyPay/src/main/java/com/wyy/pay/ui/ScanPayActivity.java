@@ -35,6 +35,8 @@ import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.ViewfinderView;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -66,7 +68,8 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     private TextView tvProPrice;//商品价格
     private TextView tvProSaveNum;//商品库存
     private ImageView ivProScanPic;//显示扫码后的商品图片
-
+    private TableGoodsDetailBean goodsBean;
+    private ArrayList<TableGoodsDetailBean> shopingCartList;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -161,20 +164,21 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                         Toast.makeText(ScanPayActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
                     }else {
                         String goodsNo = result.getText().trim();
-                        TableGoodsDetailBean bean = new TableGoodsDetailBean();
-                        bean = (TableGoodsDetailBean) bean.querySingle(null,TableGoodsDetailBean.COLUMN_USER_ID +"=? AND "+TableGoodsDetailBean.COLUMN_GOODS_BARCODE+" =?",new String[]{Utils.get6MD5WithString("18501053570"),goodsNo},null,null,null);
-                        tvProName.setText(String.format("商品名称：%s",bean.getGoodsName()));
-                        tvProPrice.setText(String.format("商品价格：￥%s",bean.getGoodsPrice()));
-                        //ivProScanPic
-                        String imgPath = bean.getGoodsImgUrl();
-                        if(TextUtils.isEmpty(imgPath)||imgPath.contains("http:")){
-                            ImageLoader.getInstance().displayImage(imgPath,ivProScanPic, BaseOptions.getInstance().getProductClipImgOptions());
-                        }else {
-                            ImageLoader.getInstance().displayImage(String.format("file://%s",imgPath),ivProScanPic, BaseOptions.getInstance().getProductClipImgOptions());
-                        }
-                        tvProSaveNum.setText(String.format("商品库存：%s",bean.getGoodsStockCount()));
-                        tvProNum.setText(String.format("商品编号：%s",result.getText()));
+                        goodsBean = (TableGoodsDetailBean) new TableGoodsDetailBean().querySingle(null,TableGoodsDetailBean.COLUMN_USER_ID +"=? AND "+TableGoodsDetailBean.COLUMN_GOODS_BARCODE+" =?",new String[]{Utils.get6MD5WithString("18501053570"),goodsNo},null,null,null);
+                      if(goodsBean!=null){
+                          tvProName.setText(String.format("商品名称：%s",goodsBean.getGoodsName()));
+                          tvProPrice.setText(String.format("商品价格：￥%s",goodsBean.getGoodsPrice()));
+                          //ivProScanPic
+                          String imgPath = goodsBean.getGoodsImgUrl();
+                          if(TextUtils.isEmpty(imgPath)||imgPath.contains("http:")){
+                              ImageLoader.getInstance().displayImage(imgPath,ivProScanPic, BaseOptions.getInstance().getProductClipImgOptions());
+                          }else {
+                              ImageLoader.getInstance().displayImage(String.format("file://%s",imgPath),ivProScanPic, BaseOptions.getInstance().getProductClipImgOptions());
+                          }
+                          tvProSaveNum.setText(String.format("商品库存：%s",goodsBean.getGoodsStockCount()));
+                          tvProNum.setText(String.format("商品编号：%s",result.getText()));
 
+                      }
                     }
                 }else if(ConstantUtils.PAY_TYPE_SCAN_PRO_FOR_BARCODE ==payType){
                     Intent intent = new Intent();
@@ -342,6 +346,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         switch (payType){
             case ConstantUtils.PAY_TYPE_SCAN_PRO:
                 CameraManager.init(getApplication(),40.0f,100.0f);
+                shopingCartList = (ArrayList<TableGoodsDetailBean>) intent.getSerializableExtra(ConstantUtils.INTENT_KEY_SHOPING_CART_LIST);
                 tvNavTitle.setText("商品扫码");
                 llPayLogoTips.setVisibility(View.VISIBLE);
                 ivPayLogo.setVisibility(View.GONE);
@@ -396,23 +401,70 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         tvProAdd.setOnClickListener(this);
         tvCannel.setOnClickListener(this);
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tvNavLeft:
+                Intent intent = new Intent();
+                if(shopingCartList!=null&&shopingCartList.size()>0){
+                    intent.putExtra(ConstantUtils.INTENT_KEY_SHOPING_CART_LIST,(Serializable)shopingCartList);
+                }
+                setResult(RESULT_OK,intent);
                 this.finish();
                 break;
             case R.id.tvNavRight:
-                restartPreviewAfterDelay(100L);//重复扫码
+                 intent = new Intent();
+                if(shopingCartList!=null&&shopingCartList.size()>0){
+                    intent.putExtra(ConstantUtils.INTENT_KEY_SHOPING_CART_LIST,(Serializable)shopingCartList);
+                }
+                setResult(RESULT_OK,intent);
+                //restartPreviewAfterDelay(100L);//重复扫码
+                this.finish();
                 break;
             case R.id.tvProAdd:
-
+                if(shopingCartList==null){
+                    shopingCartList = new ArrayList<>();
+                }
+                if(goodsBean!=null){
+                    updateCartListData(goodsBean);
+                }
                 restartPreviewAfterDelay(100L);//重复扫码
                 break;
             case R.id.tvCannel:
+                goodsBean = null;
+                goodsBean = new TableGoodsDetailBean();
                 restartPreviewAfterDelay(100L);//重复扫码
                 break;
+        }
+    }
+    private void updateCartListData(TableGoodsDetailBean goodsDetailBean) {
+        if(shopingCartList!=null&&shopingCartList.size()>0){
+            if(shopingCartList!=null&&shopingCartList.size()>0){
+                ArrayList<TableGoodsDetailBean> tempProList = new ArrayList<>();
+                boolean isLock = false;
+                for (TableGoodsDetailBean goodsBean:shopingCartList){
+                    if(goodsBean.getGoodsId().equals(goodsDetailBean.getGoodsId())){
+                        isLock = true;
+                        int goodsCount = goodsBean.getAddGoodsCount();
+                        goodsCount+=1;
+                        goodsBean.setAddGoodsCount(goodsCount);
+                        tempProList.add(goodsBean);
+                    }else {
+                        tempProList.add(goodsBean);
+                    }
+                }
+                if(!isLock){
+                    goodsDetailBean.setAddGoodsCount(1);
+                    tempProList.add(goodsDetailBean);
+                }
+                shopingCartList.clear();
+                shopingCartList.addAll(tempProList);
+                tempProList.clear();
+            }
+        }else {
+            shopingCartList = new ArrayList<>();
+            goodsDetailBean.setAddGoodsCount(1);
+            shopingCartList.add(goodsDetailBean);
         }
     }
 }
