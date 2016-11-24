@@ -463,4 +463,12 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         }
         updateProListData(bean);
     }
+
+    @Override
+    public void clearCartList() {
+        if(shopingCartList!=null&&shopingCartList.size()>0){
+            shopingCartList.clear();
+            updateProListData(null);
+        }
+    }
 }

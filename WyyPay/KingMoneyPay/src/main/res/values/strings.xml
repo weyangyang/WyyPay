@@ -31,6 +31,8 @@
     <string name="feedback_contact_message">邮箱或手机号码</string>
     <string name="submit">提交反馈</string>
     <string name="feedback">反馈</string>
+    <string name="text_dialog_ok">确定</string>
+    <string name="text_dialog_cancle">取消</string>
     <string name="contact_title">您的联系方式</string>
     <string name="content_title">您的意见</string>
     <string name="feedback_content_empty">反馈意见不能为空</string>

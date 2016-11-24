@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_radius_white"
+    android:orientation="vertical"
+    android:paddingBottom="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="19dp">
+
+    <!-- Title -->
+
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="提示"
+        android:textColor="@color/bg_nav_bar"
+        android:textSize="20sp" />
+
+
+    <!-- split -->
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1px"
+    android:layout_marginTop="5dp"
+    android:background="@color/bg_nav_bar"
+    />
+    <!-- Content -->
+
+
+    <TextView
+        android:id="@+id/tvContent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:textColor="@color/bg_nav_bar"
+        android:text="您确定要清空购物车吗？"
+
+        android:textSize="16sp" />
+
+
+    <!-- OK&Cancel Button -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp">
+
+        <Button
+            android:id="@+id/btnDialogOk"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_normal"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnDialogCancel"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_other"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/text_gray_3"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+</LinearLayout>
+
