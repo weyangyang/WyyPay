@@ -29,7 +29,9 @@ import com.wyy.pay.view.ClearEditText;
 import com.wyy.pay.view.XListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 import db.utils.BaseDbBean;
 import db.utils.TableDataListener;
@@ -42,7 +44,6 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
     private OrderProductListAdapter proListAdapter;
     private ImageView ivShopingCart;//购物车
     private TextView tvSumShopNum;//购物车上显示商品数量
-    private int totalShopingNum = 0;
     private TextView tvOrderTotalMoney;//合计：￥100.00
     private TextView tvOrderToPay;//去结算
     private List<TableGoodsDetailBean> proList;//商品list
@@ -323,24 +324,17 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
     private void setShopingListSumCount(TableGoodsDetailBean bean){
         if(shopingCartList==null){
             shopingCartList = new ArrayList<>();
+        }else {
+            shopingCartList.clear();
         }
-        if(shopingCartList.size()>0){
-            ArrayList<TableGoodsDetailBean> tempList = new ArrayList<>();
-            for (TableGoodsDetailBean goodsDetailBean:shopingCartList){
-                totalShopingNum+=goodsDetailBean.getAddGoodsCount();
-                if(goodsDetailBean.getGoodsId().equals(bean.getGoodsId())){
-                    goodsDetailBean.setAddGoodsCount(bean.getAddGoodsCount());
-                    tempList.add(goodsDetailBean);
-                }else {
-                    tempList.add(goodsDetailBean);
+        int totalShopingNum =0;
+        if(proList!=null &&proList.size()>0){
+            for (TableGoodsDetailBean goodsDetailBean:proList){
+                if(goodsDetailBean.getAddGoodsCount()>0){
+                    shopingCartList.add(goodsDetailBean);
+                    totalShopingNum+=goodsDetailBean.getAddGoodsCount();
                 }
             }
-            shopingCartList.clear();
-            shopingCartList.addAll(tempList);
-            tempList.clear();
-        }else {
-            shopingCartList.add(bean);
-            totalShopingNum+=bean.getAddGoodsCount();
         }
         if (totalShopingNum > 0) {
             tvSumShopNum.setVisibility(View.VISIBLE);
@@ -348,17 +342,17 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         }else {
             tvSumShopNum.setVisibility(View.GONE);
         }
-        totalShopingNum=0;
     }
-    private int tempGoodsCount=0;
     @Override
     public void addProOnClick(int position, TableGoodsDetailBean bean) {
-        tempGoodsCount+=1;
+        int goodsCount = bean.getAddGoodsCount();
+        goodsCount+=1;
         if(proList!=null&&proList.size()>0){
-            proList.get(position).setAddGoodsCount(tempGoodsCount);
+            proList.get(position).setAddGoodsCount(goodsCount);
         }
         proListAdapter.setProductListData(proList);
         proListAdapter.notifyDataSetChanged();
+        bean.setAddGoodsCount(goodsCount);
         setShopingListSumCount(bean);
         Toast.makeText(this, "点击position==" + position + "::bean==" + bean.toString(), Toast.LENGTH_SHORT).show();
 
@@ -366,14 +360,16 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void reduceProOnClick(int position, TableGoodsDetailBean bean) {
-        if(tempGoodsCount>0){
-            tempGoodsCount-=1;
+        if(bean.getAddGoodsCount()>0){
+            int goodsCount = bean.getAddGoodsCount();
+            goodsCount-=1;
 
             if(proList!=null&&proList.size()>0){
-                proList.get(position).setAddGoodsCount(tempGoodsCount);
+                proList.get(position).setAddGoodsCount(goodsCount);
             }
             proListAdapter.setProductListData(proList);
             proListAdapter.notifyDataSetChanged();
+            bean.setAddGoodsCount(goodsCount);
             setShopingListSumCount(bean);
         }
         Toast.makeText(this, "点击position==" + position + "::bean==" + bean.toString(), Toast.LENGTH_SHORT).show();
