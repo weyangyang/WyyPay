@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentMap;
 import db.utils.BaseDbBean;
 import db.utils.TableDataListener;
 
-public class ProOrderActivity extends BaseActivity implements View.OnClickListener, TextWatcher, TextView.OnEditorActionListener,OrderProductListAdapter.OrderProductItemOnClickListener, ProCategoryListAdapter.CategoryItemOnClickListener {
+public class ProOrderActivity extends BaseActivity implements View.OnClickListener, TextWatcher, TextView.OnEditorActionListener,OrderProductListAdapter.OrderProductItemOnClickListener, ProCategoryListAdapter.CategoryItemOnClickListener, ShopingCartPopWindow.ShopingCartPopWindowListener {
     private com.wyy.pay.view.ClearEditText etProSearch;
     private XListView categoryListView;
     private XListView orderProListView;
@@ -52,6 +52,8 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
     private TableDataListener<TableGoodsDetailBean> dataListener;
     private TableDataListener<TableCategoryBean> categoryDataListener;
     private  ArrayList<TableGoodsDetailBean> shopingCartList;//购物车
+    private ShopingCartPopWindow cartPopWindow;//购物车列表window
+    private View viewBD;//用于显示cart popup window
     private String currentCName ="默认分类";//当前分类名称
     private static final int TABLE_CATEGORY_CHANGED = 0;
     private static final int INIT_CATEGORY_COMPLETE = 1;
@@ -117,6 +119,7 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         orderProListView.setPullRefreshEnable(false);
         orderProListView.setPullLoadEnable(false);
         ivShopingCart = (ImageView) findViewById(R.id.ivShopingCart);
+       viewBD =  findViewById(R.id.viewOrderBottomDevide);
         tvSumShopNum = (TextView) findViewById(R.id.tvSumShopNum);
         tvOrderTotalMoney = (TextView) findViewById(R.id.tvOrderTotalMoney);
         tvOrderToPay = (TextView) findViewById(R.id.tvOrderToPay);
@@ -264,11 +267,12 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.ivShopingCart://去购物车
                 if(shopingCartList!=null&&shopingCartList.size()>0){
-                    StringBuilder builder = new StringBuilder();
-                    for (TableGoodsDetailBean goodsDetailBean:shopingCartList){
-                        builder.append(goodsDetailBean.toString());
-                    }
-                    Toast.makeText(this, "去购物车"+builder.toString(), Toast.LENGTH_SHORT).show();
+                     cartPopWindow = new ShopingCartPopWindow(this);
+                    cartPopWindow.setGoodsListData(shopingCartList);
+                    cartPopWindow.showPopupWindow(viewBD);
+                    cartPopWindow.setCartListener(this);
+                    ivShopingCart.setVisibility(View.GONE);
+                    tvSumShopNum.setVisibility(View.GONE);
                 }
                 break;
             case R.id.tvOrderToPay://去结算
@@ -354,7 +358,6 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         proListAdapter.notifyDataSetChanged();
         bean.setAddGoodsCount(goodsCount);
         setShopingListSumCount(bean);
-        Toast.makeText(this, "点击position==" + position + "::bean==" + bean.toString(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -372,7 +375,6 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
             bean.setAddGoodsCount(goodsCount);
             setShopingListSumCount(bean);
         }
-        Toast.makeText(this, "点击position==" + position + "::bean==" + bean.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -382,5 +384,83 @@ public class ProOrderActivity extends BaseActivity implements View.OnClickListen
         categoryListAdapter.notifyDataSetInvalidated();
         hideSoftInputFromWindow();
         getGoodsDataFromDB(categoryName);
+    }
+
+    @Override
+    public void onCartWindowDismiss() {
+        ivShopingCart.setVisibility(View.VISIBLE);
+        int totalShopingNum =0;
+        if(proList!=null&&proList.size()>0){
+            for (TableGoodsDetailBean bean :proList){
+                totalShopingNum+= bean.getAddGoodsCount();
+            }
+        }
+        if (totalShopingNum > 0) {
+            tvSumShopNum.setVisibility(View.VISIBLE);
+            tvSumShopNum.setText(String.valueOf(totalShopingNum));
+        }else {
+            tvSumShopNum.setVisibility(View.GONE);
+        }
+    }
+
+    private void updateProListData(TableGoodsDetailBean goodsDetailBean) {
+        if(shopingCartList!=null&&shopingCartList.size()>0){
+            if(proList!=null&&proList.size()>0){
+                ArrayList<TableGoodsDetailBean> tempProList = new ArrayList<>();
+
+                for (TableGoodsDetailBean goodsBean:proList){
+                    if(goodsBean.getGoodsId().equals(goodsDetailBean.getGoodsId())){
+                        goodsBean.setAddGoodsCount(goodsDetailBean.getAddGoodsCount());
+                        tempProList.add(goodsBean);
+                    }else {
+                        tempProList.add(goodsBean);
+                    }
+                }
+                proList.clear();
+                proList.addAll(tempProList);
+                tempProList.clear();
+                proListAdapter.setProductListData(proList);
+                proListAdapter.notifyDataSetChanged();
+            }
+        }else {
+            if(proList!=null&&proList.size()>0){
+                ArrayList<TableGoodsDetailBean> tempList = new ArrayList<>();
+                for (TableGoodsDetailBean bean:proList){
+                    bean.setAddGoodsCount(0);
+                    tempList.add(bean);
+                }
+                proList.clear();
+                proList.addAll(tempList);
+                proListAdapter.setProductListData(proList);
+                proListAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void cartItemAddOnClick(int position, TableGoodsDetailBean bean) {
+        if(shopingCartList!=null&&shopingCartList.size()>0){
+            shopingCartList.get(position).setAddGoodsCount(bean.getAddGoodsCount());
+            cartPopWindow.setGoodsListData(shopingCartList);
+        }
+        updateProListData(bean);
+    }
+
+    @Override
+    public void cartItemReduceOnClick(int position, TableGoodsDetailBean bean) {
+        if(shopingCartList!=null&&shopingCartList.size()>0){
+            if(bean.getAddGoodsCount()>0){
+                shopingCartList.get(position).setAddGoodsCount(bean.getAddGoodsCount());
+            }else {
+                shopingCartList.remove(position);
+                if(shopingCartList.size()==0){
+                    cartPopWindow.dismiss();
+                }
+            }
+            cartPopWindow.setGoodsListData(shopingCartList);
+        }else {
+            cartPopWindow.dismiss();
+        }
+        updateProListData(bean);
     }
 }

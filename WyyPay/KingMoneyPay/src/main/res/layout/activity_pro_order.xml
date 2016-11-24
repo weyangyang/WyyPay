@@ -105,6 +105,7 @@
         android:layout_toRightOf="@+id/categoryListView"
         android:layout_height="match_parent"/>
     <View
+        android:id="@+id/viewOrderBottomDevide"
         android:layout_width="match_parent"
         android:layout_below="@+id/orderProListView"
         android:background="@color/gray"

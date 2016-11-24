@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#66000000"
+        android:id="@+id/spaceView" />
+    <RelativeLayout
+        android:id="@+id/llPopCartTop"
+        android:layout_width="match_parent"
+        android:background="@color/bg_main_gray"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/ivShopingCart"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textColor="@color/gray"
+        android:src="@drawable/ic_placeorder_cart"
+        android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        />
+    <TextView
+        android:id="@+id/tvSumShopNum"
+        android:layout_toRightOf="@+id/ivShopingCart"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:padding="2dp"
+        android:text="99"
+        android:gravity="center"
+        android:textSize="9sp"
+        android:textColor="@color/white"
+        android:layout_marginLeft="-16dp"
+        android:background="@drawable/ic_message_red_point"
+        />
+    <TextView
+        android:id="@+id/tvClearCartList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bg_nav_bar"
+        android:layout_marginRight="20dp"
+        android:textSize="18sp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:maxLength="16"
+        android:drawablePadding="6dp"
+        android:drawableLeft="@drawable/ic_clear_shoping_cart"
+        android:gravity="center"
+        android:text="清空列表"/>
+        </RelativeLayout>
+    <View
+        android:id="@+id/viewCartDevide"
+        android:layout_below="@+id/llPopCartTop"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bg_nav_bar"
+        />
+    <com.wyy.pay.view.XListView
+        android:id="@+id/xlvShopingCart"
+        android:layout_width="match_parent"
+        android:background="@color/bg_main_gray"
+        android:cacheColorHint="@android:color/transparent"
+        android:layout_below="@+id/viewCartDevide"
+        android:fastScrollEnabled="true"
+        android:choiceMode="singleChoice"
+        android:paddingBottom="10dp"
+        android:divider="@null"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+
+
+
