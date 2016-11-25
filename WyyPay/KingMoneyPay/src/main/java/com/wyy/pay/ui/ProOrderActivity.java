@@ -544,7 +544,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
             cartPopWindow.setGoodsListData(shopingCartList);
         }
         bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
-        updateCartCount4DB();
+//        updateCartCount4DB();
         //updateProListData(bean);
     }
 
@@ -565,7 +565,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         }
         bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
         // updateProListData(bean);
-        updateCartCount4DB();
+//        updateCartCount4DB();
     }
 
     @Override
