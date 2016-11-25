@@ -24,6 +24,7 @@ import com.wyy.pay.adapter.ProCategoryListAdapter;
 import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.bean.TableCategoryBean;
 import com.wyy.pay.ui.dialog.CustomProgressDialog;
+import com.wyy.pay.ui.dialog.NoBarCodeCashierDialog;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.ClearEditText;
@@ -309,10 +310,12 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                 startActivityForResult(intent,TO_SCAN_ADD_SHOPING_REQUEST_CODE);
                 break;
             case R.id.tvNavLeft:
-                intent = new Intent(ProOrderActivity.this, ScanPayActivity.class);
-                intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE, ConstantUtils.PAY_TYPE_ALIPAY);
-                intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY, 100.00f);
-                startActivity(intent);
+                NoBarCodeCashierDialog noBarCodeCashierDialog = new NoBarCodeCashierDialog(this,R.style.DefaultDialog);
+                noBarCodeCashierDialog.show();
+//                intent = new Intent(ProOrderActivity.this, ScanPayActivity.class);
+//                intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE, ConstantUtils.PAY_TYPE_ALIPAY);
+//                intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY, 100.00f);
+//                startActivity(intent);
                 break;
             case R.id.ivShopingCart://去购物车
                 updatShopingCartList4DB();
