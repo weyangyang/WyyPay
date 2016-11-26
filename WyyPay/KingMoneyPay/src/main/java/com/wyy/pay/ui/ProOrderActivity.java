@@ -354,6 +354,10 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
             shopingCartList.addAll(noBarcodeCashierList);
         }
+        shopingCartSort();
+    }
+
+    private void shopingCartSort() {
         ArrayList<TableGoodsDetailBean> templistData = new ArrayList<>();
         templistData.addAll(shopingCartList);
         if(templistData.size()>0){
@@ -362,13 +366,13 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                     public int compare(Object o1, Object o2) {
                         TableGoodsDetailBean p1 = (TableGoodsDetailBean) o1;
                         TableGoodsDetailBean p2 = (TableGoodsDetailBean) o2;
-                        if (p1.getAddGoods2CartTime() > p2.getAddGoods2CartTime())
-                            return -1;
-                        else if (p1.getAddGoods2CartTime() == p2.getAddGoods2CartTime())
-                            return 0;
-                        else if (p1.getAddGoods2CartTime() < p2.getAddGoods2CartTime())
-                            return 1;
-                        return 0;
+//                        if (p1.getAddGoods2CartTime() < p2.getAddGoods2CartTime())
+//                            return -1;
+//                        else if (p1.getAddGoods2CartTime() == p2.getAddGoods2CartTime())
+//                            return 0;
+//                        else if (p1.getAddGoods2CartTime() > p2.getAddGoods2CartTime())
+//                            return 1;
+                        return (int)(p2.getAddGoods2CartTime() - p1.getAddGoods2CartTime());
                     }
                 };
                 Collections.sort(templistData, comp);
@@ -431,6 +435,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         int goodsCount = bean.getAddGoodsCount();
         goodsCount+=1;
         if(proList!=null&&proList.size()>0){
+            proList.get(position).setAddGoods2CartTime(System.currentTimeMillis());
             proList.get(position).setAddGoodsCount(goodsCount);
         }
         proListAdapter.setProductListData(proList);
@@ -450,6 +455,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
             goodsCount-=1;
 
             if(proList!=null&&proList.size()>0){
+                proList.get(position).setAddGoods2CartTime(System.currentTimeMillis());
                 proList.get(position).setAddGoodsCount(goodsCount);
             }
             proListAdapter.setProductListData(proList);
@@ -596,6 +602,7 @@ private void updateCartCount4DB(){
         if(beenList!=null &&beenList.size()>0){
             for (TableGoodsDetailBean bean:beenList){
                 bean.setAddGoodsCount(0);
+                bean.setAddGoods2CartTime(-1);
                 bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
             }
         }

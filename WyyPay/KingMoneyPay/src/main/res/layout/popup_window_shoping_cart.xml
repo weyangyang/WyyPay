@@ -63,6 +63,7 @@
     <com.wyy.pay.view.XListView
         android:id="@+id/xlvShopingCart"
         android:layout_width="match_parent"
+        android:maxHeight="300dp"
         android:background="@color/bg_main_gray"
         android:cacheColorHint="@android:color/transparent"
         android:layout_below="@+id/viewCartDevide"
