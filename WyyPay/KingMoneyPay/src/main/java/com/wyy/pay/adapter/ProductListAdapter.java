@@ -71,7 +71,7 @@ public class ProductListAdapter extends BaseAdapter{
         holder.tvProName.setText(bean.getGoodsName());
         holder.tvProPrice.setText(String.format("￥%.2f",bean.getGoodsPrice()));
 
-        holder.tvStockCount.setText(String.valueOf(bean.getGoodsStockCount()));
+        holder.tvStockCount.setText(String.format("库存\r%s",bean.getGoodsStockCount()));
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

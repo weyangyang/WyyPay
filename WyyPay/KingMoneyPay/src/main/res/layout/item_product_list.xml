@@ -48,7 +48,7 @@
         android:text="库存 50"
         android:layout_marginRight="10dp"
         android:padding="5dp"
-        android:gravity="center"
+        android:gravity="bottom"
         android:textColor="@color/bg_nav_bar"
         />
 <View
