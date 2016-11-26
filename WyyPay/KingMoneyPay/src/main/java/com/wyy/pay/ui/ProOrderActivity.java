@@ -39,7 +39,7 @@ import java.util.concurrent.ConcurrentMap;
 import db.utils.BaseDbBean;
 import db.utils.TableDataListener;
 
-public class ProOrderActivity extends BaseActivity implements View.OnClickListener, TextWatcher, TextView.OnEditorActionListener,OrderProductListAdapter.OrderProductItemOnClickListener, ProCategoryListAdapter.CategoryItemOnClickListener, ShopingCartPopWindow.ShopingCartPopWindowListener {
+public class ProOrderActivity extends BaseActivity implements View.OnClickListener, TextWatcher, TextView.OnEditorActionListener,OrderProductListAdapter.OrderProductItemOnClickListener, ProCategoryListAdapter.CategoryItemOnClickListener, ShopingCartPopWindow.ShopingCartPopWindowListener, NoBarCodeCashierDialog.InfoCallback {
     private com.wyy.pay.view.ClearEditText etProSearch;
     private XListView categoryListView;
     private XListView orderProListView;
@@ -279,6 +279,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                     }
                     //updateProListData(shopingCartList);
                     for (TableGoodsDetailBean bean:shopingCartList){
+                        if(!bean.getGoodsName().contains("无码商品"))
                         bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
                     }
                     if(cartPopWindow!=null){
@@ -310,7 +311,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                 startActivityForResult(intent,TO_SCAN_ADD_SHOPING_REQUEST_CODE);
                 break;
             case R.id.tvNavLeft:
-                NoBarCodeCashierDialog noBarCodeCashierDialog = new NoBarCodeCashierDialog(this,R.style.DefaultDialog);
+                NoBarCodeCashierDialog noBarCodeCashierDialog = new NoBarCodeCashierDialog(this,R.style.DefaultDialog,this);
                 noBarCodeCashierDialog.show();
 //                intent = new Intent(ProOrderActivity.this, ScanPayActivity.class);
 //                intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE, ConstantUtils.PAY_TYPE_ALIPAY);
@@ -348,7 +349,9 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                 }
             }
         }
-
+        if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
+            shopingCartList.addAll(noBarcodeCashierList);
+        }
     }
 
     @Override
@@ -468,77 +471,6 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         updateCartCount4DB();
     }
 
-//    private void showCart() {
-//        ivShopingCart.setVisibility(View.VISIBLE);
-//        int totalShopingNum =0;
-//        if(proList!=null&&proList.size()>0){
-//            for (TableGoodsDetailBean bean :proList){
-//                totalShopingNum+= bean.getAddGoodsCount();
-//            }
-//        }
-//        if (totalShopingNum > 0) {
-//            tvSumShopNum.setVisibility(View.VISIBLE);
-//            tvSumShopNum.setText(String.valueOf(totalShopingNum));
-//        }else {
-//            tvSumShopNum.setVisibility(View.GONE);
-//        }
-//    }
-
-//    private void updateProListData(ArrayList<TableGoodsDetailBean> cartList){
-//    if(cartList!=null&& cartList.size()>0){
-//        for(TableGoodsDetailBean goodsDetailBean:cartList){
-//            ArrayList<TableGoodsDetailBean> tempProList = new ArrayList<>();
-//            for (TableGoodsDetailBean goodsBean:proList){
-//                if(goodsBean.getGoodsId().equals(goodsDetailBean.getGoodsId())){
-//                    goodsBean.setAddGoodsCount(goodsDetailBean.getAddGoodsCount());
-//                    tempProList.add(goodsBean);
-//                }else {
-//                    tempProList.add(goodsBean);
-//                }
-//            }
-//            proList.clear();
-//            proList.addAll(tempProList);
-//            tempProList.clear();
-//        }
-//        proListAdapter.setProductListData(proList);
-//        proListAdapter.notifyDataSetChanged();
-//        showCart();
-//    }
-
-//}
-//    private void updateProListData(TableGoodsDetailBean goodsDetailBean) {
-//        if(shopingCartList!=null&&shopingCartList.size()>0){
-//            if(proList!=null&&proList.size()>0){
-//                ArrayList<TableGoodsDetailBean> tempProList = new ArrayList<>();
-//
-//                for (TableGoodsDetailBean goodsBean:proList){
-//                    if(goodsBean.getGoodsId().equals(goodsDetailBean.getGoodsId())){
-//                        goodsBean.setAddGoodsCount(goodsDetailBean.getAddGoodsCount());
-//                        tempProList.add(goodsBean);
-//                    }else {
-//                        tempProList.add(goodsBean);
-//                    }
-//                }
-//                proList.clear();
-//                proList.addAll(tempProList);
-//                tempProList.clear();
-//                proListAdapter.setProductListData(proList);
-//                proListAdapter.notifyDataSetChanged();
-//            }
-//        }else {
-//            if(proList!=null&&proList.size()>0){
-//                ArrayList<TableGoodsDetailBean> tempList = new ArrayList<>();
-//                for (TableGoodsDetailBean bean:proList){
-//                    bean.setAddGoodsCount(0);
-//                    tempList.add(bean);
-//                }
-//                proList.clear();
-//                proList.addAll(tempList);
-//                proListAdapter.setProductListData(proList);
-//                proListAdapter.notifyDataSetChanged();
-//            }
-//        }
-//    }
 
     @Override
     public void cartItemAddOnClick(int position, TableGoodsDetailBean bean) {
@@ -546,7 +478,11 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
             shopingCartList.get(position).setAddGoodsCount(bean.getAddGoodsCount());
             cartPopWindow.setGoodsListData(shopingCartList);
         }
-        bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
+        if(bean.getGoodsName().contains("无码商品")){
+            updateNoBarcodeCashierListData(bean);
+        }else {
+            bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
+        }
 //        updateCartCount4DB();
         //updateProListData(bean);
     }
@@ -566,9 +502,30 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         }else {
             cartPopWindow.dismiss();
         }
-        bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
+        if(bean.getGoodsName().contains("无码商品")){
+            updateNoBarcodeCashierListData(bean);
+        }else {
+            bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
+        }
         // updateProListData(bean);
 //        updateCartCount4DB();
+    }
+
+    private void updateNoBarcodeCashierListData(TableGoodsDetailBean bean) {
+        if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
+            ArrayList<TableGoodsDetailBean> tempList = new ArrayList<>();
+            for (TableGoodsDetailBean goodsDetailBean:noBarcodeCashierList){
+                if(goodsDetailBean.getGoodsId().equals(bean.getGoodsId())){
+                    goodsDetailBean.setAddGoodsCount(bean.getAddGoodsCount());
+                    tempList.add(goodsDetailBean);
+                }else {
+                    tempList.add(goodsDetailBean);
+                }
+            }
+            noBarcodeCashierList.clear();
+            noBarcodeCashierList.addAll(tempList);
+            tempList.clear();
+        }
     }
 
     @Override
@@ -599,7 +556,12 @@ private void updateCartCount4DB(){
             }
         }
     }
-
+    if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0)
+    {
+        for(TableGoodsDetailBean bean:noBarcodeCashierList){
+            totalGoodsCount+=bean.getAddGoodsCount();
+        }
+    }
     if (totalGoodsCount > 0) {
         tvSumShopNum.setVisibility(View.VISIBLE);
         tvSumShopNum.setText(String.valueOf(totalGoodsCount));
@@ -617,6 +579,36 @@ private void updateCartCount4DB(){
                 bean.setAddGoodsCount(0);
                 bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
             }
+        }
+        if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
+            noBarcodeCashierList.clear();
+        }
+    }
+    private ArrayList<TableGoodsDetailBean> noBarcodeCashierList = new ArrayList<>();
+    int noBarcodeCount=200;
+    @Override
+    public void noBarcodeCashierAddShoping2Cart(String price) {
+        noBarcodeCount+=1;
+        String goodsName = "无码商品"+noBarcodeCount;
+        String categoryName = "无码商品";
+        TableGoodsDetailBean bean = new TableGoodsDetailBean();
+        bean.setAddGoodsCount(1);
+        bean.setGoodsPrice(Double.parseDouble(price));
+        bean.setUserId(Utils.get6MD5WithString("18501053570"));
+        bean.setGoodsName(goodsName);
+        bean.setGoodsId(goodsName);
+        bean.setGoodsImgUrl("abc");
+        bean.setGoodsCreateTime(System.currentTimeMillis());
+        bean.setGoodsCid(Utils.get6MD5WithString(categoryName));
+        bean.setGoodsCName(categoryName);
+        noBarcodeCashierList.add(bean);
+        int totalGoodsCount = Integer.parseInt(tvSumShopNum.getText().toString().trim());
+        totalGoodsCount+=1;
+        if (totalGoodsCount > 0) {
+            tvSumShopNum.setVisibility(View.VISIBLE);
+            tvSumShopNum.setText(String.valueOf(totalGoodsCount));
+        }else {
+            tvSumShopNum.setVisibility(View.GONE);
         }
     }
 }

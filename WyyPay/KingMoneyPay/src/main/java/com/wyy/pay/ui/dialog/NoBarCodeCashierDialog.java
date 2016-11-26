@@ -111,7 +111,9 @@ public class NoBarCodeCashierDialog extends Dialog implements View.OnClickListen
     }
     String goodsPrice = "0";
     private  void appendNumText(String text){
-
+if(".".equals(text)&&builder.length()==0){
+    builder.append("0");
+}
         if(TextUtils.isEmpty(text)){
             setDefaultText();
             return;
@@ -215,11 +217,13 @@ public class NoBarCodeCashierDialog extends Dialog implements View.OnClickListen
     }
 
     private void addShoping2Cart() {
-        if(this.callback!=null){
+        if(this.callback!=null&&!"0".equals(goodsPrice)&&!".00".equals(goodsPrice)&&!"0.".equals(goodsPrice)&&!"0.00".equals(goodsPrice)){
             callback.noBarcodeCashierAddShoping2Cart(goodsPrice);
+            goodsPrice = "0";
+            clearAll();
+        }else {
+            Toast.makeText(mContext,"添加的订单金额不能是0！",Toast.LENGTH_SHORT).show();
         }
-        goodsPrice = "0";
-        clearAll();
     }
 
     public interface InfoCallback {
