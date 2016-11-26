@@ -109,6 +109,7 @@ public class NoBarCodeCashierDialog extends Dialog implements View.OnClickListen
         }
         return false;
     }
+    String goodsPrice = "0";
     private  void appendNumText(String text){
 
         if(TextUtils.isEmpty(text)){
@@ -128,6 +129,7 @@ public class NoBarCodeCashierDialog extends Dialog implements View.OnClickListen
         if(".".equals(result.substring(result.length()-1))){
             result +="00";
         }
+        goodsPrice = result;
         tvMoneySumCount.setText(String.format("￥\r\r%s", result));
     }
     private void setDefaultText(){
@@ -214,12 +216,14 @@ public class NoBarCodeCashierDialog extends Dialog implements View.OnClickListen
 
     private void addShoping2Cart() {
         if(this.callback!=null){
-            callback.noBarcodeCashierAddShoping2Cart();
+            callback.noBarcodeCashierAddShoping2Cart(goodsPrice);
         }
+        goodsPrice = "0";
+        clearAll();
     }
 
     public interface InfoCallback {
-         void noBarcodeCashierAddShoping2Cart();
+         void noBarcodeCashierAddShoping2Cart(String price);
 
     }
 }
