@@ -24,6 +24,7 @@ public class TableGoodsDetailBean extends BaseDbBean implements Serializable{
     public static final String COLUMN_GOODS_CATEGORY_NAME = "goods_category_name";
     public static final String COLUMN_GOODS_CREATE_TIME = "goods_create_time";
     public static final String COLUMN_GOODS_ADD_COUNT = "column_goods_add_count";
+    public static final String COLUMN_ADD_GOODS_TO_CART_TIME = "column_add_goods_to_cart_time";
 
     @ColumnAnnotation(column = COLUMN_GOODS_ID)
     public String goodsId;//商品id
@@ -47,6 +48,16 @@ public class TableGoodsDetailBean extends BaseDbBean implements Serializable{
     public long goodsCreateTime;//商品创建的时间
     @ColumnAnnotation(column = COLUMN_GOODS_ADD_COUNT,info="int",defaultValue = "-1")
     public int addGoodsCount;//添加的商品数量
+    @ColumnAnnotation(column = COLUMN_ADD_GOODS_TO_CART_TIME,info = "long",defaultValue = "-1")
+    private long addGoods2CartTime;//添加商品到购物车的时间
+
+    public long getAddGoods2CartTime() {
+        return addGoods2CartTime;
+    }
+
+    public void setAddGoods2CartTime(long addGoods2CartTime) {
+        this.addGoods2CartTime = addGoods2CartTime;
+    }
 
     public String getGoodsId() {
         return goodsId;

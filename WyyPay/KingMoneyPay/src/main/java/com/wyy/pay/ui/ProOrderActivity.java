@@ -32,6 +32,8 @@ import com.wyy.pay.view.XListView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
@@ -352,6 +354,32 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
             shopingCartList.addAll(noBarcodeCashierList);
         }
+        ArrayList<TableGoodsDetailBean> templistData = new ArrayList<>();
+        templistData.addAll(shopingCartList);
+        if(templistData.size()>0){
+
+                Comparator comp = new Comparator() {
+                    public int compare(Object o1, Object o2) {
+                        TableGoodsDetailBean p1 = (TableGoodsDetailBean) o1;
+                        TableGoodsDetailBean p2 = (TableGoodsDetailBean) o2;
+                        if (p1.getAddGoods2CartTime() > p2.getAddGoods2CartTime())
+                            return -1;
+                        else if (p1.getAddGoods2CartTime() == p2.getAddGoods2CartTime())
+                            return 0;
+                        else if (p1.getAddGoods2CartTime() < p2.getAddGoods2CartTime())
+                            return 1;
+                        return 0;
+                    }
+                };
+                Collections.sort(templistData, comp);
+                if(shopingCartList.size()>0){
+                    shopingCartList.clear();
+                }
+                for (TableGoodsDetailBean bean : templistData){
+                    shopingCartList.add(bean);
+                }
+                templistData.clear();
+            }
     }
 
     @Override
@@ -398,28 +426,6 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(etProSearch.getWindowToken(), 0);
     }
-//    private void setShopingListSumCount(TableGoodsDetailBean bean){
-//        if(shopingCartList==null){
-//            shopingCartList = new ArrayList<>();
-//        }else {
-//            shopingCartList.clear();
-//        }
-//        int totalShopingNum =0;
-//        if(proList!=null &&proList.size()>0){
-//            for (TableGoodsDetailBean goodsDetailBean:proList){
-//                if(goodsDetailBean.getAddGoodsCount()>0){
-//                    shopingCartList.add(goodsDetailBean);
-//                    totalShopingNum+=goodsDetailBean.getAddGoodsCount();
-//                }
-//            }
-//        }
-//        if (totalShopingNum > 0) {
-//            tvSumShopNum.setVisibility(View.VISIBLE);
-//            tvSumShopNum.setText(String.valueOf(totalShopingNum));
-//        }else {
-//            tvSumShopNum.setVisibility(View.GONE);
-//        }
-//    }
     @Override
     public void addProOnClick(int position, TableGoodsDetailBean bean) {
         int goodsCount = bean.getAddGoodsCount();
@@ -430,6 +436,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         proListAdapter.setProductListData(proList);
         proListAdapter.notifyDataSetChanged();
         bean.setAddGoodsCount(goodsCount);
+        bean.setAddGoods2CartTime(System.currentTimeMillis());
         bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
         updateCartCount4DB();
 //        setShopingListSumCount(bean);
@@ -448,6 +455,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
             proListAdapter.setProductListData(proList);
             proListAdapter.notifyDataSetChanged();
             bean.setAddGoodsCount(goodsCount);
+            bean.setAddGoods2CartTime(System.currentTimeMillis());
             bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
             updateCartCount4DB();
            // setShopingListSumCount(bean);
@@ -613,6 +621,7 @@ private void updateCartCount4DB(){
         bean.setGoodsCreateTime(System.currentTimeMillis());
         bean.setGoodsCid(Utils.get6MD5WithString(categoryName));
         bean.setGoodsCName(categoryName);
+        bean.setAddGoods2CartTime(System.currentTimeMillis());
         noBarcodeCashierList.add(bean);
         int totalGoodsCount = Integer.parseInt(tvSumShopNum.getText().toString().trim());
         totalGoodsCount+=1;
