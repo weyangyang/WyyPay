@@ -83,17 +83,28 @@ public class NoBarCodeCashierDialog extends Dialog implements View.OnClickListen
             setDefaultText();
         }
     }
-    private boolean checkBuilderLengthOut(){
+    private boolean checkBuilderLengthOut(String inputText){
         String temp = builder.toString();
-        if(temp.contains(".")){
-            temp = SubstringUtils.substringAfter(temp,".");
-            if(temp.length()>1){
+
+        if(temp.contains("."))
+        {
+           String beforeTemp = SubstringUtils.substringBefore(temp,".");
+           String afterTemp = SubstringUtils.substringAfter(temp,".");
+            if(afterTemp.length()>1){
                 Toast.makeText(mContext,"订单金额只保留小数点后两位！",Toast.LENGTH_SHORT).show();
                 return true;
             }
-        }
-        if(builder.length()>0&&builder.length()>5){
+            if(beforeTemp.length()>4&&afterTemp.length()>1){
+                Toast.makeText(mContext,"订单金额只保留小数点后两位！",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+        }else if(!temp.contains(".")&&builder.length()>0&&builder.length()>4&&!".".equals(inputText)){
             Toast.makeText(mContext,"单个订单金额超过限制，请重新输入！",Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if(temp.contains(".")&&builder.length()>0&&builder.length()>6){
+            Toast.makeText(mContext,"订单金额只保留小数点后两位！",Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
@@ -117,7 +128,7 @@ public class NoBarCodeCashierDialog extends Dialog implements View.OnClickListen
         if(".".equals(result.substring(result.length()-1))){
             result +="00";
         }
-        tvMoneySumCount.setText(String.format("￥\r\r%s", Utils.getNumSumWithString(result)));
+        tvMoneySumCount.setText(String.format("￥\r\r%s", result));
     }
     private void setDefaultText(){
         tvMoneySumCount.setText(String.format("￥\r\r%s", "0.00"));
@@ -186,7 +197,7 @@ public class NoBarCodeCashierDialog extends Dialog implements View.OnClickListen
 
     private void addNumber(TextView v) {
         int le = builder.toString().length();
-        if(!checkBuilderLengthOut()) {
+        if(!checkBuilderLengthOut(v.getText().toString().trim())) {
             //clearAll();
             appendNumText(v.getText().toString().trim());
         }
