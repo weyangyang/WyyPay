@@ -69,7 +69,7 @@ public class ProductListAdapter extends BaseAdapter{
 
         }
         holder.tvProName.setText(bean.getGoodsName());
-        holder.tvProPrice.setText(String.valueOf(bean.getGoodsPrice()));
+        holder.tvProPrice.setText(String.format("￥%.2f",bean.getGoodsPrice()));
 
         holder.tvStockCount.setText(String.valueOf(bean.getGoodsStockCount()));
         convertView.setOnClickListener(new View.OnClickListener() {

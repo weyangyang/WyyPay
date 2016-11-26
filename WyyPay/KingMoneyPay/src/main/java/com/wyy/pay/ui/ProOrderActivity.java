@@ -469,6 +469,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
 //        showCart();
         ivShopingCart.setVisibility(View.VISIBLE);
         updateCartCount4DB();
+        updateTotalMoneyShow();
     }
 
 
@@ -483,6 +484,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         }else {
             bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
         }
+        updateTotalMoneyShow();
 //        updateCartCount4DB();
         //updateProListData(bean);
     }
@@ -507,6 +509,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         }else {
             bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
         }
+        updateTotalMoneyShow();
         // updateProListData(bean);
 //        updateCartCount4DB();
     }
@@ -538,8 +541,9 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         }
     }
 private void updateCartCount4DB(){
-    Cursor cursor =  new TableGoodsDetailBean().queryCursor(new String[]{TableGoodsDetailBean.COLUMN_GOODS_ADD_COUNT},null,null,null,null,null);
+    Cursor cursor =  new TableGoodsDetailBean().queryCursor(new String[]{TableGoodsDetailBean.COLUMN_GOODS_ADD_COUNT,TableGoodsDetailBean.COLUMN_GOODS_PRICE},null,null,null,null,null);
     int totalGoodsCount =0;
+    double totalGoodsPrice = 0.00;
     if(cursor!=null){
         try {
 
@@ -547,6 +551,11 @@ private void updateCartCount4DB(){
               int index =  cursor.getColumnIndex(TableGoodsDetailBean.COLUMN_GOODS_ADD_COUNT);
                int goodsCount =  cursor.getInt(index);
                 totalGoodsCount+=goodsCount;
+                int pIndex =  cursor.getColumnIndex(TableGoodsDetailBean.COLUMN_GOODS_PRICE);
+                double price = cursor.getDouble(pIndex);
+                if(goodsCount>0){
+                    totalGoodsPrice += goodsCount*price;
+                }
             }
 
         } catch (Exception e) {
@@ -560,8 +569,10 @@ private void updateCartCount4DB(){
     {
         for(TableGoodsDetailBean bean:noBarcodeCashierList){
             totalGoodsCount+=bean.getAddGoodsCount();
+            totalGoodsPrice += bean.goodsPrice;
         }
     }
+    tvOrderTotalMoney.setText(String.format("合计：￥%s",String.format("%.2f",totalGoodsPrice)));
     if (totalGoodsCount > 0) {
         tvSumShopNum.setVisibility(View.VISIBLE);
         tvSumShopNum.setText(String.valueOf(totalGoodsCount));
@@ -583,6 +594,7 @@ private void updateCartCount4DB(){
         if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
             noBarcodeCashierList.clear();
         }
+        tvOrderTotalMoney.setText(String.format("合计：￥%s",0.00));
     }
     private ArrayList<TableGoodsDetailBean> noBarcodeCashierList = new ArrayList<>();
     int noBarcodeCount=200;
@@ -610,5 +622,21 @@ private void updateCartCount4DB(){
         }else {
             tvSumShopNum.setVisibility(View.GONE);
         }
+        updateTotalMoneyShow();
+    }
+
+    private void updateTotalMoneyShow() {
+        double totalMoney=0.00;
+        if(shopingCartList!=null&&shopingCartList.size()>0){
+            for (TableGoodsDetailBean shopBean :shopingCartList){
+               totalMoney+= shopBean.getAddGoodsCount() * shopBean.getGoodsPrice();
+            }
+        }
+        if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
+            for (TableGoodsDetailBean goodsDetailBean:noBarcodeCashierList){
+                totalMoney += goodsDetailBean.getAddGoodsCount() * goodsDetailBean.getGoodsPrice();
+            }
+        }
+        tvOrderTotalMoney.setText(String.format("合计：￥%s",String.format("%.2f",totalMoney)));
     }
 }

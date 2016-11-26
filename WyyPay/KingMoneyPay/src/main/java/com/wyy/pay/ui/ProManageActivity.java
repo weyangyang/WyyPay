@@ -76,8 +76,8 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
         categoryListView.setPullRefreshEnable(false);
 
         proListView = (XListView) findViewById(R.id.proListView);
-        proListView.setPullLoadEnable(true);
-        proListView.setPullRefreshEnable(true);
+        proListView.setPullLoadEnable(false);
+        proListView.setPullRefreshEnable(false);
 
     }
     private String currentCName ="默认分类";//当前分类名称

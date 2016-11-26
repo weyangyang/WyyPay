@@ -71,7 +71,7 @@ public class OrderProductListAdapter extends BaseAdapter{
             ImageLoader.getInstance().displayImage("file://"+bean.getGoodsImgUrl(), holder.ivOrderProImg,BaseOptions.getInstance().getProductImgOptions());
         }
         holder.tvOrderProName.setText(bean.getGoodsName());
-        holder.tvItemOrderPrice.setText(String.valueOf(bean.getGoodsPrice()));
+        holder.tvItemOrderPrice.setText(String.format("￥%.2f",bean.getGoodsPrice()));
         if(bean.getAddGoodsCount()>0){
             holder.tvOrderReduce.setEnabled(true);
             //设置不同的背景色
