@@ -1,0 +1,106 @@
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/bg_main_gray"
+        >
+        <include
+            android:id="@+id/navBar"
+            layout="@layout/nav_title_bar" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="20dp"
+            android:background="@color/bg_nav_bar"
+            />
+        <RelativeLayout
+            android:id="@+id/rlDiscountSetting"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center|left"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            >
+
+            <ImageView
+                android:id="@+id/ivDiscount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/ic_coupon_discount" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/ivDiscount"
+                android:gravity="center"
+                android:text="优惠折扣设置"
+                android:textColor="@color/bg_nav_bar"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/tvDiscount"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/gray"
+                android:gravity="center"
+                android:text="开启"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/icon_arrow"
+                />
+        </RelativeLayout>
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1px"
+    android:background="@color/bg_nav_bar"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
+    />
+        <RelativeLayout
+            android:id="@+id/rlRemoveZeroSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center|left"
+            android:background="@color/white"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            >
+
+            <ImageView
+                android:id="@+id/ivRemoveZero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_wipe_to_zero" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/ivRemoveZero"
+                android:text="优惠折扣设置"
+                android:gravity="center"
+                android:textColor="@color/bg_nav_bar"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/tvRemoveZero"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/gray"
+                android:gravity="center"
+                android:text="抹分"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/icon_arrow"
+                />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/bg_nav_bar"
+            />
+    </LinearLayout>
+

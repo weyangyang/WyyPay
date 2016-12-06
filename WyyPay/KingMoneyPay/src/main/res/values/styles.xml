@@ -54,6 +54,9 @@
         <attr name="isCenter" format="boolean"/>
         
     </declare-styleable>
+    <declare-styleable name="ListViewMaxHeight">
+        <attr name="maxHeight" format="dimension" />
+    </declare-styleable>
     <declare-styleable name="WyyCircleImageView">
         <attr name="radius" />
         <attr name="border" />

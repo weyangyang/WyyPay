@@ -12,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,8 +20,8 @@ import com.wyy.pay.R;
 import com.wyy.pay.adapter.OrderCategoryListAdapter;
 import com.wyy.pay.adapter.OrderProductListAdapter;
 import com.wyy.pay.adapter.ProCategoryListAdapter;
-import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.bean.TableCategoryBean;
+import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.ui.dialog.CustomProgressDialog;
 import com.wyy.pay.ui.dialog.NoBarCodeCashierDialog;
 import com.wyy.pay.utils.ConstantUtils;
@@ -34,9 +33,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentMap;
 
 import db.utils.BaseDbBean;
 import db.utils.TableDataListener;
@@ -366,7 +363,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                     public int compare(Object o1, Object o2) {
                         TableGoodsDetailBean p1 = (TableGoodsDetailBean) o1;
                         TableGoodsDetailBean p2 = (TableGoodsDetailBean) o2;
-//                        if (p1.getAddGoods2CartTime() < p2.getAddGoods2CartTime())
+//                        if (p1.getAddGoods2CartTime() < p2.get proList.get(position).setAddGoods2CartTime(System.currentTimeMillis());Goods2CartTime())
 //                            return -1;
 //                        else if (p1.getAddGoods2CartTime() == p2.getAddGoods2CartTime())
 //                            return 0;
@@ -444,6 +441,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
         bean.setAddGoods2CartTime(System.currentTimeMillis());
         bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
         updateCartCount4DB();
+        updatShopingCartList4DB();
 //        setShopingListSumCount(bean);
 
     }
@@ -464,6 +462,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
             bean.setAddGoods2CartTime(System.currentTimeMillis());
             bean.insert(true,TableGoodsDetailBean.COLUMN_GOODS_ID,bean.getGoodsId());
             updateCartCount4DB();
+            updatShopingCartList4DB();
            // setShopingListSumCount(bean);
         }
     }
@@ -639,6 +638,8 @@ private void updateCartCount4DB(){
             tvSumShopNum.setVisibility(View.GONE);
         }
         updateTotalMoneyShow();
+        ArrayList<TableGoodsDetailBean> tList = new ArrayList<>();
+        shopingCartSort();
     }
 
     private void updateTotalMoneyShow() {

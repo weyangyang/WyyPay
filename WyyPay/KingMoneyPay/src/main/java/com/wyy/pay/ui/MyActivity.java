@@ -104,6 +104,8 @@ public class MyActivity extends Activity implements View.OnClickListener {
             case R.id.tvTransactionCosts://交易费率
                 break;
             case R.id.tvCashierSetting://收银设置
+                 intent = new Intent(this,CashierSettingActivity.class);
+                startActivity(intent);
                 break;
             case R.id.tvEvaluateUs://评价我们
                 String packageName = MyActivity.this.getApplication().getPackageName();

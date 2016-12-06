@@ -4,6 +4,7 @@ import java.util.Date;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -53,35 +54,49 @@ public class XListView extends ListView implements OnScrollListener {
 
 	private final static float OFFSET_RADIO = 1.8f; // support iOS like pull
 													// feature.
-
+	private  int maxHeight  ;
 	/**
 	 * @param context
 	 */
 	public XListView(Context context) {
 		super(context);
-		initWithContext(context);
+		initWithContext(context,null);
 	}
 
 	public XListView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		initWithContext(context);
+		initWithContext(context,attrs);
 	}
 
 	public XListView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		initWithContext(context);
+		initWithContext(context,attrs);
 	}
-
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		int measuredHeight = MeasureSpec.getSize(heightMeasureSpec);
+		if (maxHeight > 0 && maxHeight < measuredHeight) {
+			int measureMode = MeasureSpec.getMode(heightMeasureSpec);
+			heightMeasureSpec = MeasureSpec.makeMeasureSpec(maxHeight, measureMode);
+		}
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
 	public void setHeaderTime(String strTime){
 		xlistview_header_time.setText(strTime);
 	}
 	
-	private void initWithContext(Context context) {
+	private void initWithContext(Context context,AttributeSet attrs) {
 		mScroller = new Scroller(context, new DecelerateInterpolator());
 		// XListView need the scroll event, and it will dispatch the event to
 		// user's listener (as a proxy).
 		super.setOnScrollListener(this);
-
+		if (attrs != null) {
+			TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ListViewMaxHeight);
+			maxHeight = a.getDimensionPixelSize(R.styleable.ListViewMaxHeight_maxHeight, Integer.MAX_VALUE);
+			a.recycle();
+		} else {
+			maxHeight = 0;
+		}
 		// 初始化头部View
 		mHeaderView = new XListViewHeader(context);
 		xlistview_header_time = (TextView) mHeaderView.findViewById(R.id.xlistview_header_time);

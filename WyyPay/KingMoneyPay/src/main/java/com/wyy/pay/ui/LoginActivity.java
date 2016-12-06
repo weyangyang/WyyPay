@@ -55,13 +55,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         Intent intent = null;
         switch (v.getId()) {
             case R.id.btnLogin://登录
-
-                intent = new Intent(LoginActivity.this,MainUIActivity.class);
-                startActivity(intent);
-                if(3>0){
+                if(3>2){
+                    intent = new Intent(LoginActivity.this,MainUIActivity.class);
+                    startActivity(intent);
                     LoginActivity.this.finish();
                     return;
                 }
+
                 final String userName = etAccount.getText().toString().trim();
                 String password = etPasswd.getText().toString().trim();
 
@@ -80,8 +80,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
-//                Intent intent = new Intent(LoginActivity.this,LoginActivity.class);
-//                startActivity(intent);
+//                if("13478277728".equals(userName)&&"wyy277728".equals(password)){
+//                    intent = new Intent(LoginActivity.this,MainUIActivity.class);
+//                    startActivity(intent);
+//                    LoginActivity.this.finish();
+//                }
                 break;
             case R.id.btnRegister://注册
                 intent = new Intent(LoginActivity.this,RegisterActivity.class);
