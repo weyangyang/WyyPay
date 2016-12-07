@@ -1,5 +1,6 @@
 package com.wyy.pay.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,6 +69,8 @@ public class CashierSettingActivity extends BaseActivity implements View.OnClick
 			case R.id.rlDiscountSetting: //优惠折扣设置
 				break;
 			case R.id.rlRemoveZeroSetting: //抹零设置
+				Intent intent = new Intent(this,RemoveZeroSettingActivity.class);
+				startActivity(intent);
 				break;
 		}
 	}

@@ -81,6 +81,11 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
+            android:name=".ui.RemoveZeroSettingActivity"
+            android:label="抹零设置界面"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <activity
             android:name=".ui.ForgetPasswdActivity"
             android:label="忘记密码界面"
             android:screenOrientation="portrait"

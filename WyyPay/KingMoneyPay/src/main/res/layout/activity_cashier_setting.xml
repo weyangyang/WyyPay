@@ -16,7 +16,7 @@
         <RelativeLayout
             android:id="@+id/rlDiscountSetting"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="42dp"
             android:background="@color/white"
             android:gravity="center|left"
             android:paddingLeft="20dp"
@@ -62,7 +62,7 @@
         <RelativeLayout
             android:id="@+id/rlRemoveZeroSetting"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="42dp"
             android:gravity="center|left"
             android:background="@color/white"
             android:paddingLeft="20dp"

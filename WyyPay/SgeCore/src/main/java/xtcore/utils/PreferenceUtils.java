@@ -11,17 +11,11 @@ public class PreferenceUtils {
 	 * 日志文件存放目录  sp key
 	 */
 	public static final String SP_LOG_DIR_PATH = "logDirPath";
-	public static final String SP_IS_WIFI_TO_UPLOAD = "isWifiToUpload";
-	public static final String SP_UPLOAD_STRATEGY_JSON = "uploadStrategyJson";
-	public static final String SP_UPLOAD_UUID_SUCC ="uploadUUIDSucc";
-	public static final String SP_SESSION_NUM ="sessionNum";
+	public static final String SP_REMOVE_ZERO_TYPE ="sp_remove_zero_type";
+	public static final String SP_REMOVE_ZERO_SWITCH ="sp_remove_zero_switch";
 	public static final String SP_UUID ="uuid";
 	public static final String SP_UID ="uid";
 	public static final String SP_SEQ_NUM ="firstUpload";
-	public static final String SP_CURRENT_TIME ="currentTime";
-	public static final String SP_SID ="exit_sid";
-	public static final String SP_DEVICE_BEAN ="devices_bean";
-	public static final String SP_DEVICE_JSON ="devices_json";
 	public static final String SP_CHANNELID = "channelID";
 	
 	
