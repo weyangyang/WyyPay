@@ -90,6 +90,10 @@ public class DiscountSettingActivity extends BaseActivity implements View.OnClic
 				}
 			}
 		});
+
+		modelTag.setSelectAllTagView(cbxRemoveZero.isChecked());
+		processTag.setSelectAllTagView(cbxRemoveZero.isChecked());
+
 	}
 
 
@@ -98,6 +102,8 @@ public class DiscountSettingActivity extends BaseActivity implements View.OnClic
 		cbxRemoveZero.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				modelTag.setSelectAllTagView(isChecked);
+				processTag.setSelectAllTagView(isChecked);
 			}
 		});
 		tvNavLeft.setOnClickListener(new View.OnClickListener() {

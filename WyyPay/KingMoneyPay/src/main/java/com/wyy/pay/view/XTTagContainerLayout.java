@@ -172,8 +172,9 @@ public class XTTagContainerLayout extends ViewGroup {
         super.onSizeChanged(w, h, oldw, oldh);
         mRectF.set(0, 0, w, h);
     }
-
+boolean isSelectedAll = false;
     public  void setSelectAllTagView(boolean isAll){
+        isSelectedAll = isAll;
     List<DiscountTagView> views = getTagViews();
     for(DiscountTagView tagView :views){
         if(isAll){
@@ -352,7 +353,7 @@ public class XTTagContainerLayout extends ViewGroup {
                 view.setTextViewOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(mOnTagClickListener!=null)
+                        if(mOnTagClickListener!=null&&isSelectedAll)
                         mOnTagClickListener.onTagTextBgOnClick((int)view.getTag(),view.getText());
                     }
                 });
