@@ -319,7 +319,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                 break;
             case R.id.ivShopingCart://去购物车
                 updatShopingCartList4DB();
-                if(shopingCartList!=null&&shopingCartList.size()>0){
+                if(shopingCartList!=null&&shopingCartList.size()>0&& checkAddGoodsCount(shopingCartList)){
                      cartPopWindow = new ShopingCartPopWindow(this);
                     cartPopWindow.setGoodsListData(shopingCartList);
                     cartPopWindow.showPopupWindow(viewBD);
@@ -332,6 +332,26 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                 Toast.makeText(this, "去结算", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    private boolean checkAddGoodsCount(ArrayList<TableGoodsDetailBean> shopingCartList) {
+        int addGoodsCount =0;
+        ArrayList<TableGoodsDetailBean> tempList = new ArrayList<>();
+        tempList.addAll(shopingCartList);
+        for(TableGoodsDetailBean bean :shopingCartList){
+            addGoodsCount+= bean.getAddGoodsCount();
+            if(bean.getAddGoodsCount()==0){
+                tempList.remove(bean);
+            }
+        }
+        shopingCartList.clear();
+
+        if(addGoodsCount>0){
+            shopingCartList.addAll(tempList);
+            return true;
+        }
+        tempList.clear();
+        return false;
     }
 
     private void updatShopingCartList4DB() {

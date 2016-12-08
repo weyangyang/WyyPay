@@ -75,9 +75,9 @@ public class OrderProductListAdapter extends BaseAdapter{
         if(bean.getAddGoodsCount()>0){
             holder.tvOrderReduce.setEnabled(true);
             //设置不同的背景色
-            holder.tvOrderReduce.setBackgroundResource(R.drawable.ic_message_red_point);
+            holder.tvOrderReduce.setBackgroundResource(R.drawable.ic_jianhao_cheng);
         }else {
-            holder.tvOrderReduce.setBackgroundResource(R.drawable.ic_cash_feed);
+            holder.tvOrderReduce.setBackgroundResource(R.drawable.ic_jianhao_hui);
             holder.tvOrderReduce.setEnabled(false);
             //设置不同的背景色
 

@@ -34,8 +34,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/ivOrderProImg"
         android:layout_marginBottom="5dp"
-        android:background="@drawable/ic_message_red_point"
-        android:text="+"
+        android:background="@drawable/ic_jiahao_cheng"
         android:gravity="center"
         android:textColor="@color/white"
         />
@@ -60,10 +59,9 @@
         android:layout_alignBottom="@+id/ivOrderProImg"
         android:padding="2dp"
         android:layout_marginBottom="5dp"
-        android:text="-"
         android:gravity="center"
         android:textColor="@color/white"
-        android:background="@drawable/ic_message_red_point"
+        android:background="@drawable/ic_jianhao_cheng"
         />
     <TextView
         android:id="@+id/tvItemOrderPrice"

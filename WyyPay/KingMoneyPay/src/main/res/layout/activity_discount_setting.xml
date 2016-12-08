@@ -1,0 +1,53 @@
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/bg_main_gray"
+        >
+        <include
+            android:id="@+id/navBar"
+            layout="@layout/nav_title_bar" />
+
+        <RelativeLayout
+            android:id="@+id/rlRemoveZeroSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center|left"
+            android:background="@color/white"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            >
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="优惠折扣设置"
+                android:gravity="center"
+                android:textColor="@color/bg_nav_bar"
+                android:textSize="18sp" />
+            <CheckBox
+                android:id="@+id/cbxRemoveZero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/cbx_background_switch"
+                android:layout_alignParentRight="true"
+                android:button="@null"
+                android:gravity="center"
+                />
+        </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="抹零设置"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/bg_nav_bar"
+        android:layout_marginLeft="20dp"
+        />
+
+
+
+    </LinearLayout>
+
