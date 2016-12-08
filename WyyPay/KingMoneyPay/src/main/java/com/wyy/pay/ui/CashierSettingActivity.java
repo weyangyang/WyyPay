@@ -67,9 +67,11 @@ public class CashierSettingActivity extends BaseActivity implements View.OnClick
 	public void onClick(View v) {
 		switch (v.getId()){
 			case R.id.rlDiscountSetting: //优惠折扣设置
+				Intent intent = new Intent(this,DiscountSettingActivity.class);
+				startActivity(intent);
 				break;
 			case R.id.rlRemoveZeroSetting: //抹零设置
-				Intent intent = new Intent(this,RemoveZeroSettingActivity.class);
+				 intent = new Intent(this,RemoveZeroSettingActivity.class);
 				startActivity(intent);
 				break;
 		}

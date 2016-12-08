@@ -1,8 +1,13 @@
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+   <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:background="@color/bg_main_gray"
+       android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/bg_main_gray"
+
         >
         <include
             android:id="@+id/navBar"
@@ -40,14 +45,53 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="抹零设置"
+        android:text="整单折扣"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:textColor="@color/bg_nav_bar"
-        android:layout_marginLeft="20dp"
+        android:background="@color/gray"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="20dp"
         />
+        <com.wyy.pay.view.XTTagContainerLayout
+            android:layout_weight="0"
+            android:id="@+id/modelTag"
+            android:background="@color/bg_main_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            >
 
+        </com.wyy.pay.view.XTTagContainerLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="整单减价"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/gray"
+            android:paddingLeft="20dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/bg_nav_bar"
+            />
+        <com.wyy.pay.view.XTTagContainerLayout
+            android:layout_weight="0"
+            android:id="@+id/processTag"
+            android:background="@color/bg_main_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            >
+
+        </com.wyy.pay.view.XTTagContainerLayout>
 
 
     </LinearLayout>
 
+   </ScrollView>
