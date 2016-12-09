@@ -13,6 +13,7 @@ public class PreferenceUtils {
 	public static final String SP_LOG_DIR_PATH = "logDirPath";
 	public static final String SP_REMOVE_ZERO_TYPE ="sp_remove_zero_type";
 	public static final String SP_REMOVE_ZERO_SWITCH ="sp_remove_zero_switch";
+	public static final String SP_DISCOUNT_SWITCH ="sp_discount_switch";
 	public static final String SP_UUID ="uuid";
 	public static final String SP_UID ="uid";
 	public static final String SP_SEQ_NUM ="firstUpload";

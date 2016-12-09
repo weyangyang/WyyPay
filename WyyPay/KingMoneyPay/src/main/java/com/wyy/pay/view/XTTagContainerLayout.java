@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.wyy.pay.R;
+import com.wyy.pay.bean.TableDiscountNumBean;
 import com.wyy.pay.utils.Utils;
 
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class XTTagContainerLayout extends ViewGroup {
 
 
     /** Tags*/
-    private List<String> mTags;
+    private List<TableDiscountNumBean> mTags;
 
     /** Can drag TagView(default false)*/
     private boolean mDragEnable;
@@ -320,10 +321,11 @@ boolean isSelectedAll = false;
         postInvalidate();
     }
 
-    private void onAddTag(String text, int position) {
+    private void onAddTag(TableDiscountNumBean numBean, int position) {
         if (position < 0 || position > mChildViews.size()){
             throw new RuntimeException("Illegal position!");
         }
+        String text = numBean.getShowText();
         DiscountTagView tagView = new DiscountTagView(getContext());
         tagView.setText(text);
         tagView.setTextBackground("+".equals(text)?R.drawable.bg_item_discount_gray:R.drawable.bg_item_discount_red);
@@ -347,7 +349,7 @@ boolean isSelectedAll = false;
                     @Override
                     public void onClick(View v) {
                         if(mOnTagClickListener!=null)
-                        mOnTagClickListener.onTagClick((int)view.getTag(),view.getText());
+                        mOnTagClickListener.onDeleteTagClick((int)view.getTag(),mTags.get((int)view.getTag()));
                     }
                 });
                 view.setTextViewOnClickListener(new OnClickListener() {
@@ -446,35 +448,27 @@ boolean isSelectedAll = false;
      * Set tags
      * @param tags
      */
-    public void setTags(List<String> tags){
+    public void setTags(List<TableDiscountNumBean> tags){
         mTags = tags;
-        onSetTag();
-    }
-    /**
-     * Set tags
-     * @param tags
-     */
-    public void setTags(String... tags){
-        mTags = Arrays.asList(tags);
         onSetTag();
     }
 
     /**
      * Inserts the specified TagView into this ContainerLayout at the end.
-     * @param text
+     * @param bean
      */
-    public void addTag(String text){
-        addTag(text, mChildViews.size());
+    public void addTag(TableDiscountNumBean bean ){
+        addTag(bean, mChildViews.size());
     }
 
     /**
      * Inserts the specified TagView into this ContainerLayout at the specified location.
      * The TagView is inserted before the current element at the specified location.
-     * @param text
+     * @param  bean
      * @param position
      */
-    public void addTag(String text, int position){
-        onAddTag(text, position);
+    public void addTag(TableDiscountNumBean bean, int position){
+        onAddTag(bean, position);
         postInvalidate();
     }
 
@@ -673,7 +667,7 @@ boolean isSelectedAll = false;
         return sp * scale;
     }
     public interface OnTagClickListener{
-        void onTagClick(int position,String text);
+        void onDeleteTagClick(int position,TableDiscountNumBean bean);
         void onTagTextBgOnClick(int position,String text);
     }
 }

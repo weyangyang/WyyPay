@@ -1,6 +1,8 @@
 package com.wyy.pay.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,18 +19,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wyy.pay.R;
+import com.wyy.pay.bean.TableCategoryBean;
+import com.wyy.pay.bean.TableDiscountNumBean;
+import com.wyy.pay.ui.dialog.CustomProgressDialog;
 import com.wyy.pay.utils.RemoveZeroType;
+import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.XTTagContainerLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import db.utils.BaseDbBean;
+import db.utils.TableDataListener;
 import xtcore.utils.PreferenceUtils;
 
-public class DiscountSettingActivity extends BaseActivity implements View.OnClickListener {
+public class DiscountSettingActivity extends BaseActivity  {
 	private CheckBox cbxRemoveZero;
 	private LayoutInflater inflater;
 	private XTTagContainerLayout modelTag,processTag;
+	ArrayList<TableDiscountNumBean> zheList;
+	ArrayList<TableDiscountNumBean> yuanList;
+	private TableDataListener<TableDiscountNumBean> dataListener;
+	private CustomProgressDialog initDialog;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_discount_setting);
@@ -37,6 +49,7 @@ public class DiscountSettingActivity extends BaseActivity implements View.OnClic
 		initView();
 		initData();
 		initListener();
+
 	}
 	@Override
 	public void initView() {
@@ -49,23 +62,21 @@ public class DiscountSettingActivity extends BaseActivity implements View.OnClic
 
 	@Override
 	public void initData() {
-		List<String> discountList=new ArrayList<String>();
-		discountList.add("5折");
-		discountList.add("4折");
-		discountList.add("6折");
-		discountList.add("9折");
-		discountList.add("+");
-		List<String> processList=new ArrayList<String>();
-		processList.add("减10元");
-		processList.add("减20元");
-		processList.add("减13元");
-		processList.add("减15元");
-		processList.add("减60元");
-		processList.add("+");
-	processTag.setTags(processList);
+		zheList = new ArrayList<>();
+		yuanList = new ArrayList<>();
+		getDataFromDB();
+		updateTagView();
+		boolean isChecked = PreferenceUtils.getPrefBoolean(this,PreferenceUtils.SP_DISCOUNT_SWITCH,false);
+		cbxRemoveZero.setChecked(isChecked);
+
+	}
+
+	private void updateTagView() {
+		processTag.setTags(yuanList);
 		processTag.setOnTagClickListener(new XTTagContainerLayout.OnTagClickListener() {
 			@Override
-			public void onTagClick(int position, String text) {
+			public void onDeleteTagClick(int position, TableDiscountNumBean bean) {
+				bean.rawDelete(TableCategoryBean.COLUMN_USER_ID+" =? AND " +TableDiscountNumBean.COLUMN_DISCOUNT_ID+" =?",new String[]{Utils.get6MD5WithString("18501053570"),bean.getDiscountId()});
 				processTag.removeTag(position);
 			}
 
@@ -76,10 +87,11 @@ public class DiscountSettingActivity extends BaseActivity implements View.OnClic
 				}
 			}
 		});
-		modelTag.setTags(discountList);
+		modelTag.setTags(zheList);
 		modelTag.setOnTagClickListener(new XTTagContainerLayout.OnTagClickListener() {
 			@Override
-			public void onTagClick(int position, String text) {
+			public void onDeleteTagClick(int position, TableDiscountNumBean bean) {
+				bean.rawDelete(TableCategoryBean.COLUMN_USER_ID+" =? AND " +TableDiscountNumBean.COLUMN_DISCOUNT_ID+" =?",new String[]{Utils.get6MD5WithString("18501053570"),bean.getDiscountId()});
 				modelTag.removeTag(position);
 			}
 
@@ -91,17 +103,136 @@ public class DiscountSettingActivity extends BaseActivity implements View.OnClic
 			}
 		});
 
-		modelTag.setSelectAllTagView(cbxRemoveZero.isChecked());
-		processTag.setSelectAllTagView(cbxRemoveZero.isChecked());
+		boolean isChecked = PreferenceUtils.getPrefBoolean(this,PreferenceUtils.SP_DISCOUNT_SWITCH,false);
+		modelTag.setSelectAllTagView(isChecked);
+		processTag.setSelectAllTagView(isChecked);
+	}
+
+	private static final int TABLE_CATEGORY_CHANGED = 0;
+	private static final int INIT_COMPLETE = 1;
+	private Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			switch (msg.what){
+				case TABLE_CATEGORY_CHANGED:
+					getDataFromDB();
+					break;
+				case INIT_COMPLETE:
+					if(initDialog!=null){
+						initDialog.dismiss();
+					}
+					updateTagView();
+			}
+		}
+	};
+
+	private void getDataFromDB() {
+		if (initDialog == null) {
+			initDialog = CustomProgressDialog.createLoadingDialog(this);
+		}
+		if (!initDialog.isShowing()) {
+			initDialog.show();
+		}
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				String orderBy = TableDiscountNumBean.COLUMN_CREATE_CATEGORY_TIEM+" DESC";
+				ArrayList<TableDiscountNumBean> tableList = new TableDiscountNumBean().query(null,TableCategoryBean.COLUMN_USER_ID +"=?",new String[]{Utils.get6MD5WithString("18501053570")},null,null,orderBy);
+				if(tableList==null||tableList.size()==0){
+					int temp = 9;
+					for (int i=1;i<13;i++){
+						TableDiscountNumBean numTableBean = new TableDiscountNumBean();
+						numTableBean.setUserId(Utils.get6MD5WithString("18501053570"));
+						if(i<6){
+							String showText = String.format("减%s元",i*5);
+							numTableBean.setCreateTime(System.currentTimeMillis());
+							String discountId = Utils.get6MD5WithString(showText);
+							numTableBean.setDiscountId(discountId);
+							numTableBean.setType(2);
+							numTableBean.setShowText(showText);
+							numTableBean.setDiscountNum(i*5);
+							numTableBean.insert(true,TableDiscountNumBean.COLUMN_DISCOUNT_ID,discountId);
+							yuanList.add(numTableBean);
+						}else if(i==6){
+							numTableBean.setCreateTime(System.currentTimeMillis());
+							String discountId = Utils.get6MD5WithString(String.format("+%s",2));
+							numTableBean.setDiscountId(discountId);
+							numTableBean.setType(2);
+							numTableBean.setDiscountNum(-200);
+							numTableBean.setShowText("+");
+							numTableBean.setCreateTime(2082733263);
+							numTableBean.insert(true,TableDiscountNumBean.COLUMN_DISCOUNT_ID,discountId);
+							yuanList.add(numTableBean);
+						}
+						else if(i>6&&i<12){
+							numTableBean.setCreateTime(System.currentTimeMillis());
+							String showText = String.format("%s折",temp);
+							String discountId = Utils.get6MD5WithString(showText);
+							numTableBean.setDiscountId(discountId);
+							numTableBean.setType(1);
+							numTableBean.setDiscountNum(temp);
+							numTableBean.setShowText(showText);
+							numTableBean.insert(true,TableDiscountNumBean.COLUMN_DISCOUNT_ID,discountId);
+							zheList.add(numTableBean);
+							temp --;
+						}else if(i==12){
+							numTableBean.setCreateTime(System.currentTimeMillis());
+							String discountId = Utils.get6MD5WithString(String.format("+%s",1));
+							numTableBean.setDiscountId(discountId);
+							numTableBean.setType(1);
+							numTableBean.setShowText("+");
+							numTableBean.setDiscountNum(-100);
+							numTableBean.setCreateTime(2082733261);
+							numTableBean.insert(true,TableDiscountNumBean.COLUMN_DISCOUNT_ID,discountId);
+							zheList.add(numTableBean);
+						}
+
+					}
+				}else if(tableList.size()>0){
+					zheList.clear();
+					yuanList.clear();
+					for(TableDiscountNumBean bean :tableList){
+						if(bean.type ==1){
+							zheList.add(bean);
+						}else {
+							yuanList.add(bean);
+						}
+					}
+				}
+
+				handler.sendEmptyMessage(INIT_COMPLETE);
+			}
+		}).start();
 
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		BaseDbBean.unregisterContentObserver(TableDiscountNumBean.TABLE_NAME, dataListener);
+	}
 
 	@Override
 	public void initListener() {
+		dataListener = new TableDataListener<TableDiscountNumBean>(handler) {
+			@Override
+			public void onDataChanged(int type, TableDiscountNumBean obj) {
+				if (type == TableDataListener.TYPE_UPDATE) {
+					handler.sendEmptyMessage(TABLE_CATEGORY_CHANGED);
+				}
+				if (type == TableDataListener.TYPE_ADD) {
+					handler.sendEmptyMessage(TABLE_CATEGORY_CHANGED);
+				}
+				if (type == TableDataListener.TYPE_DELETE
+						|| type == TableDataListener.TYPE_RAW_DELETE) {
+					return;
+				}
+			}
+		};
+		TableDiscountNumBean.registerContentObserver(TableDiscountNumBean.TABLE_NAME,dataListener);
 		cbxRemoveZero.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				PreferenceUtils.setPrefBoolean(DiscountSettingActivity.this,PreferenceUtils.SP_DISCOUNT_SWITCH,isChecked);
 				modelTag.setSelectAllTagView(isChecked);
 				processTag.setSelectAllTagView(isChecked);
 			}
@@ -128,10 +259,4 @@ public class DiscountSettingActivity extends BaseActivity implements View.OnClic
 	}
 
 
-	@Override
-	public void onClick(View v) {
-		switch ((int)v.getTag()){
-
-		}
-	}
 }
