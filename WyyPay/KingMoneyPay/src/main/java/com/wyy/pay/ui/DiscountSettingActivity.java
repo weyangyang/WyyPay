@@ -51,7 +51,7 @@ public class DiscountSettingActivity extends BaseActivity  {
 		initView();
 		initData();
 		initListener();
-
+		setResult(RESULT_OK);
 	}
 	@Override
 	public void initView() {

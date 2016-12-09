@@ -26,6 +26,7 @@ public class RemoveZeroSettingActivity extends BaseActivity implements View.OnCl
 		initView();
 		initData();
 		initListener();
+		setResult(RESULT_OK);
 	}
 	@Override
 	public void initView() {
@@ -40,8 +41,9 @@ public class RemoveZeroSettingActivity extends BaseActivity implements View.OnCl
 
 	@Override
 	public void initData() {
-		// TODO Auto-generated method stub
-		
+		boolean isChecked = PreferenceUtils.getPrefBoolean(this,PreferenceUtils.SP_REMOVE_ZERO_SWITCH,false);
+		cbxRemoveZero.setChecked(isChecked);
+		updateBtnShowStatus(isChecked);
 	}
 
 	@Override
@@ -50,28 +52,7 @@ public class RemoveZeroSettingActivity extends BaseActivity implements View.OnCl
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				PreferenceUtils.setPrefBoolean(RemoveZeroSettingActivity.this,PreferenceUtils.SP_REMOVE_ZERO_SWITCH,isChecked);
-				if(isChecked){
-					rbtn5toJiao.setEnabled(isChecked);
-					rbtnRemoveFen.setEnabled(isChecked);
-					rbtnRemoveJiao.setEnabled(isChecked);
-					int type = PreferenceUtils.getPrefInt(RemoveZeroSettingActivity.this,PreferenceUtils.SP_REMOVE_ZERO_TYPE,-1);
-					if(type ==RemoveZeroType.FILE_TO_JIAO.ordinal()){
-						rbtn5toJiao.setChecked(isChecked);
-						//rgRemoveZero.check(rbtn5toJiao.getId());
-					}else if(type == RemoveZeroType.REMOVE_FEN.ordinal()){
-						rbtnRemoveFen.setChecked(isChecked);
-					}else if(type == RemoveZeroType.REMOVE_JIAO.ordinal()){
-						rbtnRemoveJiao.setChecked(isChecked);
-					}else if(type ==-1){
-						rbtnRemoveFen.setChecked(isChecked);
-						PreferenceUtils.setPrefInt(RemoveZeroSettingActivity.this,PreferenceUtils.SP_REMOVE_ZERO_TYPE, RemoveZeroType.REMOVE_FEN.ordinal());
-					}
-				}else {
-					rgRemoveZero.clearCheck();
-					rbtn5toJiao.setEnabled(isChecked);
-					rbtnRemoveFen.setEnabled(isChecked);
-					rbtnRemoveJiao.setEnabled(isChecked);
-				}
+				updateBtnShowStatus(isChecked);
 			}
 		});
 		rgRemoveZero.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -95,6 +76,32 @@ public class RemoveZeroSettingActivity extends BaseActivity implements View.OnCl
 		});
 		
 	}
+
+	private void updateBtnShowStatus(boolean isChecked) {
+		if(isChecked){
+            rbtn5toJiao.setEnabled(isChecked);
+            rbtnRemoveFen.setEnabled(isChecked);
+            rbtnRemoveJiao.setEnabled(isChecked);
+            int type = PreferenceUtils.getPrefInt(RemoveZeroSettingActivity.this,PreferenceUtils.SP_REMOVE_ZERO_TYPE,-1);
+            if(type == RemoveZeroType.FILE_TO_JIAO.ordinal()){
+                rbtn5toJiao.setChecked(isChecked);
+                //rgRemoveZero.check(rbtn5toJiao.getId());
+            }else if(type == RemoveZeroType.REMOVE_FEN.ordinal()){
+                rbtnRemoveFen.setChecked(isChecked);
+            }else if(type == RemoveZeroType.REMOVE_JIAO.ordinal()){
+                rbtnRemoveJiao.setChecked(isChecked);
+            }else if(type ==-1){
+                rbtnRemoveFen.setChecked(isChecked);
+                PreferenceUtils.setPrefInt(RemoveZeroSettingActivity.this,PreferenceUtils.SP_REMOVE_ZERO_TYPE, RemoveZeroType.REMOVE_FEN.ordinal());
+            }
+        }else {
+            rgRemoveZero.clearCheck();
+            rbtn5toJiao.setEnabled(isChecked);
+            rbtnRemoveFen.setEnabled(isChecked);
+            rbtnRemoveJiao.setEnabled(isChecked);
+        }
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub

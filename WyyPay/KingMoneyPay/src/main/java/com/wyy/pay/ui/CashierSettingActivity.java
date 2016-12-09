@@ -8,6 +8,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wyy.pay.R;
+import com.wyy.pay.utils.RemoveZeroType;
+
+import xtcore.utils.PreferenceUtils;
 
 public class CashierSettingActivity extends BaseActivity implements View.OnClickListener {
 	private RelativeLayout rlRemoveZeroSetting;
@@ -33,8 +36,36 @@ public class CashierSettingActivity extends BaseActivity implements View.OnClick
 
 	@Override
 	public void initData() {
-		// TODO Auto-generated method stub
-		
+		updateDiscountNoText();
+		updateZeroNoText();
+	}
+
+	private void updateDiscountNoText() {
+		boolean isDiscountNo = PreferenceUtils.getPrefBoolean(this,PreferenceUtils.SP_DISCOUNT_SWITCH,false);
+		if(isDiscountNo){
+			tvDiscount.setText("开启");
+		}else{
+			tvDiscount.setText("关闭");
+		}
+	}
+
+	private void updateZeroNoText() {
+		boolean isZeroNo = PreferenceUtils.getPrefBoolean(this,PreferenceUtils.SP_REMOVE_ZERO_SWITCH,false);
+		if(isZeroNo){
+			int type = PreferenceUtils.getPrefInt(this,PreferenceUtils.SP_REMOVE_ZERO_TYPE,-1);
+			if(type == RemoveZeroType.FILE_TO_JIAO.ordinal()){
+				tvRemoveZero.setText(getString(R.string.text_to_jiao));
+			}else if(type == RemoveZeroType.REMOVE_FEN.ordinal()){
+				tvRemoveZero.setText("抹分");
+			}else if(type == RemoveZeroType.REMOVE_JIAO.ordinal()){
+				tvRemoveZero.setText("抹角");
+			}else {
+				tvRemoveZero.setText("开启");
+			}
+
+		}else {
+			tvRemoveZero.setText("关闭");
+		}
 	}
 
 	@Override
@@ -62,17 +93,33 @@ public class CashierSettingActivity extends BaseActivity implements View.OnClick
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode ==RESULT_OK ){
+			switch (requestCode){
+				case DISCOUNT_REQUEST_COUNT:
+					updateDiscountNoText();
+					break;
+				case REMOVE_ZERO_REQUEST_COUNT:
+					updateZeroNoText();
+					break;
+			}
+		}
+	}
 
+	private static final int DISCOUNT_REQUEST_COUNT = 122;
+private static final int REMOVE_ZERO_REQUEST_COUNT = 123;
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
 			case R.id.rlDiscountSetting: //优惠折扣设置
 				Intent intent = new Intent(this,DiscountSettingActivity.class);
-				startActivity(intent);
+				startActivityForResult(intent,DISCOUNT_REQUEST_COUNT);
 				break;
 			case R.id.rlRemoveZeroSetting: //抹零设置
 				 intent = new Intent(this,RemoveZeroSettingActivity.class);
-				startActivity(intent);
+				startActivityForResult(intent,REMOVE_ZERO_REQUEST_COUNT);
 				break;
 		}
 	}
