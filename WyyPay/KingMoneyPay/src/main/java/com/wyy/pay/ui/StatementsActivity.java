@@ -1,5 +1,6 @@
 package com.wyy.pay.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -8,7 +9,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wyy.pay.R;
+import com.wyy.pay.adapter.StatementsListAdapter;
+import com.wyy.pay.bean.TableGoodsDetailBean;
+import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.view.XListView;
+
+import java.util.ArrayList;
 
 public class StatementsActivity extends BaseActivity implements View.OnClickListener {
 	private RelativeLayout rlDiscount;//用于显示优惠信息
@@ -21,6 +27,8 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 	private TextView tvSum;//合计多少钱
 	private TextView tvOrderTotalMoney;//应收多少钱
 	private XListView statementsListView;//显示商品列表
+	private ArrayList<TableGoodsDetailBean> shopingCartList;//购物车
+	private StatementsListAdapter adapter;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_statements);
@@ -32,7 +40,13 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 	@Override
 	public void initView() {
 		statementsListView = (XListView) findViewById(R.id.statementsListView);
-		//TODO:XXX 加载adapter
+		statementsListView.setPullRefreshEnable(false);
+		statementsListView.setPullLoadEnable(false);
+		if(shopingCartList==null){
+			shopingCartList = new ArrayList<>();
+		}
+		adapter = new StatementsListAdapter(this);
+		statementsListView.setAdapter(adapter);
 		tvOrderTotalMoney = (TextView) findViewById(R.id.tvOrderTotalMoney);
 		tvSum = (TextView) findViewById(R.id.tvSum);
 		tvCount = (TextView) findViewById(R.id.tvCount);
@@ -47,16 +61,27 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 
 		tvNavLeft.setBackgroundResource(R.drawable.ic_nav_back);
 		tvNavTitle.setText("结算");
+		tvNavRight.setText("选择优惠");
 	}
 
 	@Override
 	public void initData() {
-		//TODO:XXX 获取intent data
+		int totalCoount =0;
+		Intent intent = getIntent();
+		shopingCartList = (ArrayList<TableGoodsDetailBean>) intent.getSerializableExtra(ConstantUtils.INTENT_KEY_SHOPING_CART_LIST);
+		if(shopingCartList!=null&&shopingCartList.size()>0){
+			for(TableGoodsDetailBean bean :shopingCartList){
+				tempPayTotal +=bean.getGoodsPrice() * bean.getAddGoodsCount();
+				totalCoount += bean.getAddGoodsCount();
+			}
+			adapter.setGoodsListData(shopingCartList);
+			adapter.notifyDataSetChanged();
+		}
+//		setDiscountGone();
+		tvCount.setText(String.valueOf(totalCoount));
+		tvSum.setText(String.format("￥%.2f",tempPayTotal));
+		setDiscountShow(true,1,8.0f);
 
-		setDiscountGone();
-		tvCount.setText("");
-		tvSum.setText("");
-		tvOrderTotalMoney.setText("");
 	}
 
 	@Override
@@ -95,14 +120,22 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 		tvDiscountType.setVisibility(isShow?View.VISIBLE:View.GONE);
 		tvDiscountTM.setVisibility(isShow?View.VISIBLE:View.GONE);
 		tvDiscountM.setVisibility(isShow?View.VISIBLE:View.GONE);
+		if(!isShow){
+			tvOrderTotalMoney.setText(String.format("￥%.2f",tempPayTotal));
+		}
 		if(isShow && type==1){
 			tvDiscount.setText(String.format("%s折",text));
 			tvDiscountType.setText(String.format("整单%s折",text));
-			tvDiscountM.setText(String.format("￥%s",tempPayTotal*(text/10)));
+			double tDiscount = tempPayTotal*((text/10));
+			String tDiscountPrice = String.format("%.2f",tDiscount);
+			tvDiscountM.setText(String.format("￥%.2f",(tempPayTotal - Double.parseDouble(tDiscountPrice))));
+			tvOrderTotalMoney.setText(String.format("￥%s",tDiscountPrice));
 		}else if(isShow && type==2){
-			tvDiscountM.setText(String.format("￥%s",text));
-			tvDiscount.setText(String.format("减%s元",text));
-			tvDiscountType.setText(String.format("整单减%s元",text));
+			tvDiscountM.setText(String.format("￥%.2f",text));
+			tvDiscount.setText(String.format("减%.2f元",text));
+			tvDiscountType.setText(String.format("整单减%.2f元",text));
+			double d1 = tempPayTotal -text;
+			tvOrderTotalMoney.setText(String.valueOf(d1));
 		}
 	}
 	public void setDiscountGone(){
@@ -116,6 +149,8 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 				break;
 			case R.id.tvOrderToPay:
 				//TODO:XX弹出框选择支付方式
+				break;
+			case R.id.tvNavRight://选择优惠
 				break;
 		}
 	}

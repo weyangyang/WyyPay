@@ -7,18 +7,10 @@
         android:id="@+id/navBar"
         layout="@layout/nav_title_bar"
         />
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/navBar"
-        android:layout_above="@+id/llOrderBottom"
-        >
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_below="@+id/navBar"
         android:background="@color/white"
         android:layout_margin="15dp"
         android:padding="10dp"
@@ -167,6 +159,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="商品名称"
+                android:paddingLeft="10dp"
+                android:gravity="left"
                 android:textColor="@color/bg_nav_bar"
                 android:textSize="13dp"
                 android:layout_weight="2"
@@ -175,6 +169,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="单价"
+                android:paddingLeft="5dp"
                 android:textColor="@color/bg_nav_bar"
                 android:textSize="13dp"
                 android:layout_weight="1"
@@ -184,6 +179,7 @@
                 android:layout_height="wrap_content"
                 android:text="数量"
                 android:gravity="center"
+                android:paddingRight="15dp"
                 android:textColor="@color/bg_nav_bar"
                 android:textSize="13dp"
                 android:layout_weight="1"
@@ -201,22 +197,20 @@
             android:id="@+id/statementsListView"
             android:cacheColorHint="@android:color/transparent"
             android:divider="@null"
-            android:fastScrollEnabled="false"
+            android:fastScrollEnabled="true"
             android:scrollbars="none"
-            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_below="@+id/view112"
             android:layout_height="wrap_content"/>
 
 
     </RelativeLayout>
-    </ScrollView>
     <RelativeLayout
         android:id="@+id/llOrderBottom"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:layout_height="40dp">
+        android:layout_height="46dp">
         <TextView
             android:id="@+id/tvYPay"
             android:layout_width="wrap_content"

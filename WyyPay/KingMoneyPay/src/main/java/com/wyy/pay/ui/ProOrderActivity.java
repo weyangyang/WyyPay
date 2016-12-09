@@ -306,8 +306,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                 if(shopingCartList==null){
                     shopingCartList = new ArrayList<>();
                 }
-                intent.putExtra(ConstantUtils.INTENT_KEY_SHOPING_CART_LIST,(Serializable)shopingCartList);
-                startActivityForResult(intent,TO_SCAN_ADD_SHOPING_REQUEST_CODE);
+
                 break;
             case R.id.tvNavLeft:
                 NoBarCodeCashierDialog noBarCodeCashierDialog = new NoBarCodeCashierDialog(this,R.style.DefaultDialog,this);
@@ -329,7 +328,13 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                 }
                 break;
             case R.id.tvOrderToPay://去结算
-                Toast.makeText(this, "去结算", Toast.LENGTH_SHORT).show();
+                if(shopingCartList.size()>0){
+                    intent = new Intent(this,StatementsActivity.class);
+                    intent.putExtra(ConstantUtils.INTENT_KEY_SHOPING_CART_LIST,(Serializable)shopingCartList);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(this,"您的购物车里没有商品，请添加后再结算！",Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }
