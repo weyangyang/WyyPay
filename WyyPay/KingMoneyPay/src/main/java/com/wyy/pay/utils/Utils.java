@@ -72,6 +72,66 @@ public class Utils {
 		}
 	}
 
+
+
+	// 判断一个字符串是否都为数字
+	public static boolean isDigit(String strNum) {
+		Pattern pattern = Pattern.compile("[0-9]{1,}");
+		Matcher matcher = pattern.matcher((CharSequence) strNum);
+		return matcher.matches();
+	}
+
+	//截取数字
+	public static String getNumbers(String content) {
+		Pattern pattern = Pattern.compile("\\d+");
+		Matcher matcher = pattern.matcher(content);
+		while (matcher.find()) {
+			return matcher.group(0);
+		}
+		return "";
+	}
+	public static boolean isDiscountBadNumber(String number){
+		if(TextUtils.isEmpty(number)){
+			return false;
+		}
+		if(number.length()==1 && "0".equals(number)){
+			return false;
+		}
+		if(Utils.HasDigit(number)){
+			String notNumber = Utils.splitNotNumber(number);
+			if(notNumber.length()==0){
+				return true;
+			}else if(notNumber.length()==1 && ".".equals(notNumber)){
+				return true;
+			} else if(notNumber.length()>1){
+				return false;
+			}
+			return false;
+		}
+
+		return false;
+	}
+	// 截取非数字
+	public static  String splitNotNumber(String content) {
+		Pattern pattern = Pattern.compile("\\D+");
+		Matcher matcher = pattern.matcher(content);
+		while (matcher.find()) {
+			return matcher.group(0);
+		}
+		return "";
+	}
+
+	// 判断一个字符串是否含有数字
+	public static boolean HasDigit(String content) {
+		boolean flag = false;
+		Pattern p = Pattern.compile(".*\\d+.*");
+		Matcher m = p.matcher(content);
+		if (m.matches()) {
+			flag = true;
+		}
+		return flag;
+	}
+
 	/**
 	 *
 	 * @param str 需要相加的字符串数字

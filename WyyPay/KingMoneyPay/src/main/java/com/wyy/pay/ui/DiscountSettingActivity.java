@@ -21,8 +21,10 @@ import android.widget.Toast;
 import com.wyy.pay.R;
 import com.wyy.pay.bean.TableCategoryBean;
 import com.wyy.pay.bean.TableDiscountNumBean;
+import com.wyy.pay.ui.dialog.CustomDiscountDialog;
 import com.wyy.pay.ui.dialog.CustomProgressDialog;
 import com.wyy.pay.utils.RemoveZeroType;
+import com.wyy.pay.utils.SubstringUtils;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.XTTagContainerLayout;
 
@@ -83,7 +85,7 @@ public class DiscountSettingActivity extends BaseActivity  {
 			@Override
 			public void onTagTextBgOnClick(int position, String text) {
 				if("+".equals(text)){
-					Toast.makeText(DiscountSettingActivity.this,"弹框添加item",Toast.LENGTH_SHORT).show();
+					showAddDiscount(2);
 				}
 			}
 		});
@@ -98,9 +100,10 @@ public class DiscountSettingActivity extends BaseActivity  {
 			@Override
 			public void onTagTextBgOnClick(int position, String text) {
 				if("+".equals(text)){
-					Toast.makeText(DiscountSettingActivity.this,"弹框添加item",Toast.LENGTH_SHORT).show();
+					showAddDiscount(1);
 				}
 			}
+
 		});
 
 		boolean isChecked = PreferenceUtils.getPrefBoolean(this,PreferenceUtils.SP_DISCOUNT_SWITCH,false);
@@ -124,6 +127,36 @@ public class DiscountSettingActivity extends BaseActivity  {
 			}
 		}
 	};
+
+	private void showAddDiscount(final int type) {
+		CustomDiscountDialog discountDialog = new CustomDiscountDialog(DiscountSettingActivity.this,type, R.style.DefaultDialog, new CustomDiscountDialog.InfoCallback() {
+            @Override
+            public void btnOkOnClick(String text) {
+				TableDiscountNumBean numTableBean = new TableDiscountNumBean();
+				if(text.contains(".")){
+					String temp = SubstringUtils.substringAfter(text,".");
+					if("0".equals(temp)){
+						text = SubstringUtils.substringBefore(text,".");
+					}
+				}
+				String showText = "";
+				if(type ==1){
+					showText = String.format("%s折",text);
+				}else  if(type==2){
+					showText = String.format("减%s元",text);
+				}
+				numTableBean.setUserId(Utils.get6MD5WithString("18501053570"));
+					numTableBean.setCreateTime(System.currentTimeMillis());
+					String discountId = Utils.get6MD5WithString(showText);
+					numTableBean.setDiscountId(discountId);
+					numTableBean.setType(type);
+					numTableBean.setShowText(showText);
+					numTableBean.setDiscountNum(Float.parseFloat(text));
+					numTableBean.insert(true,TableDiscountNumBean.COLUMN_DISCOUNT_ID,discountId);
+            }
+        });
+		discountDialog.show();
+	}
 
 	private void getDataFromDB() {
 		if (initDialog == null) {
