@@ -66,6 +66,7 @@ public class Statements2PayPopWindow extends PopupWindow {
                 if(listener!=null){
                     listener.on2PayMoney(1,payMoney);
                 }
+                dismiss();
             }
         });
         tvAliPay.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +75,7 @@ public class Statements2PayPopWindow extends PopupWindow {
                 if(listener!=null){
                     listener.on2PayMoney(2,payMoney);
                 }
+                dismiss();
             }
         });
         tvMoneyPay.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +84,7 @@ public class Statements2PayPopWindow extends PopupWindow {
                 if(listener!=null){
                     listener.on2PayMoney(3,payMoney);
                 }
+                dismiss();
             }
         });
     }

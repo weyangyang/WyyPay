@@ -16,6 +16,7 @@ import com.wyy.pay.bean.TableCategoryBean;
 import com.wyy.pay.bean.TableDiscountNumBean;
 import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.utils.ConstantUtils;
+import com.wyy.pay.utils.SubstringUtils;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.XListView;
 
@@ -257,14 +258,24 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 	public void on2PayMoney(int type, double payMoney) {
 		switch (type){
 			case 1: //微信支付
-				Toast.makeText(this,"微信支付"+payMoney,Toast.LENGTH_SHORT).show();
+				toWeixinOrAlipay(ConstantUtils.PAY_TYPE_WEXIN,payMoney);
 				break;
 			case 2://支付宝支付
-				Toast.makeText(this,"支付宝支付"+payMoney,Toast.LENGTH_SHORT).show();
+				toWeixinOrAlipay(ConstantUtils.PAY_TYPE_ALIPAY,payMoney);
 				break;
 			case 3://现金支付
 				Toast.makeText(this,"现金支付"+payMoney,Toast.LENGTH_SHORT).show();
 				break;
 		}
+	}
+	private void toWeixinOrAlipay(int payType,double money) {
+		if(money<=0){
+			Toast.makeText(this,"付款金额不能为0!",Toast.LENGTH_SHORT).show();
+			return;
+		}
+		Intent intent = new Intent(this,ScanPayActivity.class);
+		intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,payType);
+		intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,money);
+		startActivity(intent);
 	}
 }
