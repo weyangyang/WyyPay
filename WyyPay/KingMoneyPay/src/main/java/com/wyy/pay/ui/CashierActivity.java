@@ -88,37 +88,16 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
     public void initData() {
     }
     private void addNumber(TextView v) {
-        int le = builder.toString().length();
-        if(!checkBuilderLengthOut(v.getText().toString().trim())) {
-            //clearAll();
+        int length = tvMoneySumCount.getText().toString().length();
+        if(length<12) {
             appendNumText(v.getText().toString().trim());
+        }else {
+            Toast.makeText(this,"订单金额受限止,请拆分订单再试!",Toast.LENGTH_SHORT).show();
         }
     }
-    private boolean checkBuilderLengthOut(String inputText){
-        String temp = builder.toString();
-
-        if(temp.contains("."))
-        {
-            String beforeTemp = SubstringUtils.substringBefore(temp,".");
-            String afterTemp = SubstringUtils.substringAfter(temp,".");
-            if(afterTemp.length()>1){
-                Toast.makeText(this,"订单金额只保留小数点后两位！",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            if(beforeTemp.length()>4&&afterTemp.length()>1){
-                Toast.makeText(this,"订单金额只保留小数点后两位！",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-
-        }else if(!temp.contains(".")&&builder.length()>0&&builder.length()>4&&!".".equals(inputText)){
-            Toast.makeText(this,"单个订单金额超过限制，请重新输入！",Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        else if(temp.contains(".")&&builder.length()>0&&builder.length()>6){
-            Toast.makeText(this,"订单金额只保留小数点后两位！",Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return false;
+    private void clearAllHistoryData(){
+        setDiscountGone();
+        setDefaultText();
     }
     /**
      * 设置优惠信息显示
@@ -162,6 +141,7 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
         appendNumText(result);
     }
     public void clearAll(){
+        setDiscountGone();
         if(builder!=null){
             builder.delete(0,builder.length());
             appendNumText(builder.toString());
@@ -271,6 +251,7 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
                     intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,totalMoney);
                 }
                 this.startActivity(intent);
+                clearAllHistoryData();
                 break;
             case TV_NAV_LEFT:
                 Toast.makeText(this,(String)v.getTag(),Toast.LENGTH_SHORT).show();
@@ -333,6 +314,7 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
             intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,money);
         }
         startActivity(intent);
+        clearAllHistoryData();
     }
 
     @Override

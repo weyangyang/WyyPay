@@ -247,6 +247,7 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 				Intent intent = new Intent(this,CashPayActivity.class);
 				intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,payMoney);
 				this.startActivity(intent);
+
 				break;
 		}
 	}
