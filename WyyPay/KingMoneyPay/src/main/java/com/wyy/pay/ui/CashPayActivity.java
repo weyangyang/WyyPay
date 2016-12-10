@@ -207,11 +207,10 @@ public class CashPayActivity extends BaseActivity implements View.OnClickListene
        // goodsPrice = result;
         shiSMoney = Double.parseDouble(result);
         zhaoLMoney = shiSMoney -totalMoney;
-        if(zhaoLMoney>0){
-            tvZhaoZeroMoney.setText(String.format("￥%.2f", zhaoLMoney));
-        }else {
-            tvZhaoZeroMoney.setText(String.format("￥%.2f", 0));
+        if(zhaoLMoney<=0){
+            zhaoLMoney=0.00;
         }
+        tvZhaoZeroMoney.setText(String.format("￥%.2f", zhaoLMoney));
         tvShishouMoney.setText(String.format("￥\r\r%s", result));
     }
     private void addNumber(TextView v) {
