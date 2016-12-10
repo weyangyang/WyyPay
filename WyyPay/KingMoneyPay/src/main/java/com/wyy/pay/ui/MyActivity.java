@@ -28,8 +28,8 @@ public class MyActivity extends Activity implements View.OnClickListener {
     private TextView tvSign;//签到
     private TextView tvAccountSetting;//账号设置
     private TextView tvCashierManage;//收银员管理
-    private TextView tvCashierMateriel;//收银物料
-    private TextView tvTransactionCosts;//交易费率
+//    private TextView tvCashierMateriel;//收银物料
+//    private TextView tvTransactionCosts;//交易费率
     private TextView tvCashierSetting;//收银设置
     private TextView tvEvaluateUs;//评价我们
     private TextView tvFeedback;//意见反馈
@@ -54,8 +54,8 @@ public class MyActivity extends Activity implements View.OnClickListener {
         tvSign.setOnClickListener(this);
         tvAccountSetting.setOnClickListener(this);
         tvCashierManage.setOnClickListener(this);
-        tvCashierMateriel.setOnClickListener(this);
-        tvTransactionCosts.setOnClickListener(this);
+//        tvCashierMateriel.setOnClickListener(this);
+//        tvTransactionCosts.setOnClickListener(this);
         tvCashierSetting.setOnClickListener(this);
         tvEvaluateUs.setOnClickListener(this);
         tvFeedback.setOnClickListener(this);
@@ -73,8 +73,8 @@ public class MyActivity extends Activity implements View.OnClickListener {
         tvSign  = (TextView) findViewById(R.id.tvSign);
         tvAccountSetting  = (TextView) findViewById(R.id.tvAccountSetting);
         tvCashierManage  = (TextView) findViewById(R.id.tvCashierManage);
-        tvCashierMateriel  = (TextView) findViewById(R.id.tvCashierMateriel);
-        tvTransactionCosts  = (TextView) findViewById(R.id.tvTransactionCosts);
+//        tvCashierMateriel  = (TextView) findViewById(R.id.tvCashierMateriel);
+//        tvTransactionCosts  = (TextView) findViewById(R.id.tvTransactionCosts);
         tvCashierSetting  = (TextView) findViewById(R.id.tvCashierSetting);
         tvEvaluateUs  = (TextView) findViewById(R.id.tvEvaluateUs);
         tvFeedback  = (TextView) findViewById(R.id.tvFeedback);
@@ -99,10 +99,10 @@ public class MyActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.tvCashierManage://收银员管理
                 break;
-            case R.id.tvCashierMateriel://收银物料
-                break;
-            case R.id.tvTransactionCosts://交易费率
-                break;
+//            case R.id.tvCashierMateriel://收银物料
+//                break;
+//            case R.id.tvTransactionCosts://交易费率
+//                break;
             case R.id.tvCashierSetting://收银设置
                  intent = new Intent(this,CashierSettingActivity.class);
                 startActivity(intent);

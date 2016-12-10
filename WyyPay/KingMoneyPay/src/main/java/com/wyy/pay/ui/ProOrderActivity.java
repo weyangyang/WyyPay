@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import db.utils.BaseDbBean;
 import db.utils.TableDataListener;
@@ -328,7 +330,8 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                 }
                 break;
             case R.id.tvOrderToPay://去结算
-                if(shopingCartList.size()>0){
+                updatShopingCartList4DB();
+                if(shopingCartList.size()>0& checkAddGoodsCount(shopingCartList)){
                     intent = new Intent(this,StatementsActivity.class);
                     intent.putExtra(ConstantUtils.INTENT_KEY_SHOPING_CART_LIST,(Serializable)shopingCartList);
                     startActivity(intent);
@@ -513,7 +516,7 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
 
     @Override
     public void cartItemAddOnClick(int position, TableGoodsDetailBean bean) {
-        if(shopingCartList!=null&&shopingCartList.size()>0){
+        if(shopingCartList!=null&&shopingCartList.size()>0 ){
             shopingCartList.get(position).setAddGoodsCount(bean.getAddGoodsCount());
             cartPopWindow.setGoodsListData(shopingCartList);
         }
@@ -553,20 +556,35 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
     }
 
     private void updateNoBarcodeCashierListData(TableGoodsDetailBean bean) {
+        ConcurrentHashMap<String,TableGoodsDetailBean> goodsMap = new ConcurrentHashMap<String,TableGoodsDetailBean>();
         if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
-            ArrayList<TableGoodsDetailBean> tempList = new ArrayList<>();
+            if(bean.getAddGoodsCount()>0){
+                noBarcodeCashierList.add(bean);
+            }
             for (TableGoodsDetailBean goodsDetailBean:noBarcodeCashierList){
-                if(goodsDetailBean.getGoodsId().equals(bean.getGoodsId())){
-                    goodsDetailBean.setAddGoodsCount(bean.getAddGoodsCount());
-                    tempList.add(goodsDetailBean);
-                }else {
-                    tempList.add(goodsDetailBean);
-                }
+                goodsMap.put(goodsDetailBean.getGoodsId(),goodsDetailBean);
             }
             noBarcodeCashierList.clear();
-            noBarcodeCashierList.addAll(tempList);
-            tempList.clear();
+            for (Map.Entry<String, TableGoodsDetailBean> entry : goodsMap.entrySet()) {
+                noBarcodeCashierList.add(entry.getValue());
+
+            }
+            goodsMap.clear();
         }
+//        if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
+//            ArrayList<TableGoodsDetailBean> tempList = new ArrayList<>();
+//            for (TableGoodsDetailBean goodsDetailBean:noBarcodeCashierList){
+//                if(goodsDetailBean.getGoodsId().equals(bean.getGoodsId())){
+//                    goodsDetailBean.setAddGoodsCount(bean.getAddGoodsCount());
+//                    tempList.add(goodsDetailBean);
+//                }else {
+//                    tempList.add(goodsDetailBean);
+//                }
+//            }
+//            noBarcodeCashierList.clear();
+//            noBarcodeCashierList.addAll(tempList);
+//            tempList.clear();
+//        }
     }
 
     @Override
@@ -669,15 +687,21 @@ private void updateCartCount4DB(){
 
     private void updateTotalMoneyShow() {
         double totalMoney=0.00;
+        ConcurrentHashMap<String,TableGoodsDetailBean> goodsMap = new ConcurrentHashMap<String,TableGoodsDetailBean>();
         if(shopingCartList!=null&&shopingCartList.size()>0){
-            for (TableGoodsDetailBean shopBean :shopingCartList){
-               totalMoney+= shopBean.getAddGoodsCount() * shopBean.getGoodsPrice();
+            if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
+                shopingCartList.addAll(noBarcodeCashierList);
             }
-        }
-        if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
-            for (TableGoodsDetailBean goodsDetailBean:noBarcodeCashierList){
-                totalMoney += goodsDetailBean.getAddGoodsCount() * goodsDetailBean.getGoodsPrice();
+            for (TableGoodsDetailBean goodsDetailBean:shopingCartList){
+                goodsMap.put(goodsDetailBean.getGoodsId(),goodsDetailBean);
             }
+            shopingCartList.clear();
+            for (Map.Entry<String, TableGoodsDetailBean> entry : goodsMap.entrySet()) {
+                shopingCartList.add(entry.getValue());
+                totalMoney+= entry.getValue().getAddGoodsCount() * entry.getValue().getGoodsPrice();
+
+            }
+            goodsMap.clear();
         }
         tvOrderTotalMoney.setText(String.format("合计：￥%s",String.format("%.2f",totalMoney)));
     }
