@@ -51,6 +51,8 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
     private Button btnDelete;
     private double totalMoney=0.00;
     private double tempMoney=0.00;
+    private int discountType = 10;
+    private double discountNum=0.00;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_cashier);
@@ -98,6 +100,9 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
     private void clearAllHistoryData(){
         setDiscountGone();
         setDefaultText();
+        if(builder.length()>0){
+            builder.delete(0,builder.length());
+        }
     }
     /**
      * 设置优惠信息显示
@@ -153,6 +158,9 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
         tvShowMoneyDetail.setText("");
         tvMoneySumCount.setText(String.format("￥\r\r%s", "0.00"));
         totalMoney = 0.00;
+        if(builder.length()>0){
+            builder.delete(0,builder.length());
+        }
     }
     private  void appendNumText(String text){
 
@@ -241,7 +249,9 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
                     Toast.makeText(this,"付款金额要大于0!",Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                if(rlDiscount.isShown()){
+                    setDiscountShow(true,discountType,discountNum);
+                }
                 Intent intent = new Intent(this,CashPayActivity.class);
                 if(tempMoney>0 && tempMoney<totalMoney){
 
@@ -297,6 +307,9 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void toWeixinOrAlipay(int payType) {
+        if(rlDiscount.isShown()){
+            setDiscountShow(true,discountType,discountNum);
+        }
         String strMoney = tvMoneySumCount.getText().toString().trim();
         strMoney =  SubstringUtils.substringAfter(strMoney,"￥");
         double money = Double.parseDouble(strMoney);
@@ -329,6 +342,8 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onItemSelected(int type, double number) {
+        discountType = type;
+        discountNum = number;
         if(type==1){
             setDiscountShow(true,type,number);
             return;
