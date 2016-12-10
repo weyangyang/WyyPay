@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wyy.pay.R;
 import com.wyy.pay.adapter.StatementsListAdapter;
@@ -20,7 +21,7 @@ import com.wyy.pay.view.XListView;
 
 import java.util.ArrayList;
 
-public class StatementsActivity extends BaseActivity implements View.OnClickListener {
+public class StatementsActivity extends BaseActivity implements View.OnClickListener, StatementDiscountPopWindow.DiscountPopWindowListener {
 	private RelativeLayout rlDiscount;//用于显示优惠信息
 	private TextView tvDiscount;//显示优惠信息
 	private Button btnDelete;//删除优惠信息
@@ -81,10 +82,10 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 			adapter.setGoodsListData(shopingCartList);
 			adapter.notifyDataSetChanged();
 		}
-//		setDiscountGone();
+		setDiscountGone();
 		tvCount.setText(String.valueOf(totalCoount));
 		tvSum.setText(String.format("￥%.2f",tempPayTotal));
-		setDiscountShow(true,1,8.0f);
+//		setDiscountShow(true,1,8.0f);
 
 	}
 
@@ -113,13 +114,38 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 		return super.onOptionsItemSelected(item);
 	}
 
+
+//	private void setDiscountShow(boolean isShow,int type,float text){
+//		rlDiscount.setVisibility(isShow?View.VISIBLE:View.GONE);
+//		tvDiscountTypeT.setVisibility(isShow?View.VISIBLE:View.GONE);
+//		tvDiscountType.setVisibility(isShow?View.VISIBLE:View.GONE);
+//		tvDiscountTM.setVisibility(isShow?View.VISIBLE:View.GONE);
+//		tvDiscountM.setVisibility(isShow?View.VISIBLE:View.GONE);
+//		if(!isShow){
+//			tvOrderTotalMoney.setText(String.format("￥%.2f",tempPayTotal));
+//		}
+//		if(isShow && type==1){
+//			tvDiscount.setText(String.format("%s折",text));
+//			tvDiscountType.setText(String.format("整单%s折",text));
+//			double tDiscount = tempPayTotal*((text/10));
+//			String tDiscountPrice = String.format("%.2f",tDiscount);
+//			tvDiscountM.setText(String.format("￥%.2f",(tempPayTotal - Double.parseDouble(tDiscountPrice))));
+//			tvOrderTotalMoney.setText(String.format("￥%s",tDiscountPrice));
+//		}else if(isShow && type==2){
+//			tvDiscountM.setText(String.format("￥%.2f",text));
+//			tvDiscount.setText(String.format("减%.2f元",text));
+//			tvDiscountType.setText(String.format("整单减%.2f元",text));
+//			double d1 = tempPayTotal -text;
+//			tvOrderTotalMoney.setText(String.valueOf(d1));
+//		}
+//	}
 	/**
 	 * 设置优惠信息显示
 	 * @param isShow 是否显示
 	 * @param type type=1 整单折扣，type =2整单优惠
-	 * @param text 折扣或优惠数字
-     */
-	private void setDiscountShow(boolean isShow,int type,float text){
+	 * @param number 折扣或优惠数字
+	 */
+	private void setDiscountShow(boolean isShow,int type,double number){
 		rlDiscount.setVisibility(isShow?View.VISIBLE:View.GONE);
 		tvDiscountTypeT.setVisibility(isShow?View.VISIBLE:View.GONE);
 		tvDiscountType.setVisibility(isShow?View.VISIBLE:View.GONE);
@@ -127,21 +153,29 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 		tvDiscountM.setVisibility(isShow?View.VISIBLE:View.GONE);
 		if(!isShow){
 			tvOrderTotalMoney.setText(String.format("￥%.2f",tempPayTotal));
+		}else {
+			switch (type){
+				case 1:
+					tvDiscount.setText(String.format("%.1f折",number));
+					tvDiscountType.setText(String.format("整单%.1f折",number));
+					double tDiscount = tempPayTotal*((number/10));
+					String tDiscountPrice = String.format("%.2f",tDiscount);
+					tvDiscountM.setText(String.format("￥%.2f",(tempPayTotal - Double.parseDouble(tDiscountPrice))));
+					tvOrderTotalMoney.setText(String.format("￥%s",tDiscountPrice));
+					break;
+				case 2:
+				case 3:
+					tvDiscountM.setText(String.format("￥%.2f",number));
+					tvDiscount.setText(String.format("减%.2f元",number));
+					tvDiscountType.setText(String.format("整单减%.2f元",number));
+					double d1 = tempPayTotal -number;
+					tvOrderTotalMoney.setText(String.valueOf(d1));
+					break;
+			}
+
+
 		}
-		if(isShow && type==1){
-			tvDiscount.setText(String.format("%s折",text));
-			tvDiscountType.setText(String.format("整单%s折",text));
-			double tDiscount = tempPayTotal*((text/10));
-			String tDiscountPrice = String.format("%.2f",tDiscount);
-			tvDiscountM.setText(String.format("￥%.2f",(tempPayTotal - Double.parseDouble(tDiscountPrice))));
-			tvOrderTotalMoney.setText(String.format("￥%s",tDiscountPrice));
-		}else if(isShow && type==2){
-			tvDiscountM.setText(String.format("￥%.2f",text));
-			tvDiscount.setText(String.format("减%.2f元",text));
-			tvDiscountType.setText(String.format("整单减%.2f元",text));
-			double d1 = tempPayTotal -text;
-			tvOrderTotalMoney.setText(String.valueOf(d1));
-		}
+
 	}
 	public void setDiscountGone(){
 		setDiscountShow(false,0,0);
@@ -177,7 +211,30 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 				}
 				popWindow.setDiscountListData(arrayListZhenZ,arrayListZhenJ);
 				popWindow.showPopupWindow(tvNavTitle);
+				popWindow.setDiscuntPopWListener(this);
+				tvNavRight.setText("");
+				tvNavRight.setBackgroundResource(R.drawable.ic_nav_back);
 				break;
 		}
+	}
+
+	@Override
+	public void onItemSelected(int type, double number) {
+		if(type==1){
+			setDiscountShow(true,type,number);
+			return;
+		}
+		if(type==2||type==3 && tempPayTotal >number){
+			setDiscountShow(true,type,number);
+		}else {
+			Toast.makeText(this,"整单减少的金额已大于商品总价！",Toast.LENGTH_SHORT).show();
+		}
+
+	}
+
+	@Override
+	public void onDiscountPopWindowDismiss() {
+		tvNavRight.setText("选择优惠");
+		tvNavRight.setBackground(null);
 	}
 }

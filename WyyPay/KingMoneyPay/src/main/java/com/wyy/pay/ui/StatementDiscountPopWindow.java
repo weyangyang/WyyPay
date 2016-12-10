@@ -33,7 +33,7 @@ import java.util.ArrayList;
  * Created by liyusheng on 16/11/24.
  */
 
-public class StatementDiscountPopWindow extends PopupWindow  {
+public class StatementDiscountPopWindow extends PopupWindow implements StatementsDiscountAdapter.ItemOnClickListener {
     private Activity mActivity;
     private int popupWidth;
     private int popupHeight;
@@ -161,6 +161,7 @@ public class StatementDiscountPopWindow extends PopupWindow  {
         rclZhenZ.setLayoutManager(layoutManager1);
         rclZhenZ.setItemAnimator(new DefaultItemAnimator());
         rclZhenZ.setAdapter(adapter1);
+        adapter1.setItemOnClickListener(this);
 
         tvZhenJ = (TextView) parentView.findViewById(R.id.tvZhenJ);
         viewZhenJ = parentView.findViewById(R.id.viewZhenJ);
@@ -171,6 +172,7 @@ public class StatementDiscountPopWindow extends PopupWindow  {
         rclZhenJ.setLayoutManager(layoutManager2);
         rclZhenJ.setItemAnimator(new DefaultItemAnimator());
         rclZhenJ.setAdapter(adapter2);
+        adapter2.setItemOnClickListener(this);
 
         btnZhenU = (Button) parentView.findViewById(R.id.btnZhenU);
         edtZhenU = (ClearEditText) parentView.findViewById(R.id.edtZhenU);
@@ -181,6 +183,7 @@ public class StatementDiscountPopWindow extends PopupWindow  {
         rclZhenU.setLayoutManager(layoutManager3);
         rclZhenU.setItemAnimator(new DefaultItemAnimator());
         rclZhenU.setAdapter(adapter2);
+        adapter3.setItemOnClickListener(this);
         setContentView(parentView);
     }
 
@@ -202,12 +205,29 @@ public class StatementDiscountPopWindow extends PopupWindow  {
          */
 
     }
-
+    private DiscountPopWindowListener listener;
+    public void setDiscuntPopWListener(DiscountPopWindowListener listener){
+        this.listener = listener;
+    }
+    public  interface DiscountPopWindowListener{
+        void onItemSelected(int type, double number);
+        void onDiscountPopWindowDismiss();
+    }
 
 
     @Override
     public void dismiss() {
         super.dismiss();
+        if(listener!=null){
+            listener.onDiscountPopWindowDismiss();
+        }
     }
 
+    @Override
+    public void onItemClick(int type, double number) {
+        if(this.listener!=null){
+            this.listener.onItemSelected(type,number);
+        }
+        dismiss();
+    }
 }
