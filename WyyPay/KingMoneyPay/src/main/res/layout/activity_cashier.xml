@@ -1,74 +1,109 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray">
+    android:background="@color/bg_main_gray">
     >
 
     <include
         android:id="@+id/navBar"
         layout="@layout/nav_title_bar" />
-
-    <TextView
-        android:id="@+id/tvMoneyTitle"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rlTotalMoney"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@+id/navBar"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
-        android:text="订单金额："
-        android:textColor="@color/bg_nav_bar"
-        android:textSize="14sp" />
+        android:background="@color/white"
+        >
+        <RelativeLayout
+            android:id="@+id/rlDiscount"
+            android:layout_width="120dp"
+            android:layout_height="70dp"
+            android:layout_centerVertical="true"
+            android:gravity="left"
+            >
 
-    <TextView
-        android:id="@+id/tvMoneySumCount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvMoneyTitle"
-        android:layout_marginTop="10dp"
-        android:gravity="right"
-        android:paddingBottom="10dp"
-        android:paddingRight="20dp"
-        android:paddingTop="5dp"
-        android:text="￥0.00"
-        android:textColor="@color/yellow"
-        android:textSize="26sp"
-        android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvDiscount"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/bg_item_discount_red"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="5.8折"
+                />
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignTop="@+id/tvDiscount"
+                android:layout_marginLeft="-10dp"
+                android:layout_marginTop="-5dp"
+                android:layout_toRightOf="@+id/tvDiscount"
+                android:background="@drawable/ic_mini_deletegray"
+                />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tvMoneyTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
 
-    <View
-        android:id="@+id/viewDevideTop"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@+id/tvMoneySumCount"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/bg_main_gray" />
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:text="订单金额："
+            android:textColor="@color/bg_nav_bar"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvMoneySumCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvMoneyTitle"
+            android:layout_toRightOf="@+id/rlDiscount"
+            android:layout_marginTop="10dp"
+            android:gravity="right"
+            android:paddingBottom="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:maxLength="12"
+            android:text="￥0.00"
+            android:textColor="@color/yellow"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/tvShowMoneyDetail"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/viewDevideTop"
+        android:layout_below="@+id/rlTotalMoney"
         android:gravity="left|top"
         android:maxLines="10"
-        android:minLines="10"
+        android:minLines="6"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_btn_other"
         android:padding="10dp"
         android:textColor="@color/bg_nav_bar"
         android:scrollbars="vertical"
         android:singleLine="false" />
 
-    <View
-        android:id="@+id/viewDevideCenter"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@+id/tvShowMoneyDetail"
-        android:background="@color/text_gray_1" />
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/text_gray_1"
+        android:background="@color/gray"
         android:orientation="vertical"
-        android:layout_below="@+id/viewDevideCenter"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/tvShowMoneyDetail"
         >
         <LinearLayout
             android:layout_width="fill_parent"
@@ -83,7 +118,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:textColor="@color/text_cashier_num"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -101,7 +136,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_marginRight="1px"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:textColor="@color/text_cashier_num"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -114,7 +149,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginRight="1px"
                 android:textColor="@color/text_cashier_num"
                 android:textStyle="bold"
@@ -128,7 +163,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:src="@drawable/icon_gathering_delete"
                 />
 
@@ -147,7 +182,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginRight="1px"
                 android:textColor="@color/text_cashier_num"
                 android:textStyle="bold"
@@ -162,7 +197,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginRight="1px"
                 android:textColor="@color/text_cashier_num"
                 android:textStyle="bold"
@@ -177,7 +212,7 @@
                 android:layout_weight="1"
                 android:layout_marginRight="1px"
                 android:gravity="center"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:textColor="@color/text_cashier_num"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -191,7 +226,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/red"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:src="@drawable/icon_gathering_alipay"
                 />
 
@@ -210,7 +245,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginRight="1px"
                 android:textColor="@color/text_cashier_num"
                 android:textStyle="bold"
@@ -228,7 +263,7 @@
                 android:textColor="@color/text_cashier_num"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:text="2"
                 />
             <TextView
@@ -237,7 +272,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:gravity="center"
                 android:layout_marginRight="1px"
                 android:textColor="@color/text_cashier_num"
@@ -253,7 +288,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/red"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:src="@drawable/icon_gathering_wechat"
                 />
 
@@ -263,7 +298,6 @@
             android:layout_width="fill_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:layout_marginBottom="1px"
             android:layout_height="fill_parent" >
             <TextView
                 android:layout_width="fill_parent"
@@ -273,7 +307,7 @@
                 android:id="@+id/view13"
                 android:layout_marginRight="1px"
                 android:gravity="center"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:textColor="@color/text_cashier_num"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -290,7 +324,7 @@
                 android:textColor="@color/text_cashier_num"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:text="."
                 />
             <TextView
@@ -301,7 +335,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_marginRight="1px"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:textColor="@color/text_cashier_num"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -314,7 +348,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:src="@drawable/icon_gathering_cash"
                 />
 

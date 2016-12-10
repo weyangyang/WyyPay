@@ -20,7 +20,7 @@ import com.wyy.pay.view.XListView;
 import java.util.ArrayList;
 
 /**
- * Created by liyusheng on 16/11/24.
+ * Created by liyusheng on 16/12/10.
  */
 
 public class Statements2PayPopWindow extends PopupWindow {

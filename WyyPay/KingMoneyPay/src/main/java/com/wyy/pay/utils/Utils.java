@@ -157,6 +157,7 @@ public class Utils {
 		}
 		return String.format("%.2f",sum);
 	}
+
 	 enum MD5Type{
 		MD5_32,MD5_16,MD5_6
 	}

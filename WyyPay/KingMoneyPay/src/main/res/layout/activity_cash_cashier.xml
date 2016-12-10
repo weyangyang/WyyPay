@@ -322,7 +322,7 @@
                 android:textColor="@color/yellow"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:text="添"
+                android:text="完成"
                 android:background="@color/white"
                 />
 
@@ -387,7 +387,7 @@
                 android:textColor="@color/yellow"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:text="加"
+                android:text="结算"
                 />
 
         </LinearLayout>

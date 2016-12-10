@@ -73,7 +73,12 @@ public class CashPayActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void initListener() {
-        tvNavLeft.setOnClickListener(this);
+        tvNavLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CashPayActivity.this.finish();
+            }
+        });
         tvNavRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +137,11 @@ public class CashPayActivity extends BaseActivity implements View.OnClickListene
             case ADD_SHOPING_TO_CART:
             case ADD_SHOPING_TO_CART2:
                 //完成结算
-                CashPayActivity.this.finish();
+                if(shiSMoney-totalMoney>=0){
+                    CashPayActivity.this.finish();
+                }else {
+                    Toast.makeText(this,"实收金额不能小于应收金额!",Toast.LENGTH_SHORT).show();
+                }
                 break;
 
         }
@@ -154,7 +163,10 @@ public class CashPayActivity extends BaseActivity implements View.OnClickListene
         }
     }
     private void setDefaultText(){
+        shiSMoney = 0.00;
+        zhaoLMoney=0.00;
         tvShishouMoney.setText(String.format("￥\r\r%s", "0.00"));
+        tvZhaoZeroMoney.setText(String.format("￥\r\r%s", "0.00"));
     }
     private boolean checkBuilderLengthOut(String inputText){
         String temp = builder.toString();
@@ -207,10 +219,12 @@ public class CashPayActivity extends BaseActivity implements View.OnClickListene
        // goodsPrice = result;
         shiSMoney = Double.parseDouble(result);
         zhaoLMoney = shiSMoney -totalMoney;
-        if(zhaoLMoney<=0){
+        if(zhaoLMoney>0){
+            tvZhaoZeroMoney.setText(String.format("￥%.2f", zhaoLMoney));
+        }else {
             zhaoLMoney=0.00;
+            tvZhaoZeroMoney.setText(String.format("￥%.2f", zhaoLMoney));
         }
-        tvZhaoZeroMoney.setText(String.format("￥%.2f", zhaoLMoney));
         tvShishouMoney.setText(String.format("￥\r\r%s", result));
     }
     private void addNumber(TextView v) {

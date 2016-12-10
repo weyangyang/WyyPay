@@ -29,6 +29,8 @@ import com.wyy.pay.view.XListView;
 
 import java.util.ArrayList;
 
+import xtcore.utils.PreferenceUtils;
+
 /**
  * Created by liyusheng on 16/11/24.
  */
@@ -40,6 +42,7 @@ public class StatementDiscountPopWindow extends PopupWindow implements Statement
     private View parentView;
     private  View spaceView;
     private  RecyclerView rclZhenZ;
+    private TextView tvDiscountTips;
     private TextView tvZhenZ;
     private View viewZhenZ;
 
@@ -88,6 +91,9 @@ public class StatementDiscountPopWindow extends PopupWindow implements Statement
    }
 
     private void initData() {
+        boolean isDiscount = PreferenceUtils.getPrefBoolean(mActivity,PreferenceUtils.SP_DISCOUNT_SWITCH,false);
+            //显示tips
+        tvDiscountTips.setVisibility(isDiscount?View.GONE:View.VISIBLE);
         if(zheKList.size()>0){
             adapter1.setDiscountListData(zheKList);
             adapter1.notifyDataSetChanged();
@@ -104,6 +110,7 @@ public class StatementDiscountPopWindow extends PopupWindow implements Statement
             viewZhenJ.setVisibility(View.GONE);
             rclZhenJ.setVisibility(View.GONE);
         }
+            rclZhenU.setVisibility(serverList.size()>0?View.VISIBLE:View.GONE);
     }
 
     private void initListener() {
@@ -152,6 +159,7 @@ public class StatementDiscountPopWindow extends PopupWindow implements Statement
 
 
 
+        tvDiscountTips = (TextView) parentView.findViewById(R.id.tvDiscountTips);
         tvZhenZ = (TextView) parentView.findViewById(R.id.tvZhenZ);
         viewZhenZ = parentView.findViewById(R.id.viewZhenZ);
         rclZhenZ = (RecyclerView) parentView.findViewById(R.id.rclZhenZ);

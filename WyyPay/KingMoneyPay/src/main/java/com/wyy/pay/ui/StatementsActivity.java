@@ -119,30 +119,6 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 	}
 
 
-//	private void setDiscountShow(boolean isShow,int type,float text){
-//		rlDiscount.setVisibility(isShow?View.VISIBLE:View.GONE);
-//		tvDiscountTypeT.setVisibility(isShow?View.VISIBLE:View.GONE);
-//		tvDiscountType.setVisibility(isShow?View.VISIBLE:View.GONE);
-//		tvDiscountTM.setVisibility(isShow?View.VISIBLE:View.GONE);
-//		tvDiscountM.setVisibility(isShow?View.VISIBLE:View.GONE);
-//		if(!isShow){
-//			tvOrderTotalMoney.setText(String.format("￥%.2f",tempPayTotal));
-//		}
-//		if(isShow && type==1){
-//			tvDiscount.setText(String.format("%s折",text));
-//			tvDiscountType.setText(String.format("整单%s折",text));
-//			double tDiscount = tempPayTotal*((text/10));
-//			String tDiscountPrice = String.format("%.2f",tDiscount);
-//			tvDiscountM.setText(String.format("￥%.2f",(tempPayTotal - Double.parseDouble(tDiscountPrice))));
-//			tvOrderTotalMoney.setText(String.format("￥%s",tDiscountPrice));
-//		}else if(isShow && type==2){
-//			tvDiscountM.setText(String.format("￥%.2f",text));
-//			tvDiscount.setText(String.format("减%.2f元",text));
-//			tvDiscountType.setText(String.format("整单减%.2f元",text));
-//			double d1 = tempPayTotal -text;
-//			tvOrderTotalMoney.setText(String.valueOf(d1));
-//		}
-//	}
 	/**
 	 * 设置优惠信息显示
 	 * @param isShow 是否显示
@@ -264,6 +240,10 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 				toWeixinOrAlipay(ConstantUtils.PAY_TYPE_ALIPAY,payMoney);
 				break;
 			case 3://现金支付
+				if(payMoney<=0){
+					Toast.makeText(this,"付款金额要大于0!",Toast.LENGTH_SHORT).show();
+					return;
+				}
 				Intent intent = new Intent(this,CashPayActivity.class);
 				intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,payMoney);
 				this.startActivity(intent);
@@ -272,7 +252,7 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 	}
 	private void toWeixinOrAlipay(int payType,double money) {
 		if(money<=0){
-			Toast.makeText(this,"付款金额不能为0!",Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,"付款金额要大于0!",Toast.LENGTH_SHORT).show();
 			return;
 		}
 		Intent intent = new Intent(this,ScanPayActivity.class);

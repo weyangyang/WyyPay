@@ -39,15 +39,6 @@ public class NoBarCodeCashierDialog extends Dialog implements View.OnClickListen
     private TextView tvMoneySumCount;
     private StringBuilder builder;
     private Context mContext;
-    public NoBarCodeCashierDialog(Context context) {
-        super(context);
-        this.mContext = context;
-    }
-
-    public NoBarCodeCashierDialog(Context context, int themeResId) {
-        super(context, themeResId);
-        this.mContext = context;
-    }
     public NoBarCodeCashierDialog(Context context, int themeResId, InfoCallback callback) {
         super(context,themeResId);
         this.mContext = context;
