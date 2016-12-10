@@ -244,7 +244,7 @@ boolean isSelectedAll = false;
                     mViewPos[i * 2 + 1] = curTop;
                     curLeft += width + mHorizontalInterval ;
                 }
-                    curLeft +=Utils.dip2px(getContext(),15.0f);
+                    curLeft +=Utils.dip2px(getContext(),5.0f);
             }
         }
 

@@ -21,7 +21,9 @@ import com.wyy.pay.view.XListView;
 
 import java.util.ArrayList;
 
-public class StatementsActivity extends BaseActivity implements View.OnClickListener, StatementDiscountPopWindow.DiscountPopWindowListener {
+import xtcore.utils.PreferenceUtils;
+
+public class StatementsActivity extends BaseActivity implements View.OnClickListener, StatementDiscountPopWindow.DiscountPopWindowListener, Statements2PayPopWindow.Statements2PayPopWindowListener {
 	private RelativeLayout rlDiscount;//用于显示优惠信息
 	private TextView tvDiscount;//显示优惠信息
 	private Button btnDelete;//删除优惠信息
@@ -34,6 +36,7 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 	private XListView statementsListView;//显示商品列表
 	private ArrayList<TableGoodsDetailBean> shopingCartList;//购物车
 	private StatementsListAdapter adapter;
+	private  double toPayMoney =0;//实际支付的钱
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_statements);
@@ -153,6 +156,7 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 		tvDiscountM.setVisibility(isShow?View.VISIBLE:View.GONE);
 		if(!isShow){
 			tvOrderTotalMoney.setText(String.format("￥%.2f",tempPayTotal));
+			toPayMoney =tempPayTotal;
 		}else {
 			switch (type){
 				case 1:
@@ -162,6 +166,7 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 					String tDiscountPrice = String.format("%.2f",tDiscount);
 					tvDiscountM.setText(String.format("￥%.2f",(tempPayTotal - Double.parseDouble(tDiscountPrice))));
 					tvOrderTotalMoney.setText(String.format("￥%s",tDiscountPrice));
+					toPayMoney = Double.parseDouble(tDiscountPrice);
 					break;
 				case 2:
 				case 3:
@@ -170,6 +175,7 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 					tvDiscountType.setText(String.format("整单减%.2f元",number));
 					double d1 = tempPayTotal -number;
 					tvOrderTotalMoney.setText(String.valueOf(d1));
+					toPayMoney = d1;
 					break;
 			}
 
@@ -187,24 +193,33 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 				setDiscountGone();
 				break;
 			case R.id.tvOrderToPay:
-				//TODO:XX弹出框选择支付方式
+				if(toPayMoney>0){
+					Statements2PayPopWindow payPopWindow = new Statements2PayPopWindow(this,toPayMoney);
+					payPopWindow.showPopupWindow(tvOrderToPay);
+					payPopWindow.set2PayWindowListener(this);
+				}else {
+					Toast.makeText(this,"待支付金额不能为0",Toast.LENGTH_SHORT).show();
+				}
 				break;
 			case R.id.tvNavRight://选择优惠
 				StatementDiscountPopWindow popWindow = new StatementDiscountPopWindow(this);
 				ArrayList<StatementsDiscountBean> arrayListZhenZ = new ArrayList<>();
 				ArrayList<StatementsDiscountBean> arrayListZhenJ = new ArrayList<>();
-				String orderBy = TableDiscountNumBean.COLUMN_CREATE_CATEGORY_TIEM+" DESC";
-				ArrayList<TableDiscountNumBean> tableList = new TableDiscountNumBean().query(null, TableCategoryBean.COLUMN_USER_ID +"=?",new String[]{Utils.get6MD5WithString("18501053570")},null,null,orderBy);
-				if(tableList!=null&&tableList.size()>0){
-					for (TableDiscountNumBean bean:tableList){
-						if(!"+".equals(bean.getShowText())){
-							StatementsDiscountBean discountBean = new StatementsDiscountBean();
-							discountBean.setType(bean.getType());
-							discountBean.setNumber(bean.getDiscountNum());
-							if(bean.getType()==1){
-								arrayListZhenZ.add(discountBean);
-							}else if(bean.getType()==2){
-								arrayListZhenJ.add(discountBean);
+				boolean isDiscount = PreferenceUtils.getPrefBoolean(this,PreferenceUtils.SP_DISCOUNT_SWITCH,false);
+				if(isDiscount){
+					String orderBy = TableDiscountNumBean.COLUMN_CREATE_CATEGORY_TIEM+" DESC";
+					ArrayList<TableDiscountNumBean> tableList = new TableDiscountNumBean().query(null, TableCategoryBean.COLUMN_USER_ID +"=?",new String[]{Utils.get6MD5WithString("18501053570")},null,null,orderBy);
+					if(tableList!=null&&tableList.size()>0){
+						for (TableDiscountNumBean bean:tableList){
+							if(!"+".equals(bean.getShowText())){
+								StatementsDiscountBean discountBean = new StatementsDiscountBean();
+								discountBean.setType(bean.getType());
+								discountBean.setNumber(bean.getDiscountNum());
+								if(bean.getType()==1){
+									arrayListZhenZ.add(discountBean);
+								}else if(bean.getType()==2){
+									arrayListZhenJ.add(discountBean);
+								}
 							}
 						}
 					}
@@ -224,7 +239,7 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 			setDiscountShow(true,type,number);
 			return;
 		}
-		if(type==2||type==3 && tempPayTotal >number){
+		if(tempPayTotal >number && type==2||type==3){
 			setDiscountShow(true,type,number);
 		}else {
 			Toast.makeText(this,"整单减少的金额已大于商品总价！",Toast.LENGTH_SHORT).show();
@@ -236,5 +251,20 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 	public void onDiscountPopWindowDismiss() {
 		tvNavRight.setText("选择优惠");
 		tvNavRight.setBackground(null);
+	}
+
+	@Override
+	public void on2PayMoney(int type, double payMoney) {
+		switch (type){
+			case 1: //微信支付
+				Toast.makeText(this,"微信支付"+payMoney,Toast.LENGTH_SHORT).show();
+				break;
+			case 2://支付宝支付
+				Toast.makeText(this,"支付宝支付"+payMoney,Toast.LENGTH_SHORT).show();
+				break;
+			case 3://现金支付
+				Toast.makeText(this,"现金支付"+payMoney,Toast.LENGTH_SHORT).show();
+				break;
+		}
 	}
 }

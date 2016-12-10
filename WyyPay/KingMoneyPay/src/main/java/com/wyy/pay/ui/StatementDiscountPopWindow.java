@@ -182,7 +182,7 @@ public class StatementDiscountPopWindow extends PopupWindow implements Statement
         layoutManager3.setOrientation(OrientationHelper.HORIZONTAL);
         rclZhenU.setLayoutManager(layoutManager3);
         rclZhenU.setItemAnimator(new DefaultItemAnimator());
-        rclZhenU.setAdapter(adapter2);
+        rclZhenU.setAdapter(adapter3);
         adapter3.setItemOnClickListener(this);
         setContentView(parentView);
     }
@@ -190,7 +190,7 @@ public class StatementDiscountPopWindow extends PopupWindow implements Statement
     public void showPopupWindow(View v) {
       //  int[] location = new int[2];
       //  v.getLocationOnScreen(location);
-        showAsDropDown(v,0,Utils.dip2px(mActivity,5.0f));
+        showAsDropDown(v,0,Utils.dip2px(mActivity,8.0f));
         //在控件上方显示
        // showAtLocation(v, Gravity.NO_GRAVITY, (location[0]) - popupWidth / 2, location[1] - popupHeight);
 

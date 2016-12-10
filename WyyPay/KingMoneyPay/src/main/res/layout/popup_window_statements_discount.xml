@@ -89,6 +89,7 @@
             android:textColorHint="@color/gray"
             android:background="@drawable/bg_btn_other"
             android:textSize="15sp"
+            android:inputType="number"
             app:isCenter="true"
             android:layout_weight="2"
             />
