@@ -10,8 +10,12 @@ import android.widget.TextView;
 
 import com.wyy.pay.R;
 import com.wyy.pay.adapter.StatementsListAdapter;
+import com.wyy.pay.bean.StatementsDiscountBean;
+import com.wyy.pay.bean.TableCategoryBean;
+import com.wyy.pay.bean.TableDiscountNumBean;
 import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.utils.ConstantUtils;
+import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.XListView;
 
 import java.util.ArrayList;
@@ -94,6 +98,7 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 				StatementsActivity.this.finish();
 			}
 		});
+		tvNavRight.setOnClickListener(this);
 		
 	}
 	@Override
@@ -151,6 +156,27 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 				//TODO:XX弹出框选择支付方式
 				break;
 			case R.id.tvNavRight://选择优惠
+				StatementDiscountPopWindow popWindow = new StatementDiscountPopWindow(this);
+				ArrayList<StatementsDiscountBean> arrayListZhenZ = new ArrayList<>();
+				ArrayList<StatementsDiscountBean> arrayListZhenJ = new ArrayList<>();
+				String orderBy = TableDiscountNumBean.COLUMN_CREATE_CATEGORY_TIEM+" DESC";
+				ArrayList<TableDiscountNumBean> tableList = new TableDiscountNumBean().query(null, TableCategoryBean.COLUMN_USER_ID +"=?",new String[]{Utils.get6MD5WithString("18501053570")},null,null,orderBy);
+				if(tableList!=null&&tableList.size()>0){
+					for (TableDiscountNumBean bean:tableList){
+						if(!"+".equals(bean.getShowText())){
+							StatementsDiscountBean discountBean = new StatementsDiscountBean();
+							discountBean.setType(bean.getType());
+							discountBean.setNumber(bean.getDiscountNum());
+							if(bean.getType()==1){
+								arrayListZhenZ.add(discountBean);
+							}else if(bean.getType()==2){
+								arrayListZhenJ.add(discountBean);
+							}
+						}
+					}
+				}
+				popWindow.setDiscountListData(arrayListZhenZ,arrayListZhenJ);
+				popWindow.showPopupWindow(tvNavTitle);
 				break;
 		}
 	}

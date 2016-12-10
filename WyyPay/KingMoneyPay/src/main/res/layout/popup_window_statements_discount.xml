@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="15dp"
+    >
+
+
+    <TextView
+        android:id="@+id/tvZhenZ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="整单折扣"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/bg_nav_bar"
+        />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rclZhenZ"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="5dp"
+        android:scrollbars="none"
+        />
+    <View
+        android:id="@+id/viewZhenZ"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="10dp"
+        android:background="@color/gray"
+    />
+    <TextView
+        android:id="@+id/tvZhenJ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:layout_marginTop="5dp"
+        android:text="整单减价"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/bg_nav_bar"
+        />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rclZhenJ"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="5dp"
+        android:scrollbars="none"
+        />
+    <View
+        android:id="@+id/viewZhenJ"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="10dp"
+        android:background="@color/gray"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:layout_marginTop="5dp"
+        android:text="选择用户已有优惠券"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/bg_nav_bar"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        >
+        <com.wyy.pay.view.ClearEditText
+            android:id="@+id/edtZhenU"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:hint="请输入用户手机号码"
+            android:layout_marginRight="20dp"
+            android:textColorHint="@color/gray"
+            android:background="@drawable/bg_btn_other"
+            android:textSize="15sp"
+            app:isCenter="true"
+            android:layout_weight="2"
+            />
+        <Button
+            android:id="@+id/btnZhenU"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:text="获取优惠券"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_btn_normal"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rclZhenU"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="5dp"
+        android:scrollbars="none"
+        />
+
+</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#66000000"
+        android:id="@+id/spaceView" />
+</LinearLayout>
+
+
+
