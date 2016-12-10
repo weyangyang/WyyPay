@@ -264,7 +264,9 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 				toWeixinOrAlipay(ConstantUtils.PAY_TYPE_ALIPAY,payMoney);
 				break;
 			case 3://现金支付
-				Toast.makeText(this,"现金支付"+payMoney,Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(this,CashPayActivity.class);
+				intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,payMoney);
+				this.startActivity(intent);
 				break;
 		}
 	}
