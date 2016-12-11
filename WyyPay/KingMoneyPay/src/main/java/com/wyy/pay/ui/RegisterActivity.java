@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import netutils.engine.NetReqCallBack;
+import xtcore.utils.SystemUtils;
 
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
@@ -71,7 +72,11 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
                 break;
             case R.id.btnRegister://注册
 
-                checkParamAndRegister();
+                if(SystemUtils.checkAllNet(this)){
+                    checkParamAndRegister();
+                }else {
+                    Toast.makeText(RegisterActivity.this,getString(R.string.text_net_error),Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.btnVerifyCode: //获取验证码
                 break;
@@ -99,13 +104,8 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
         new XTAsyncTask() {
             @Override
             protected void onPreExectue() {
-                /**
-
-                 if (isShowDialog && mContext != null) {
-                 mCustomDialog = CustomDialog.createLoadingDialog(mContext,
+                 mCustomDialog = CustomDialog.createLoadingDialog(RegisterActivity.this,
                  null, true);
-                 }
-                 */
             }
 
             @Override
@@ -142,12 +142,8 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
 
             @Override
             protected void onPostExecute() {
-/**
- * if (isShowDialog && mContext != null) {
- mCustomDialog.dismiss();
- }
- */
-            }
+             mCustomDialog.dismiss();
+             }
         };
 
 
