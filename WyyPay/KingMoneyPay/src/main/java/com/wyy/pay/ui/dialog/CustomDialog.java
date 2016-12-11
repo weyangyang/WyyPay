@@ -2,101 +2,85 @@ package com.wyy.pay.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.wyy.pay.R;
 
-/**
- * Created by liyusheng on 16/11/24.
- */
 
-public class CustomDialog extends Dialog{
-    private TextView tvTitle;
-    private TextView tvContent;
-    private Button btnOk;
-    private Button btnCancel;
-    private String strTitle;
-    private String strContent;
-    private String strCancel;
-    private InfoCallback callback;
-    public void setStrTitle(String strTitle) {
-        this.strTitle = strTitle;
-    }
+public class CustomDialog extends Dialog {
+	protected static final String TAG = "CustomDialog";
+	private View dialogView = null;
+	private static Resources res;
+	public CustomDialog(Context context) {
+		super(context, R.style.CustomDialogTheme);
+		res = context.getResources();
+	}
 
-    public void setStrContent(String strContent) {
-        this.strContent = strContent;
-    }
+	public CustomDialog(Context context, int layoutID) {
+		super(context, R.style.CustomDialogTheme);
+		res = context.getResources();
+		dialogView = LayoutInflater.from(context).inflate(layoutID, null);
+	}
 
-    public void setStrCancel(String strCancel) {
-        this.strCancel = strCancel;
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    public CustomDialog(Context context) {
-        super(context);
-    }
+		if (dialogView != null) {
+			setContentView(dialogView);
+		}
+	}
 
-    public CustomDialog(Context context, int themeResId) {
-        super(context, themeResId);
-    }
-    public CustomDialog(Context context,int themeResId,InfoCallback callback) {
-        super(context,themeResId);
-        this.callback = callback;
-    }
+	public View getCustomView() {
+		return dialogView;
+	}
+	@Override
+	public void dismiss(){
+		try {
+			super.dismiss();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public void show(){
+		try {
+			super.show();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @param context
+	 *            如果不需要，置null
+	 * @param desc
+	 * @param isCancel
+	 *            返回键和点击外部是否可以取消
+	 */
+	public static CustomDialog createLoadingDialog(Context context, String desc, boolean isCancel) {
+		final CustomDialog dialog = new CustomDialog(context, R.layout.dialog_loading);
+		View view = dialog.getCustomView();
+		if (!TextUtils.isEmpty(desc)) {
+			TextView descView = (TextView) view.findViewById(R.id.textv_dialogLoading);
+			descView.setText(desc);
+		}
+//		if (dismissListener != null) {
+//			dialog.setOnDismissListener(dismissListener);
+//		}
+		dialog.setCanceledOnTouchOutside(isCancel);
+		dialog.setCancelable(isCancel);
+		
+		dialog.show();
+		return dialog;
+	}
+	
+	
 
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_custom_layout);
-        initView();
-        initListener();
-    }
-
-    private void initListener() {
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CustomDialog.this.dismiss();
-            }
-        });
-        btnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(callback!=null){
-                    callback.btnOkOnClick();
-                }
-                CustomDialog.this.dismiss();
-            }
-        });
-    }
-
-    private void initView() {
-        tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvContent = (TextView) findViewById(R.id.tvContent);
-        btnCancel = (Button) findViewById(R.id.btnDialogCancel);
-        btnOk = (Button) findViewById(R.id.btnDialogOk);
-    }
-
-    @Override
-    public void show() {
-        super.show();
-        if (!TextUtils.isEmpty(strTitle)) {
-            tvTitle.setText(strTitle);
-        }
-        if(!TextUtils.isEmpty(strContent)) {
-            btnOk.setText(strContent);
-        }
-        if(!TextUtils.isEmpty(strCancel)){
-            btnCancel.setText(strCancel);
-        }
-    }
-    public interface InfoCallback {
-         void btnOkOnClick();
-
-    }
 }

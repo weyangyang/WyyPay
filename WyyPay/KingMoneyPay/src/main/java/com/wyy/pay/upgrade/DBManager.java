@@ -5,6 +5,7 @@ import android.content.Context;
 import com.wyy.pay.bean.TableCategoryBean;
 import com.wyy.pay.bean.TableDiscountNumBean;
 import com.wyy.pay.bean.TableGoodsDetailBean;
+import com.wyy.pay.bean.TableUserBean;
 
 import db.utils.BaseDbBean;
 
@@ -23,6 +24,7 @@ public class DBManager {
 		BaseDbBean.init(mContext, TableCategoryBean.class);
 		BaseDbBean.init(mContext, TableGoodsDetailBean.class);
 		BaseDbBean.init(mContext, TableDiscountNumBean.class);
+		BaseDbBean.init(mContext, TableUserBean.class);
 
 	}
 

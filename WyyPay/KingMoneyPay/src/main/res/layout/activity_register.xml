@@ -13,6 +13,7 @@
   <LinearLayout
       android:layout_below="@+id/navBar"
       android:id="@+id/linearLayout_focus"
+      android:orientation="horizontal"
       android:focusable="true"
       android:focusableInTouchMode="true"
       android:layout_width="0px"
@@ -149,50 +150,14 @@
         android:layout_below="@+id/etRegPasswd"
         android:layout_toRightOf="@+id/ivRegPasswd"
         />
-    <ImageView
-        android:id="@+id/ivNickName"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/viewRegPasswd"
-        android:background="@drawable/icon_nickname"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        />
-    <com.wyy.pay.view.ClearEditText
-        android:id="@+id/etNickName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/ivPhoneNum"
-        android:layout_marginTop="10dp"
-        android:textSize="16sp"
-        android:paddingTop="5dp"
-        android:layout_below="@+id/viewRegPasswd"
-        android:hint="请输入昵称"
-        android:paddingBottom="5dp"
-        android:singleLine="true"
-        android:textColor="@color/text_gray_press_3"
-        android:textColorHint="@color/text_gray_3"
-        android:background="@null"
-        android:inputType="text"
-        />
-    <View
-        android:id="@+id/viewNickName"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/text_gray_3"
-        android:layout_marginRight="20dp"
-        android:layout_below="@+id/etNickName"
-        android:layout_toRightOf="@+id/ivNickName"
-        />
+
+
     <ImageView
         android:id="@+id/ivShopName"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginTop="15dp"
-        android:layout_below="@+id/viewNickName"
+        android:layout_below="@+id/viewRegPasswd"
         android:background="@drawable/icon_nickname"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="20dp"
@@ -206,7 +171,7 @@
         android:layout_toRightOf="@+id/ivShopName"
         android:layout_marginTop="10dp"
         android:paddingTop="5dp"
-        android:layout_below="@+id/viewNickName"
+        android:layout_below="@+id/viewRegPasswd"
         android:textSize="16sp"
         android:hint="请输入店铺名称"
         android:paddingBottom="5dp"
@@ -223,7 +188,7 @@
         android:background="@color/text_gray_3"
         android:layout_marginRight="20dp"
         android:layout_below="@+id/etShopName"
-        android:layout_toRightOf="@+id/ivNickName"
+        android:layout_toRightOf="@+id/ivShopName"
         />
     <TextView
         android:id="@+id/shopNameTips"
@@ -232,6 +197,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
+        android:textColor="@color/gray"
         android:text="注：店铺名称还可以在设置中修改"
         android:background="@null"
         android:layout_below="@+id/viewShopName"

@@ -12,20 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wyy.pay.R;
-import com.wyy.pay.adapter.OrderProductListAdapter;
 import com.wyy.pay.adapter.StatementsDiscountAdapter;
 import com.wyy.pay.bean.StatementsDiscountBean;
-import com.wyy.pay.bean.TableGoodsDetailBean;
-import com.wyy.pay.ui.dialog.CustomDialog;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.ClearEditText;
-import com.wyy.pay.view.XListView;
 
 import java.util.ArrayList;
 

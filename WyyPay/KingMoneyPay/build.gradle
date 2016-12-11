@@ -24,6 +24,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.1.1'
     compile files('libs/universal-image-loader-1.9.5.jar')
-    compile project(':SgeNetReq')
+//    compile project(':SgeNetReq')
+    compile project(':SgeCore')
     compile project(':SgeScan')
 }

@@ -15,10 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wyy.pay.R;
+import com.wyy.pay.bean.GetUpgradeDataBean;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.SDUtils;
 import com.wyy.pay.utils.Utils;
-import com.wyy.net.bean.GetUpgradeDataBean;
 
 import java.io.File;
 

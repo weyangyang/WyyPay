@@ -40,6 +40,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void initData() {
+        Intent intent = getIntent();
+        String username = intent.getStringExtra(ConstantUtils.INTENT_KEY_USER_NAME);
+        etAccount.setText(username);
 
     }
 

@@ -1,20 +1,13 @@
 package com.wyy.net.interf.impl;
 
-import netutils.engine.NetConstants;
-import netutils.engine.NetReqCallBack;
-import netutils.http.HttpHeader;
-
-import org.json.JSONException;
-
 import android.content.Context;
 
 import com.wyy.net.abs.AbsFeedbackData;
-import com.wyy.net.engine.ParserEngine;
-import com.wyy.net.engine.RequestEngine;
-import com.wyy.net.exception.ParserException;
 import com.wyy.net.interf.ShowDialogInterf;
 import com.wyy.utils.CustomDialog;
 import com.wyy.utils.XTAsyncTask;
+
+import netutils.http.HttpHeader;
 
 
 public class FeedbackImpl implements com.wyy.net.interf.FeedbackInterf {
@@ -74,31 +67,31 @@ class FeedBackEngine extends XTAsyncTask {
 	
 	@Override
 	protected void doInbackgroud() {
-		RequestEngine.getInstance().postFeedback(header,content, contact, log, new NetReqCallBack() {
-			
-			@Override
-			public void getErrData(int statusCode, String strJson,String strUrl) {
-				try {
-					ParserEngine.getInstance().parserErrData(strJson,strUrl, mAbsFeedbackData);
-				} catch (ParserException e) {
-					mAbsFeedbackData.getParserErrData(NetConstants.PARSE_EXCEPTION, e.getMessage(),strUrl);
-				} catch (JSONException e) {
-					mAbsFeedbackData.getParserErrData(NetConstants.JSON_EXCEPTION, e.getMessage(),strUrl);
-				}
-				super.getErrData(statusCode, strJson,strUrl);
-			}
-
-			@Override
-			public void getSuccData(int statusCode, String strJson,String strUrl) {
-				try {
-					ParserEngine.getInstance().parserFeedbackData(strJson, mAbsFeedbackData,strUrl);
-				} catch (ParserException e) {
-					mAbsFeedbackData.getParserErrData(NetConstants.PARSE_EXCEPTION, e.getMessage(),strUrl);
-				} catch (JSONException e) {
-					mAbsFeedbackData.getParserErrData(NetConstants.JSON_EXCEPTION, e.getMessage(),strUrl);
-				}
-			}
-		});
+//		RequestEngine.getInstance().postFeedback(header,content, contact, log, new NetReqCallBack() {
+//
+//			@Override
+//			public void getErrData(int statusCode, String strJson,String strUrl) {
+//				try {
+//					ParserEngine.getInstance().parserErrData(strJson,strUrl, mAbsFeedbackData);
+//				} catch (ParserException e) {
+//					mAbsFeedbackData.getParserErrData(NetConstants.PARSE_EXCEPTION, e.getMessage(),strUrl);
+//				} catch (JSONException e) {
+//					mAbsFeedbackData.getParserErrData(NetConstants.JSON_EXCEPTION, e.getMessage(),strUrl);
+//				}
+//				super.getErrData(statusCode, strJson,strUrl);
+//			}
+//
+//			@Override
+//			public void getSuccData(int statusCode, String strJson,String strUrl) {
+//				try {
+//					ParserEngine.getInstance().parserFeedbackData(strJson, mAbsFeedbackData,strUrl);
+//				} catch (ParserException e) {
+//					mAbsFeedbackData.getParserErrData(NetConstants.PARSE_EXCEPTION, e.getMessage(),strUrl);
+//				} catch (JSONException e) {
+//					mAbsFeedbackData.getParserErrData(NetConstants.JSON_EXCEPTION, e.getMessage(),strUrl);
+//				}
+//			}
+//		});
 	}
 	@Override
 	protected void onPreExectue() {

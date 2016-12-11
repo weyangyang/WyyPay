@@ -12,8 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.wyy.net.abs.AbsGetUpgradeData;
-import com.wyy.net.bean.GetUpgradeDataBean;
 import com.wyy.pay.R;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.Utils;
@@ -136,61 +134,61 @@ public class MyActivity extends Activity implements View.OnClickListener {
     public void update(final boolean isShowUpdateDialog) {
 
 
-        Utils.checkApkUpdate(MyActivity.this, new AbsGetUpgradeData() {
-            @Override
-            public void getErrData(int errCode, String errMsg, String strUrl) {
-                super.getErrData(errCode, errMsg, strUrl);
-                toastUpdateApkErr(isShowUpdateDialog);
-            }
-
-            @Override
-            public void getParserErrData(int errCode, String errMsg, String strUrl) {
-                super.getParserErrData(errCode, errMsg, strUrl);
-                toastUpdateApkErr(isShowUpdateDialog);
-            }
-
-            @Override
-            public void getExceptionData(int errCode, String errMsg, String strUrl) {
-                super.getExceptionData(errCode, errMsg, strUrl);
-                toastUpdateApkErr(isShowUpdateDialog);
-            }
-
-            @Override
-            public void getSuccData(final GetUpgradeDataBean mGetUpgradeDataBean, String strUrl) {
-                MyActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(mGetUpgradeDataBean!=null&&mGetUpgradeDataBean.getIntVersionCode()>  Utils.getAppVersionCode(MyActivity.this)
-                                &&Utils.getChannel(MyActivity.this).equals(mGetUpgradeDataBean.getStrChannel())
-                                &&!TextUtils.isEmpty(mGetUpgradeDataBean.getStrUrl())){//需要升级
-                            if(isShowUpdateDialog){
-                                if(isShowUpdateDialog && xtcore.utils.PreferenceUtils.getPrefBoolean(MyActivity.this, ConstantUtils.APK_UPDATE_DOWNLOADING,false)){
-                                    Toast.makeText(MyActivity.this,
-                                            MyActivity.this.getResources()
-                                                    .getString(R.string.apk_downloading),
-                                            Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                                Intent intent = new Intent(MyActivity.this,ApkUpdateActivity.class);
-                                intent.putExtra(ConstantUtils.APK_UPDATE,mGetUpgradeDataBean);
-                                intent.putExtra(ConstantUtils.IS_GONE_UPDATE_CHECKBOX,true);
-                                MyActivity.this.startActivity(intent);
-                            }else {
-                                tvNewVersionHint.setVisibility(View.VISIBLE);
-                            }
-
-                        }else {
-                            if (isShowUpdateDialog) {
-                                Toast.makeText(MyActivity.this,
-                                        R.string.no_new_version, Toast.LENGTH_SHORT).show();
-                            }
-                            tvNewVersionHint.setVisibility(View.GONE);
-                        }
-                    }
-                });
-
-            }
-        });
+//        Utils.checkApkUpdate(MyActivity.this, new AbsGetUpgradeData() {
+//            @Override
+//            public void getErrData(int errCode, String errMsg, String strUrl) {
+//                super.getErrData(errCode, errMsg, strUrl);
+//                toastUpdateApkErr(isShowUpdateDialog);
+//            }
+//
+//            @Override
+//            public void getParserErrData(int errCode, String errMsg, String strUrl) {
+//                super.getParserErrData(errCode, errMsg, strUrl);
+//                toastUpdateApkErr(isShowUpdateDialog);
+//            }
+//
+//            @Override
+//            public void getExceptionData(int errCode, String errMsg, String strUrl) {
+//                super.getExceptionData(errCode, errMsg, strUrl);
+//                toastUpdateApkErr(isShowUpdateDialog);
+//            }
+//
+//            @Override
+//            public void getSuccData(final GetUpgradeDataBean mGetUpgradeDataBean, String strUrl) {
+//                MyActivity.this.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if(mGetUpgradeDataBean!=null&&mGetUpgradeDataBean.getIntVersionCode()>  Utils.getAppVersionCode(MyActivity.this)
+//                                &&Utils.getChannel(MyActivity.this).equals(mGetUpgradeDataBean.getStrChannel())
+//                                &&!TextUtils.isEmpty(mGetUpgradeDataBean.getStrUrl())){//需要升级
+//                            if(isShowUpdateDialog){
+//                                if(isShowUpdateDialog && xtcore.utils.PreferenceUtils.getPrefBoolean(MyActivity.this, ConstantUtils.APK_UPDATE_DOWNLOADING,false)){
+//                                    Toast.makeText(MyActivity.this,
+//                                            MyActivity.this.getResources()
+//                                                    .getString(R.string.apk_downloading),
+//                                            Toast.LENGTH_SHORT).show();
+//                                    return;
+//                                }
+//                                Intent intent = new Intent(MyActivity.this,ApkUpdateActivity.class);
+//                                intent.putExtra(ConstantUtils.APK_UPDATE,mGetUpgradeDataBean);
+//                                intent.putExtra(ConstantUtils.IS_GONE_UPDATE_CHECKBOX,true);
+//                                MyActivity.this.startActivity(intent);
+//                            }else {
+//                                tvNewVersionHint.setVisibility(View.VISIBLE);
+//                            }
+//
+//                        }else {
+//                            if (isShowUpdateDialog) {
+//                                Toast.makeText(MyActivity.this,
+//                                        R.string.no_new_version, Toast.LENGTH_SHORT).show();
+//                            }
+//                            tvNewVersionHint.setVisibility(View.GONE);
+//                        }
+//                    }
+//                });
+//
+//            }
+//        });
     }
 
     private void toastUpdateApkErr(final boolean isShowUpdateDialog) {

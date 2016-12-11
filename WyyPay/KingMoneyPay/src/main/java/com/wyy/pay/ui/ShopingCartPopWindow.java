@@ -1,9 +1,7 @@
 package com.wyy.pay.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,7 @@ import android.widget.TextView;
 import com.wyy.pay.R;
 import com.wyy.pay.adapter.OrderProductListAdapter;
 import com.wyy.pay.bean.TableGoodsDetailBean;
-import com.wyy.pay.ui.dialog.CustomDialog;
+import com.wyy.pay.ui.dialog.CustomTipsDialog;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.XListView;
 
@@ -85,7 +83,7 @@ public class ShopingCartPopWindow extends PopupWindow implements OrderProductLis
             @Override
             public void onClick(View v) {
                     //弹出框
-                CustomDialog customDialog = new CustomDialog(mActivity,R.style.DefaultDialog, new CustomDialog.InfoCallback() {
+                CustomTipsDialog customDialog = new CustomTipsDialog(mActivity,R.style.DefaultDialog, new CustomTipsDialog.InfoCallback() {
                     @Override
                     public void btnOkOnClick() {
                         if(cartListener!=null){

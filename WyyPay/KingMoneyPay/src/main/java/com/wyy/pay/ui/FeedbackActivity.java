@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-import com.wyy.net.abs.AbsFeedbackData;
-import com.wyy.net.factory.ExternalFactory;
 import com.wyy.pay.R;
 import com.wyy.pay.utils.NetUtils;
 import com.wyy.pay.utils.RunningWithNet;
@@ -98,27 +96,27 @@ public class FeedbackActivity extends BaseActivity {
 	private void feedBackToNet(String content, String contact) {
 		HttpHeader header = null;
 		header = UserUtils.getDefaultHttpHeader();
-		ExternalFactory.getInstance().createFeedback().feedback(header, this, true, content, contact, new AbsFeedbackData(){
-
-			@Override
-			public void getSuccData(String strUrl) {
-				showMessage(R.string.feedback_submit_suc, true);
-			}
-
-			@Override
-			public void getErrData(int errCode, String errMsg,String strUrl) {
-				showMessage(R.string.feedback_submit_fail, false);
-			}
-
-			@Override
-			public void getParserErrData(int errCode, String errMsg,String strUrl) {
-				showMessage(R.string.feedback_submit_fail, false);
-			}
-			@Override
-			public void getExceptionData(int errCode, String errMsg,String strUrl) {
-				showMessage(R.string.feedback_submit_fail, false);
-			}
-		});
+//		ExternalFactory.getInstance().createFeedback().feedback(header, this, true, content, contact, new AbsFeedbackData(){
+//
+//			@Override
+//			public void getSuccData(String strUrl) {
+//				showMessage(R.string.feedback_submit_suc, true);
+//			}
+//
+//			@Override
+//			public void getErrData(int errCode, String errMsg,String strUrl) {
+//				showMessage(R.string.feedback_submit_fail, false);
+//			}
+//
+//			@Override
+//			public void getParserErrData(int errCode, String errMsg,String strUrl) {
+//				showMessage(R.string.feedback_submit_fail, false);
+//			}
+//			@Override
+//			public void getExceptionData(int errCode, String errMsg,String strUrl) {
+//				showMessage(R.string.feedback_submit_fail, false);
+//			}
+//		});
 	}
 	public void showMessage(final int resId, final boolean finish) {
 		runOnUiThread(new Runnable(){

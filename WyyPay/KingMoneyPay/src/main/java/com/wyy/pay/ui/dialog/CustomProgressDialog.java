@@ -9,11 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.wyy.net.interf.ShowDialogInterf;
 import com.wyy.pay.R;
 
 
-public class CustomProgressDialog extends Dialog implements ShowDialogInterf {
+public class CustomProgressDialog extends Dialog  {
 	protected static final String TAG = "CustomProgressDialog";
 	private View dialogView = null;
 	private static Resources res;

@@ -1,14 +1,10 @@
-package com.wyy.net.engine;
+package com.wyy.pay.engine;
 
-import com.wyy.net.config.Urls;
-
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import netutils.engine.NetReqCallBack;
 import netutils.http.HttpHeader;
 import netutils.http.HttpNetUtils;
-import netutils.http.RequestParams;
 import netutils.httpclient.core.ParameterList;
 import netutils.httpclient.core.ParameterList.HeaderParameter;
 import netutils.httpclient.core.ParameterList.StringParameter;
@@ -42,7 +38,22 @@ public class RequestEngine extends BaseRequest {
 		}
 		return paramsList;
 	}
+	public void login(String uname,String passwd,NetReqCallBack callBack){
+		ParameterList paramsList = HttpNetUtils.getHttpClient().newParams();
+		paramsList.add(new StringParameter("username", uname));
+		paramsList.add(new StringParameter("password", passwd));
+		super.post(Urls.BASE_URL + Urls.LOGIN_URL,paramsList, callBack);
 
+	}
+	public void register(String uname,String passwd,String smsCode,String storeName,NetReqCallBack callBack){
+		ParameterList paramsList = HttpNetUtils.getHttpClient().newParams();
+		paramsList.add(new StringParameter("phone", uname));
+		paramsList.add(new StringParameter("password", passwd));
+		paramsList.add(new StringParameter("vcode", smsCode));
+		paramsList.add(new StringParameter("storename", storeName));
+		super.post(Urls.BASE_URL + Urls.REGISTER_URL,paramsList, callBack);
+
+	}
 	public void postFeedback(HttpHeader header, String content, String contact, String log,
 			NetReqCallBack netDataCallBackInterf) {
 		ParameterList paramsList = setHeaderParameter(header);
@@ -53,9 +64,9 @@ public class RequestEngine extends BaseRequest {
 	}
 
 
-	public void getUpgradeData(HttpHeader header, String strChannel, int strVersionCode, NetReqCallBack mNetReqCallBack) {
-		super.post(Urls.BASE_URL + Urls.UPGRADE_URL +"?app_version_code="+strVersionCode+"&channel="+strChannel.replace(" ","%20"), header, mNetReqCallBack,null);
-	}
+//	public void getUpgradeData(HttpHeader header, String strChannel, int strVersionCode, NetReqCallBack mNetReqCallBack) {
+//		       super.post(Urls.BASE_URL + Urls.UPGRADE_URL +"?app_version_code="+strVersionCode+"&channel="+strChannel.replace(" ","%20"), header, mNetReqCallBack,null);
+//	}
 
 
 	

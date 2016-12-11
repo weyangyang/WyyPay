@@ -37,12 +37,8 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.wyy.net.abs.AbsGetUpgradeData;
-import com.wyy.net.bean.GetUpgradeDataBean;
-import com.wyy.net.factory.ExternalFactory;
 import com.wyy.pay.ui.ApkUpdateActivity;
 
-import xtcore.utils.StringUtils;
 import xtcore.utils.SystemUtils;
 
 public class Utils {
@@ -963,40 +959,40 @@ public class Utils {
 		if(xtcore.utils.PreferenceUtils.getPrefBoolean(activity,ConstantUtils.APK_UPDATE_CHECKBOX_STATE,false)){
 			return;//启动时忽略此版本更新
 		}
-		checkApkUpdate(activity,null);
+		//checkApkUpdate(activity,null);
 	}
-	public static void checkApkUpdate(final Activity activity,AbsGetUpgradeData mAbsGetUpgradeData) {
-
-		final String currentChannel = Utils.getChannel(activity);
-		final int currentVersionCode = Utils.getAppVersionCode(activity);
-		if(!SystemUtils.checkAllNet(activity)){
-			return;
-		}
-		if(mAbsGetUpgradeData==null){
-			ExternalFactory.getInstance().createGetUpgrade().getUpgrade(UserUtils.getDefaultHttpHeader(),currentChannel,currentVersionCode, new AbsGetUpgradeData() {
-				@Override
-				public void getSuccData(final GetUpgradeDataBean mGetUpgradeDataBean, String strUrl) {
-					activity.runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							if(mGetUpgradeDataBean!=null&&mGetUpgradeDataBean.getIntVersionCode()> currentVersionCode
-									&&currentChannel.equals(mGetUpgradeDataBean.getStrChannel())
-									&&!TextUtils.isEmpty(mGetUpgradeDataBean.getStrUrl())){//需要升级
-								Intent intent = new Intent(activity,ApkUpdateActivity.class);
-								intent.putExtra(ConstantUtils.APK_UPDATE,mGetUpgradeDataBean);
-								activity.startActivity(intent);
-							}
-
-						}
-					});
-
-				}
-			});
-		}else {
-			ExternalFactory.getInstance().createGetUpgrade().getUpgrade(UserUtils.getDefaultHttpHeader(),currentChannel,currentVersionCode,mAbsGetUpgradeData);
-		}
-
-	}
+//	public static void checkApkUpdate(final Activity activity,AbsGetUpgradeData mAbsGetUpgradeData) {
+//
+//		final String currentChannel = Utils.getChannel(activity);
+//		final int currentVersionCode = Utils.getAppVersionCode(activity);
+//		if(!SystemUtils.checkAllNet(activity)){
+//			return;
+//		}
+//		if(mAbsGetUpgradeData==null){
+//			ExternalFactory.getInstance().createGetUpgrade().getUpgrade(UserUtils.getDefaultHttpHeader(),currentChannel,currentVersionCode, new AbsGetUpgradeData() {
+//				@Override
+//				public void getSuccData(final GetUpgradeDataBean mGetUpgradeDataBean, String strUrl) {
+//					activity.runOnUiThread(new Runnable() {
+//						@Override
+//						public void run() {
+//							if(mGetUpgradeDataBean!=null&&mGetUpgradeDataBean.getIntVersionCode()> currentVersionCode
+//									&&currentChannel.equals(mGetUpgradeDataBean.getStrChannel())
+//									&&!TextUtils.isEmpty(mGetUpgradeDataBean.getStrUrl())){//需要升级
+//								Intent intent = new Intent(activity,ApkUpdateActivity.class);
+//								intent.putExtra(ConstantUtils.APK_UPDATE,mGetUpgradeDataBean);
+//								activity.startActivity(intent);
+//							}
+//
+//						}
+//					});
+//
+//				}
+//			});
+//		}else {
+//			ExternalFactory.getInstance().createGetUpgrade().getUpgrade(UserUtils.getDefaultHttpHeader(),currentChannel,currentVersionCode,mAbsGetUpgradeData);
+//		}
+//
+//	}
 	//安装APK
 	public static void installAPK(String  filePath,Context context) {
 		Intent intent = new Intent();
