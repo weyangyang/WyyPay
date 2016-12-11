@@ -680,9 +680,9 @@ private void updateCartCount4DB(){
         }else {
             tvSumShopNum.setVisibility(View.GONE);
         }
-        updateTotalMoneyShow();
-        ArrayList<TableGoodsDetailBean> tList = new ArrayList<>();
+        shopingCartList.addAll(noBarcodeCashierList);
         shopingCartSort();
+        updateTotalMoneyShow();
     }
 
     private void updateTotalMoneyShow() {
