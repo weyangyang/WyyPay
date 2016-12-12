@@ -17,6 +17,10 @@ public class Urls {
 	 */
 	public static final String LOGIN_URL = "/login";
 	/**
+	 * 支付url
+	 */
+	public static final String REQUEST_PAY_URL = "/requestpay";
+	/**
 	 * 生成订单url
 	 */
 	public static final String CREATE_ORDER_URL = "/createorder";

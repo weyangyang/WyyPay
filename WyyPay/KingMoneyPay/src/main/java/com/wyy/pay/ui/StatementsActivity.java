@@ -336,6 +336,7 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 		Intent intent = new Intent(this,ScanPayActivity.class);
 		intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,payType);
 		intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,money);
+		intent.putExtra(ConstantUtils.INTENT_KEY_ORDER_NO,StatementsActivity.orderNo);
 		startActivity(intent);
 	}
 }

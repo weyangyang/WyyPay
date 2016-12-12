@@ -78,6 +78,24 @@ public class RequestEngine extends BaseRequest {
 		super.post(Urls.BASE_URL + Urls.REGISTER_URL,paramsList, callBack);
 
 	}
+
+	/**
+	 * 支付接口
+	 * @param uname 用户名
+	 * @param wyyCode 微洋洋code
+	 * @param authCode 通过扫描用户付款码获得
+	 * @param orderNo  通过创建订单获得的号码
+     * @param callBack 回调接口
+     */
+	public void requestPay(String uname,String wyyCode,String authCode,String orderNo,NetReqCallBack callBack){
+		ParameterList paramsList = HttpNetUtils.getHttpClient().newParams();
+		paramsList.add(new StringParameter("username", uname));
+		paramsList.add(new StringParameter("wyycode", wyyCode));
+		paramsList.add(new StringParameter("authcode", authCode));
+		paramsList.add(new StringParameter("orderno", orderNo));
+		super.post(Urls.BASE_URL + Urls.REGISTER_URL,paramsList, callBack);
+
+	}
 	public void getSmsVerifyCode(String phone,NetReqCallBack callBack){
 		ParameterList paramsList = HttpNetUtils.getHttpClient().newParams();
 		paramsList.add(new StringParameter("phone", phone));

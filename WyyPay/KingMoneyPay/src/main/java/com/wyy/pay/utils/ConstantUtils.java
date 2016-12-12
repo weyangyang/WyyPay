@@ -14,6 +14,7 @@ public class ConstantUtils {
     public final static String IS_GONE_UPDATE_CHECKBOX = "is_gone_update_checkbox";
     public static final String P_IMAGE = "wyypay/mobilev1/image/";
     public static final String INTENT_KEY_PAY_TYPE = "intent_key_pay_type";
+    public static final String INTENT_KEY_ORDER_NO = "intent_key_order_no";
     public static final String INTENT_KEY_USER_NAME = "intent_key_user_name";
     public static final String INTENT_KEY_SHOPING_CART_LIST = "intent_key_shoping_cart_list";
     public static final String INTENT_KEY_PRODUCT_NO = "intent_key_product_no";//商品条码

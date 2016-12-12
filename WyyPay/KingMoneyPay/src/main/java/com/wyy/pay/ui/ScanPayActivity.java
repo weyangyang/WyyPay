@@ -29,15 +29,25 @@ import com.wyy.pay.bean.TableGoodsDetailBean;
 import com.wyy.pay.camera.CameraManager;
 import com.wyy.pay.decoding.CaptureActivityHandler;
 import com.wyy.pay.decoding.InactivityTimer;
+import com.wyy.pay.engine.RequestEngine;
+import com.wyy.pay.engine.XTAsyncTask;
+import com.wyy.pay.ui.dialog.CustomDialog;
 import com.wyy.pay.utils.BaseOptions;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.ViewfinderView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Vector;
+
+import netutils.engine.NetReqCallBack;
+import xtcore.utils.PreferenceUtils;
+import xtcore.utils.SystemUtils;
 
 /**
  * Created by liyusheng on 16/11/9.
@@ -70,6 +80,9 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     private ImageView ivProScanPic;//显示扫码后的商品图片
     private TableGoodsDetailBean goodsBean;
     private ArrayList<TableGoodsDetailBean> shopingCartList;
+
+    private String orderNo = "";//订单编号
+    private double money = 0;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -153,7 +166,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         String resultString = result.getText().trim();
        // Toast.makeText(ScanPayActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
         if (TextUtils.isEmpty(resultString)) {
-            Toast.makeText(ScanPayActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ScanPayActivity.this, "扫码失败，请重试！", Toast.LENGTH_SHORT).show();
         }else {
             if(barcode!=null){
                 if(ConstantUtils.PAY_TYPE_SCAN_PRO == payType){
@@ -185,9 +198,21 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                     intent.putExtra(ConstantUtils.INTENT_KEY_PRODUCT_NO,resultString);
                     ScanPayActivity.this.setResult(RESULT_OK,intent);
                     ScanPayActivity.this.finish();
-                }else {
-                    Toast.makeText(ScanPayActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
+                }else if(ConstantUtils.PAY_TYPE_WEXIN == payType){//微信支付
+                    if(SystemUtils.checkAllNet(this)){
+                        requestPay4Net(result.getText());
+                    }else {
+                        Toast.makeText(ScanPayActivity.this,getString(R.string.text_net_error),Toast.LENGTH_SHORT).show();
+                        ScanPayActivity.this.finish();
+                    }
 
+                }else if(ConstantUtils.PAY_TYPE_ALIPAY == payType){//支付宝支付
+                    if(SystemUtils.checkAllNet(this)){
+                        requestPay4Net(result.getText());
+                    }else {
+                        Toast.makeText(ScanPayActivity.this,getString(R.string.text_net_error),Toast.LENGTH_SHORT).show();
+                        ScanPayActivity.this.finish();
+                    }
                 }
                // Bitmap bt = BitmapUtils.scaleImage(barcode, 200, 200);
                // ivPayLogo.setImageBitmap(bt);
@@ -202,6 +227,67 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
 
 
 
+        }
+    }
+    private CustomDialog mCustomDialog;
+    private void requestPay4Net(final String authToken) {
+        if(Utils.checkUserIsLogin(this)){
+            new XTAsyncTask() {
+                @Override
+                protected void onPreExectue() {
+
+                    if(mCustomDialog==null)
+                        mCustomDialog = CustomDialog.createLoadingDialog(ScanPayActivity.this,
+                                "正在获取短信验证码", true); }
+
+                @Override
+                protected void doInbackgroud() {
+                    RequestEngine.getInstance().requestPay(BaseApplication.getUserName(),BaseApplication.getWyyCode(),authToken,orderNo, new NetReqCallBack() {
+                        @Override
+                        public void getSuccData(int statusCode, String strJson, String strUrl) {
+                            try {
+                                JSONObject mJSONObject = new JSONObject(strJson);
+                                int code = mJSONObject.optInt("Code");
+                                String message = mJSONObject.optString("Message");
+                                if(code==1){
+                                    JSONObject orderObj = 	mJSONObject.optJSONObject("Obj");
+                                    if(orderObj!=null) {
+                                        final String orderNewNo = orderObj.optString("orderno");
+                                        ScanPayActivity.this.runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent intent = new Intent();
+                                                intent.putExtra(ConstantUtils.INTENT_KEY_ORDER_NO,orderNewNo);
+                                                ScanPayActivity.this.setResult(RESULT_OK, intent);
+                                                ScanPayActivity.this.orderNo="";
+                                                ScanPayActivity.this.finish();
+                                            }
+                                        });
+                                    }
+                                }else {
+                                    if(TextUtils.isEmpty(message))
+                                        Toast.makeText(ScanPayActivity.this,message,Toast.LENGTH_SHORT).show();
+                                    ScanPayActivity.this.orderNo="";
+                                    ScanPayActivity.this.finish();
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(ScanPayActivity.this,"服务器异常，请稍后再试",Toast.LENGTH_SHORT).show();
+                                ScanPayActivity.this.orderNo="";
+                                ScanPayActivity.this.finish();
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                protected void onPostExecute() {
+                    if(null!=ScanPayActivity.this && mCustomDialog.isShowing())
+                        mCustomDialog.dismiss();
+                }
+            }.execute();
+        }else {
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -343,6 +429,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
     public void initData() {
         Intent intent = getIntent();
         payType =  intent.getIntExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,ConstantUtils.PAY_TYPE_SCAN_PRO_FOR_BARCODE);
+
         switch (payType){
             case ConstantUtils.PAY_TYPE_SCAN_PRO:
                 CameraManager.init(getApplication(),40.0f,100.0f);
@@ -376,7 +463,9 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 tvNavTitle.setText("支付宝付款");
                 ivPayLogo.setBackgroundResource(R.drawable.icon_bill_alipay);
                 double sumOfMoney = intent.getDoubleExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0);
-                tvSumOfMoney.setText(String.format("%.2f",sumOfMoney));
+                orderNo = intent.getStringExtra(ConstantUtils.INTENT_KEY_ORDER_NO);
+                money = sumOfMoney;
+                tvSumOfMoney.setText(String.format("￥%.2f",sumOfMoney));
                 break;
             case ConstantUtils.PAY_TYPE_WEXIN:
                 CameraManager.init(getApplication());
@@ -386,8 +475,10 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                 tvSumOfMoney.setVisibility(View.VISIBLE);
                 ivPayLogo.setBackgroundResource(R.drawable.icon_bill_wechat);
                 tvNavTitle.setText("微信付款");
+                orderNo = intent.getStringExtra(ConstantUtils.INTENT_KEY_ORDER_NO);
                  sumOfMoney = intent.getDoubleExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,0);
-                tvSumOfMoney.setText(String.format("%.2f",sumOfMoney));
+                money = sumOfMoney;
+                tvSumOfMoney.setText(String.format("￥%.2f",sumOfMoney));
                 break;
         }
 
