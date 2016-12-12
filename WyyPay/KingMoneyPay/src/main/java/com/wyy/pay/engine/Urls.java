@@ -21,6 +21,10 @@ public class Urls {
 	 */
 	public static final String REGISTER_URL = "/storepayapi/register";
 	/**
+	 * 注册url
+	 */
+	public static final String SMS_VERIFY_URL = "storepayapi/sendsmscode";
+	/**
 	 * app版本更新url
 	 */
 	public static final String UPGRADE_URL = "/v2/upgrade/Android";

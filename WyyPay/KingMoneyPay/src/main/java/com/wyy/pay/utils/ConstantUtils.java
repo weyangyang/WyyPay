@@ -30,4 +30,6 @@ public class ConstantUtils {
     public static final int FROM_PRO_DETAIL_ACTIVITY = 70;//from pro detail activity
     public static final int FROM_POPUP_WINDOW_CATEGORY_MANAGE = 80;//from_popup_window_category_manage
 
+    public static final int SMS_HANDLER_CODE = 15;
+
 }

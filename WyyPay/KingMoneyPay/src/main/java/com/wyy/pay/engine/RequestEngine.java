@@ -54,6 +54,12 @@ public class RequestEngine extends BaseRequest {
 		super.post(Urls.BASE_URL + Urls.REGISTER_URL,paramsList, callBack);
 
 	}
+	public void getSmsVerifyCode(String phone,NetReqCallBack callBack){
+		ParameterList paramsList = HttpNetUtils.getHttpClient().newParams();
+		paramsList.add(new StringParameter("phone", phone));
+		super.post(Urls.BASE_URL + Urls.SMS_VERIFY_URL,paramsList, callBack);
+
+	}
 	public void postFeedback(HttpHeader header, String content, String contact, String log,
 			NetReqCallBack netDataCallBackInterf) {
 		ParameterList paramsList = setHeaderParameter(header);
