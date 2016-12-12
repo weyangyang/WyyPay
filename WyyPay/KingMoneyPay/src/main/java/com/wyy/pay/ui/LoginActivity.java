@@ -122,6 +122,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             protected void doInbackgroud() {
                 RequestEngine.getInstance().login(userName, password, new NetReqCallBack() {
                     @Override
+                    public void getErrData(int statusCode, String strJson, String strUrl) {
+                        super.getErrData(statusCode, strJson, strUrl);
+                        LoginActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LoginActivity.this,"登录失败，请重试！",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
                     public void getSuccData(int statusCode, final String strJson, String strUrl) {
                         LoginActivity.this.runOnUiThread(new Runnable() {
                             @Override

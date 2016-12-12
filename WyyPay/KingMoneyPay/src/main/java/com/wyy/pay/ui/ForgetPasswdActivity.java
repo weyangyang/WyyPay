@@ -73,6 +73,8 @@ private ClearEditText etPhoneNum,etVerifyCode,etRegPasswd;
     @Override
     public void initListener() {
         tvNavLeft.setOnClickListener(this);
+        btnVerifyCode.setOnClickListener(this);
+        btnCommit.setOnClickListener(this);
     }
     private final int COUNT = 0;
     private final int ERROR = 1;
