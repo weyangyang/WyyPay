@@ -45,6 +45,14 @@ public class RequestEngine extends BaseRequest {
 		super.post(Urls.BASE_URL + Urls.LOGIN_URL,paramsList, callBack);
 
 	}
+	public void frogetPasswdCommit(String phone,String passwd,String smsCode,NetReqCallBack callBack){
+		ParameterList paramsList = HttpNetUtils.getHttpClient().newParams();
+		paramsList.add(new StringParameter("phone", phone));
+		paramsList.add(new StringParameter("newpwd", passwd));
+		paramsList.add(new StringParameter("vcode", smsCode));
+		super.post(Urls.BASE_URL + Urls.FORGET_PASSWORD_URL,paramsList, callBack);
+
+	}
 	public void register(String uname,String passwd,String smsCode,String storeName,NetReqCallBack callBack){
 		ParameterList paramsList = HttpNetUtils.getHttpClient().newParams();
 		paramsList.add(new StringParameter("phone", uname));

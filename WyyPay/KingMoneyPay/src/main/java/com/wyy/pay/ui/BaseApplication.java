@@ -15,10 +15,8 @@ import config.bean.XTCoreConfig;
 
 public class BaseApplication extends Application {
 	public static Context mContext;
-	public static String accessToken;
-	private static String uid;
-	public static int fromActivity;
-	public static String sid;
+	public static String wyyCode;
+	private static String userName;
 
 	@Override
 	public void onCreate() {
@@ -49,12 +47,21 @@ public class BaseApplication extends Application {
 		DBManager db = new DBManager();
 		db.initTables(getApplicationContext());
 	}
-	public static String getUid() {
-		return uid;
+	public static String getUserName() {
+		return userName;
 	}
 
-	public static void setUid(String strUid) {
-		uid = strUid;
+	public static void setUserName(String userName) {
+
+		BaseApplication.userName = userName;
+	}
+	public static String getWyyCode() {
+		return wyyCode;
+	}
+
+	public static void setWyyCode(String wyyCode) {
+
+		BaseApplication.wyyCode = wyyCode;
 	}
 
 	@Override

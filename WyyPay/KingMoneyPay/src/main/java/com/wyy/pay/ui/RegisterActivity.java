@@ -61,8 +61,7 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
     @Override
     public void initData() {
         smsObserver = new SmsObserver(this, handler);
-        this.getContentResolver()
-                .registerContentObserver(SMS_INBOX, true, smsObserver);
+        this.getContentResolver().registerContentObserver(SMS_INBOX, true, smsObserver);
     }
 
     @Override
@@ -204,7 +203,7 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
                                     Toast.makeText(RegisterActivity.this,message,Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Toast.makeText(RegisterActivity.this,"服务器异常，请稍后再试",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -267,7 +266,7 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
                                             Toast.makeText(RegisterActivity.this,message,Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    Toast.makeText(RegisterActivity.this,"服务器异常，请稍后再试",Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

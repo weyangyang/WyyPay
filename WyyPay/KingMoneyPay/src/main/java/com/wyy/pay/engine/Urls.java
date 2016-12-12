@@ -17,11 +17,15 @@ public class Urls {
 	 */
 	public static final String LOGIN_URL = "/login";
 	/**
+	 * 忘记密码url
+	 */
+	public static final String FORGET_PASSWORD_URL = "/resetpwd";
+	/**
 	 * 注册url
 	 */
 	public static final String REGISTER_URL = "/register";
 	/**
-	 * 注册url
+	 * 短信验证码url
 	 */
 	public static final String SMS_VERIFY_URL = "/sendsmscode";
 	/**
