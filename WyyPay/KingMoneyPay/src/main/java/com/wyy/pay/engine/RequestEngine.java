@@ -45,6 +45,14 @@ public class RequestEngine extends BaseRequest {
 		super.post(Urls.BASE_URL + Urls.LOGIN_URL,paramsList, callBack);
 
 	}
+	public void getDiscountWithPhone(String uname,String wyyCode,String phone,NetReqCallBack callBack){
+		ParameterList paramsList = HttpNetUtils.getHttpClient().newParams();
+		paramsList.add(new StringParameter("username", uname));
+		paramsList.add(new StringParameter("wyycode", wyyCode));
+		paramsList.add(new StringParameter("phone", phone));
+		super.post(Urls.BASE_URL + Urls.GET_DISCOUNT_URL,paramsList, callBack);
+
+	}
 	public void frogetPasswdCommit(String phone,String passwd,String smsCode,NetReqCallBack callBack){
 		ParameterList paramsList = HttpNetUtils.getHttpClient().newParams();
 		paramsList.add(new StringParameter("phone", phone));

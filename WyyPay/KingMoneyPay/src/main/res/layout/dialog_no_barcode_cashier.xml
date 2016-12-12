@@ -60,6 +60,7 @@
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:background="@color/gray"
+        android:padding="1dp"
         android:layout_below="@+id/viewDevideCenter"
         >
         <LinearLayout
@@ -178,16 +179,19 @@
                 android:textSize="20sp"
                 android:text="6"
                 />
-            <ImageView
+            <TextView
                 android:tag="8"
                 android:id="@+id/view8"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/red"
                 android:background="@color/white"
-                android:src="@drawable/icon_gathering_delete"
+                android:textStyle="bold"
+                android:textColor="@color/text_cashier_num"
+                android:textSize="30sp"
+                android:paddingBottom="10dp"
+                android:text="←"
                 />
 
         </LinearLayout>
@@ -262,7 +266,6 @@
             android:layout_width="fill_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:layout_marginBottom="1dp"
             android:layout_height="fill_parent" >
             <TextView
                 android:layout_width="fill_parent"

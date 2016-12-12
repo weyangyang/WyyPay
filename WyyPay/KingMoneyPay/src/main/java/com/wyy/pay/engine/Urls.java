@@ -21,6 +21,10 @@ public class Urls {
 	 */
 	public static final String FORGET_PASSWORD_URL = "/resetpwd";
 	/**
+	 * 获取优惠券url
+	 */
+	public static final String GET_DISCOUNT_URL = "/getusercoupon";
+	/**
 	 * 注册url
 	 */
 	public static final String REGISTER_URL = "/register";

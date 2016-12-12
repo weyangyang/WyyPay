@@ -2,6 +2,7 @@ package com.wyy.pay.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,12 +20,24 @@ import android.widget.Toast;
 import com.wyy.pay.R;
 import com.wyy.pay.adapter.StatementsDiscountAdapter;
 import com.wyy.pay.bean.StatementsDiscountBean;
+import com.wyy.pay.bean.TableUserBean;
+import com.wyy.pay.engine.RequestEngine;
+import com.wyy.pay.engine.XTAsyncTask;
+import com.wyy.pay.ui.dialog.CustomDialog;
+import com.wyy.pay.utils.BaseOptions;
+import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.ClearEditText;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
+import netutils.engine.NetReqCallBack;
 import xtcore.utils.PreferenceUtils;
+import xtcore.utils.SystemUtils;
 
 /**
  * Created by liyusheng on 16/11/24.
@@ -55,6 +68,7 @@ public class StatementDiscountPopWindow extends PopupWindow implements Statement
     private StatementsDiscountAdapter adapter1;
     private StatementsDiscountAdapter adapter2;
     private StatementsDiscountAdapter adapter3;
+    private CustomDialog mCustomDialog;
 
     public void setDiscountListData(ArrayList<StatementsDiscountBean> zheKList,ArrayList<StatementsDiscountBean> zhenDList) {
         this.zheKList = zheKList;
@@ -114,7 +128,22 @@ public class StatementDiscountPopWindow extends PopupWindow implements Statement
             public void onClick(View v) {
               String phone =   edtZhenU.getText().toString().trim();
                if(!TextUtils.isEmpty(phone)&& Utils.isPhoneNumber(phone)){
-                   //获取优惠券 TODO:xxx去服务器获取
+                   if(Utils.checkUserIsLogin(mActivity)){
+                       String userName = BaseApplication.getUserName();
+                       String wyyCode = BaseApplication.getWyyCode();
+                       if(SystemUtils.checkAllNet(mActivity)){
+                           getUserDiscountWithPhoneNum(phone,userName,wyyCode);
+                       }else {
+                           Toast.makeText(mActivity,mActivity.getString(R.string.text_net_error),Toast.LENGTH_SHORT).show();
+                       }
+                   }else {
+                       Intent intent = new Intent(mActivity,LoginActivity.class);
+                       mActivity.startActivity(intent);
+                       StatementDiscountPopWindow.this.dismiss();
+                   }
+
+
+
                }else {
                    Toast.makeText(mActivity,"您输入的手机号不正确，请重新输入！",Toast.LENGTH_SHORT).show();
                }
@@ -128,6 +157,78 @@ public class StatementDiscountPopWindow extends PopupWindow implements Statement
                 }
             }
         });
+    }
+
+    private void getUserDiscountWithPhoneNum(final String phone, final String userName, final String wyyCode) {
+      new XTAsyncTask() {
+          @Override
+          protected void onPreExectue() {
+              if(mCustomDialog==null)
+                  mCustomDialog = CustomDialog.createLoadingDialog(mActivity,
+                          "正在获取优惠券...", true);
+          }
+
+          @Override
+          protected void doInbackgroud() {
+              RequestEngine.getInstance().getDiscountWithPhone(userName, wyyCode, phone, new NetReqCallBack() {
+                  @Override
+                  public void getSuccData(int statusCode, final String strJson, String strUrl) {
+                      mActivity.runOnUiThread(new Runnable() {
+                          @Override
+                          public void run() {
+                              try {
+                                  JSONObject mJSONObject = new JSONObject(strJson);
+                                  int code = mJSONObject.optInt("Code");
+                                  String message = mJSONObject.optString("Message");
+                                  if(code==1){
+                                      //获取优惠券成功
+                                      JSONArray array = mJSONObject.optJSONArray("Obj");
+                                      if(array!=null&&array.length()>0){
+                                          if(serverList==null){
+                                              serverList = new ArrayList<StatementsDiscountBean>();
+                                          }
+                                          for (int i=0;i<array.length();i++){
+                                              StatementsDiscountBean bean = new StatementsDiscountBean();
+                                              JSONObject aObj = array.getJSONObject(i);
+                                             double discount =  aObj.optDouble("value");
+                                              bean.setNumber(discount);
+                                              bean.setType(3);
+                                              serverList.add(bean);
+                                          }
+                                          mActivity.runOnUiThread(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                  if(serverList.size()>0){
+                                                      rclZhenU.setVisibility(View.VISIBLE);
+                                                      adapter3.setDiscountListData(serverList);
+                                                      adapter3.notifyDataSetChanged();
+                                                  }
+                                              }
+                                          });
+
+                                      }
+
+
+                                  }else {
+                                      if(!TextUtils.isEmpty(message))
+                                          Toast.makeText(mActivity,message,Toast.LENGTH_SHORT).show();
+                                  }
+                              } catch (JSONException e) {
+                                  Toast.makeText(mActivity,"服务器异常，请稍后再试",Toast.LENGTH_SHORT).show();
+                              }
+                          }
+                      });
+
+                  }
+              });
+          }
+
+          @Override
+          protected void onPostExecute() {
+              if(null!=mActivity&& mCustomDialog.isShowing())
+                  mCustomDialog.dismiss();
+          }
+      }.execute();
     }
 
     private void setPopConfig() {

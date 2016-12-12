@@ -13,7 +13,9 @@
     android:layout_height="wrap_content"
     android:layout_below="@+id/navBar"
     android:background="@color/white"
-    android:layout_margin="10dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp"
     >
     <TextView
         android:id="@+id/tvMoneyTitle"
@@ -113,24 +115,22 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@+id/rlCash"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="@color/bg_main_gray" />
 
 
 
-    <View
-        android:id="@+id/viewDevideCenter"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/viewDevideTop"
-        android:background="@color/gray" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/gray"
         android:orientation="vertical"
-        android:layout_below="@+id/viewDevideCenter"
+        android:layout_margin="20dp"
+        android:padding="1dp"
+        android:layout_below="@+id/viewDevideTop"
         >
         <LinearLayout
             android:layout_width="fill_parent"
@@ -248,16 +248,20 @@
                 android:textSize="20sp"
                 android:text="6"
                 />
-            <ImageView
+            <TextView
                 android:tag="8"
                 android:id="@+id/view8"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/red"
                 android:background="@color/white"
-                android:src="@drawable/icon_gathering_delete"
+                android:textStyle="bold"
+                android:textColor="@color/text_cashier_num"
+                android:textSize="30sp"
+                android:paddingBottom="10dp"
+                android:text="←"
+
                 />
 
         </LinearLayout>
@@ -332,7 +336,6 @@
             android:layout_width="fill_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:layout_marginBottom="1dp"
             android:layout_height="fill_parent" >
             <TextView
                 android:layout_width="fill_parent"

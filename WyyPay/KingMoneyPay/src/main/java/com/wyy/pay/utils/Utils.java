@@ -37,7 +37,10 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.wyy.pay.bean.TableUserBean;
 import com.wyy.pay.ui.ApkUpdateActivity;
+import com.wyy.pay.ui.BaseApplication;
+import com.wyy.pay.ui.LoginActivity;
 
 import xtcore.utils.SystemUtils;
 
@@ -126,6 +129,23 @@ public class Utils {
 			flag = true;
 		}
 		return flag;
+	}
+
+	public static boolean checkUserIsLogin(Activity mActivity){
+		String userName = BaseApplication.getUserName();
+		String wyyCode = BaseApplication.getWyyCode();
+		if(TextUtils.isEmpty(userName)||TextUtils.isEmpty(wyyCode)){
+			TableUserBean userBean = (TableUserBean) new TableUserBean().querySingle(null,null,null,null,null,null);
+			if(userBean!=null){
+				BaseApplication.setUserName(userBean.getUserName());
+				BaseApplication.setWyyCode(userBean.getWyyCode());
+				return true;
+			}else {
+				return false;
+			}
+		}else {
+			return true;
+		}
 	}
 
 	/**
