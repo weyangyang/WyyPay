@@ -7,7 +7,7 @@ package com.wyy.pay.engine;
  */
 public class Urls {
 	public static  String ROOT_URL = "https://fxssl.weyangyang.com";
-	public static final String BASE_URL = ROOT_URL + "/api";
+	public static final String BASE_URL = ROOT_URL + "/storepayapi";
 	/**
 	 * 意见反馈url
 	 */
@@ -15,15 +15,15 @@ public class Urls {
 	/**
 	 * 登录url
 	 */
-	public static final String LOGIN_URL = "/storepayapi/login";
+	public static final String LOGIN_URL = "/login";
 	/**
 	 * 注册url
 	 */
-	public static final String REGISTER_URL = "/storepayapi/register";
+	public static final String REGISTER_URL = "/register";
 	/**
 	 * 注册url
 	 */
-	public static final String SMS_VERIFY_URL = "storepayapi/sendsmscode";
+	public static final String SMS_VERIFY_URL = "/sendsmscode";
 	/**
 	 * app版本更新url
 	 */

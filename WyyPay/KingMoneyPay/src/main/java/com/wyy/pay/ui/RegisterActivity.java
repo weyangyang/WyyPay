@@ -1,6 +1,5 @@
 package com.wyy.pay.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import com.wyy.pay.engine.RequestEngine;
 import com.wyy.pay.engine.XTAsyncTask;
 import com.wyy.pay.sms.SmsObserver;
 import com.wyy.pay.ui.dialog.CustomDialog;
-import com.wyy.pay.ui.dialog.CustomProgressDialog;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.ClearEditText;
@@ -36,7 +34,6 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
     private CustomDialog mCustomDialog;
     private SmsObserver smsObserver;
     private Uri SMS_INBOX = Uri.parse("content://sms/");
-    private CustomProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_register);
@@ -63,7 +60,6 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
 
     @Override
     public void initData() {
-        handler.sendEmptyMessage(COUNT);
         smsObserver = new SmsObserver(this, handler);
         this.getContentResolver()
                 .registerContentObserver(SMS_INBOX, true, smsObserver);
@@ -121,7 +117,7 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
     public void setIdentifyButton(boolean clickable) {
         if (!clickable) {
             btnVerifyCode.setTextColor(getResources().getColor(
-                    R.color.bg_main_gray));
+                    R.color.text_cashier_num));
             btnVerifyCode
                     .setBackgroundResource(R.drawable.bg_btn_other);
         } else {
@@ -167,6 +163,9 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
                 }
                 if(Utils.isPhoneNumber(phone)){
                     if(SystemUtils.checkAllNet(this)){
+                        PreferenceUtils.setPrefLong(RegisterActivity.this,"last_get_identify",
+                                System.currentTimeMillis());
+                        handler.sendEmptyMessage(COUNT);
                         getSmsVerifyCode(phone);
                     }else {
                         Toast.makeText(RegisterActivity.this,getString(R.string.text_net_error),Toast.LENGTH_SHORT).show();
@@ -182,9 +181,9 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
         new XTAsyncTask() {
             @Override
             protected void onPreExectue() {
-                if(dialog==null)
-                    dialog = CustomProgressDialog.createLoadingDialog(RegisterActivity.this);
-            }
+                if(mCustomDialog==null)
+                    mCustomDialog = CustomDialog.createLoadingDialog(RegisterActivity.this,
+                            "正在获取短信验证码", true); }
 
             @Override
             protected void doInbackgroud() {
@@ -213,10 +212,10 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
 
             @Override
             protected void onPostExecute() {
-                if(null!=RegisterActivity.this && dialog.isShowing())
-                    dialog.dismiss();
+                if(null!=RegisterActivity.this && mCustomDialog.isShowing())
+                    mCustomDialog.dismiss();
             }
-        };
+        }.execute();
     }
 
     private void checkParamAndRegister() {
@@ -264,7 +263,7 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
                                         RegisterActivity.this.startActivity(intent);
                                         RegisterActivity.this.finish();
                                     }else {
-                                        if(TextUtils.isEmpty(message))
+                                        if(!TextUtils.isEmpty(message))
                                             Toast.makeText(RegisterActivity.this,message,Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (JSONException e) {
@@ -282,7 +281,7 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
                 if(null!=RegisterActivity.this&& mCustomDialog.isShowing())
              mCustomDialog.dismiss();
              }
-        };
+        }.execute();
 
 
     }
