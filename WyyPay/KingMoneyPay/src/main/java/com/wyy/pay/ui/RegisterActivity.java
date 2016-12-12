@@ -32,6 +32,7 @@ import xtcore.utils.SystemUtils;
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
 private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etShopName;
     private Button btnVerifyCode;
+    private Button btnRegister;
     private CustomDialog mCustomDialog;
     private SmsObserver smsObserver;
     private Uri SMS_INBOX = Uri.parse("content://sms/");
@@ -54,6 +55,7 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
         etPhoneNum = (ClearEditText) findViewById(R.id.etPhoneNum);
         etVerifyCode = (ClearEditText) findViewById(R.id.etVerifyCode);
         btnVerifyCode = (Button) findViewById(R.id.btnVerifyCode);
+        btnRegister = (Button) findViewById(R.id.btnRegister);
         etRegPasswd = (ClearEditText) findViewById(R.id.etRegPasswd);
         etShopName = (ClearEditText) findViewById(R.id.etShopName);
 
@@ -71,6 +73,8 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
     public void initListener() {
         tvNavRight.setOnClickListener(this);
         tvNavLeft.setOnClickListener(this);
+        btnVerifyCode.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
     }
     private final int COUNT = 0;
     private final int ERROR = 1;
@@ -155,14 +159,18 @@ private com.wyy.pay.view.ClearEditText etPhoneNum,etVerifyCode,etRegPasswd,etSho
                 }
                 break;
             case R.id.btnVerifyCode: //获取验证码
+
                 String phone = etPhoneNum.getText().toString().trim();
                 if(TextUtils.isEmpty(phone)){
                     Toast.makeText(this,"手机号码不能为空",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(Utils.isPhoneNumber(phone)){
-
-                    getSmsVerifyCode(phone);
+                    if(SystemUtils.checkAllNet(this)){
+                        getSmsVerifyCode(phone);
+                    }else {
+                        Toast.makeText(RegisterActivity.this,getString(R.string.text_net_error),Toast.LENGTH_SHORT).show();
+                    }
                 }else {
                     Toast.makeText(this,"目前只支持中国地区手机号码",Toast.LENGTH_SHORT).show();
                 }
