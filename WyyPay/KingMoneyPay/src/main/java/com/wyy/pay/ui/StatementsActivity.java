@@ -2,6 +2,7 @@ package com.wyy.pay.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -15,14 +16,22 @@ import com.wyy.pay.bean.StatementsDiscountBean;
 import com.wyy.pay.bean.TableCategoryBean;
 import com.wyy.pay.bean.TableDiscountNumBean;
 import com.wyy.pay.bean.TableGoodsDetailBean;
+import com.wyy.pay.engine.RequestEngine;
+import com.wyy.pay.engine.XTAsyncTask;
+import com.wyy.pay.ui.dialog.CustomDialog;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.SubstringUtils;
 import com.wyy.pay.utils.Utils;
 import com.wyy.pay.view.XListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
+import netutils.engine.NetReqCallBack;
 import xtcore.utils.PreferenceUtils;
+import xtcore.utils.SystemUtils;
 
 public class StatementsActivity extends BaseActivity implements View.OnClickListener, StatementDiscountPopWindow.DiscountPopWindowListener, Statements2PayPopWindow.Statements2PayPopWindowListener {
 	private RelativeLayout rlDiscount;//用于显示优惠信息
@@ -38,6 +47,8 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 	private ArrayList<TableGoodsDetailBean> shopingCartList;//购物车
 	private StatementsListAdapter adapter;
 	private  double toPayMoney =0;//实际支付的钱
+	private CustomDialog mCustomDialog;
+	private volatile static String orderNo = "";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_statements);
@@ -171,9 +182,17 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 				break;
 			case R.id.tvOrderToPay:
 				if(toPayMoney>0){
-					Statements2PayPopWindow payPopWindow = new Statements2PayPopWindow(this,toPayMoney);
-					payPopWindow.showPopupWindow(tvOrderToPay);
-					payPopWindow.set2PayWindowListener(this);
+					if(SystemUtils.checkAllNet(this)){
+						if(Utils.checkUserIsLogin(StatementsActivity.this)){
+							createOrder4Net(BaseApplication.getUserName(),BaseApplication.getWyyCode(),toPayMoney);
+						}else {
+							Intent intent = new Intent(StatementsActivity.this,LoginActivity.class);
+							StatementsActivity.this.startActivity(intent);
+						}
+
+					}else {
+						Toast.makeText(StatementsActivity.this,getString(R.string.text_net_error),Toast.LENGTH_SHORT).show();
+					}
 				}else {
 					Toast.makeText(this,"待支付金额不能为0",Toast.LENGTH_SHORT).show();
 				}
@@ -208,6 +227,64 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 				tvNavRight.setBackgroundResource(R.drawable.ic_nav_back);
 				break;
 		}
+	}
+
+	private void createOrder4Net(final String userName, final String wyyCode, final double toPayMoney) {
+		new XTAsyncTask() {
+			@Override
+			protected void onPreExectue() {
+				if(mCustomDialog==null)
+					mCustomDialog = CustomDialog.createLoadingDialog(StatementsActivity.this,
+							"正在保存订单", true);
+			}
+
+			@Override
+			protected void doInbackgroud() {
+				RequestEngine.getInstance().createOrder(userName, wyyCode, toPayMoney, new NetReqCallBack() {
+					@Override
+					public void getSuccData(int statusCode, final String strJson, String strUrl) {
+						StatementsActivity.this.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								try {
+									JSONObject mJSONObject = new JSONObject(strJson);
+									int code = mJSONObject.optInt("Code");
+									String message = mJSONObject.optString("Message");
+									if(code==1){
+										//创建订单成功
+										JSONObject orderObj = 	mJSONObject.optJSONObject("Obj");
+										if(orderObj!=null){
+											String orderNo = orderObj.optString("orderno");
+											StatementsActivity.orderNo = orderNo;
+											StatementsActivity.this.runOnUiThread(new Runnable() {
+												@Override
+												public void run() {
+													Statements2PayPopWindow payPopWindow = new Statements2PayPopWindow(StatementsActivity.this,toPayMoney);
+													payPopWindow.showPopupWindow(tvOrderToPay);
+													payPopWindow.set2PayWindowListener(StatementsActivity.this);
+												}
+											});
+										}
+									}else {
+										if(!TextUtils.isEmpty(message))
+											Toast.makeText(StatementsActivity.this,message,Toast.LENGTH_SHORT).show();
+									}
+								} catch (JSONException e) {
+									Toast.makeText(StatementsActivity.this,"服务器异常，请稍后再试",Toast.LENGTH_SHORT).show();
+								}
+							}
+						});
+
+					}
+				});
+			}
+
+			@Override
+			protected void onPostExecute() {
+				if(null!=StatementsActivity.this&& mCustomDialog.isShowing())
+					mCustomDialog.dismiss();
+			}
+		}.execute();
 	}
 
 	@Override

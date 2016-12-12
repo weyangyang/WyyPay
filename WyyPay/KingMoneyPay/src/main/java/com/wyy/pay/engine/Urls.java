@@ -17,6 +17,10 @@ public class Urls {
 	 */
 	public static final String LOGIN_URL = "/login";
 	/**
+	 * 生成订单url
+	 */
+	public static final String CREATE_ORDER_URL = "/createorder";
+	/**
 	 * 忘记密码url
 	 */
 	public static final String FORGET_PASSWORD_URL = "/resetpwd";
