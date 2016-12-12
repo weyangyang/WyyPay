@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:textColor="@color/gray"
-        android:src="@drawable/ic_placeorder_cart"
+        android:src="@drawable/ic_cart_have_shoping"
         android:layout_alignParentLeft="true"
         android:gravity="center"
         android:layout_marginLeft="10dp"

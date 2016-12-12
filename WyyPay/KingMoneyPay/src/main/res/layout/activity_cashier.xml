@@ -156,7 +156,7 @@
                 android:textSize="20sp"
                 android:text="9"
                 />
-            <ImageView
+            <TextView
                 android:id="@+id/view4"
                 android:tag="4"
                 android:layout_width="fill_parent"
@@ -164,7 +164,11 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@color/white"
-                android:src="@drawable/icon_gathering_delete"
+                android:textStyle="bold"
+                android:textColor="@color/text_cashier_num"
+                android:textSize="30sp"
+                android:paddingBottom="10dp"
+                android:text="←"
                 />
 
         </LinearLayout>
@@ -218,16 +222,19 @@
                 android:textSize="20sp"
                 android:text="6"
                 />
-            <ImageView
+            <TextView
                 android:tag="8"
                 android:id="@+id/view8"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/red"
+                android:paddingTop="8dp"
+                android:textSize="12sp"
+                android:textColor="@color/text_cashier_num"
+                android:drawableTop="@drawable/img_alipay_small"
+                android:text="支付宝"
                 android:background="@color/white"
-                android:src="@drawable/icon_gathering_alipay"
                 />
 
         </LinearLayout>
@@ -280,16 +287,19 @@
                 android:textSize="20sp"
                 android:text="3"
                 />
-            <ImageView
+            <TextView
                 android:tag="12"
                 android:id="@+id/view12"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/red"
+                android:text="微信"
+                android:paddingTop="8dp"
+                android:textSize="12sp"
+                android:drawableTop="@drawable/img_we_chat_small"
+                android:textColor="@color/text_cashier_num"
                 android:background="@color/white"
-                android:src="@drawable/icon_gathering_wechat"
                 />
 
         </LinearLayout>
@@ -341,15 +351,19 @@
                 android:textSize="20sp"
                 android:text="+"
                 />
-            <ImageView
+            <TextView
                 android:tag="16"
                 android:id="@+id/view16"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:paddingTop="8dp"
+                android:textColor="@color/text_cashier_num"
+                android:drawableTop="@drawable/icon_cash_small"
+                android:text="现金"
+                android:textSize="12sp"
                 android:background="@color/white"
-                android:src="@drawable/icon_gathering_cash"
                 />
 
         </LinearLayout>

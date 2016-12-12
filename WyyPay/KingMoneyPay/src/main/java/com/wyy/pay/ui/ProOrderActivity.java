@@ -686,7 +686,7 @@ private void updateCartCount4DB(){
     }
 
     private void updateTotalMoneyShow() {
-        double totalMoney=0.00;
+        double totalMoney=0;
         ConcurrentHashMap<String,TableGoodsDetailBean> goodsMap = new ConcurrentHashMap<String,TableGoodsDetailBean>();
         if(shopingCartList!=null&&shopingCartList.size()>0){
             if(noBarcodeCashierList!=null&&noBarcodeCashierList.size()>0){
@@ -702,6 +702,11 @@ private void updateCartCount4DB(){
 
             }
             goodsMap.clear();
+        }
+        if(totalMoney>0){
+            ivShopingCart.setBackgroundResource(R.drawable.ic_cart_have_shoping);
+        }else {
+            ivShopingCart.setBackgroundResource(R.drawable.ic_cart_no_shoping);
         }
         tvOrderTotalMoney.setText(String.format("合计：￥%s",String.format("%.2f",totalMoney)));
     }

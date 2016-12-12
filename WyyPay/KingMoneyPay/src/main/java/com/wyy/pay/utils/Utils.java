@@ -134,6 +134,12 @@ public class Utils {
 	 * @return  String 两位小数点的数学
      */
 	public static String getNumSumWithString(String str) {
+//		if(!TextUtils.isEmpty(str)&&str.contains(".")){
+//			String beforePoint = SubstringUtils.substringBefore(str,".");
+//			String afterPoint = SubstringUtils.substringAfterLast(str,".");
+//			str = String.format("%s.%s",beforePoint,afterPoint);
+//
+//		}
 		double sum = 0;
 		String strTemp = "";
 		if (!TextUtils.isEmpty(str.trim())) {

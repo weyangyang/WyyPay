@@ -162,13 +162,21 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
             builder.delete(0,builder.length());
         }
     }
+    String tempText = "";
     private  void appendNumText(String text){
 
         if(TextUtils.isEmpty(text)){
             setDefaultText();
             return;
         }
+        if(tempText.contains(".")&&text.equals(".")){
+            return;
+        }
+        if(tempText.contains("+")&&text.equals("+")){
+            return;
+        }
         builder.append(text);
+        tempText = text;
         String result =  builder.toString();
         if("+".equals(result.substring(0))){
             setDefaultText();

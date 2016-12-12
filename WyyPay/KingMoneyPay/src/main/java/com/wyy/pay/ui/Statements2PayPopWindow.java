@@ -10,6 +10,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.wyy.pay.R;
+import com.wyy.pay.utils.Utils;
 
 /**
  * Created by liyusheng on 16/12/10.
@@ -111,7 +112,7 @@ public class Statements2PayPopWindow extends PopupWindow {
     public void showPopupWindow(View v) {
         int[] location = new int[2];
         v.getLocationOnScreen(location);
-        showAsDropDown(v, 0,  -location[1]);
+        showAsDropDown(v, 0,  -location[1]- Utils.dip2px(mActivity,5.0f));
 
     }
 

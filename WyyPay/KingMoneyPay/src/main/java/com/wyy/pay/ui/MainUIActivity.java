@@ -61,10 +61,10 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
                 setImageViewWidth(widgetW);
             }
         });
-        addBottomTab(ProOrderActivity.class,R.drawable.tab_activity_main_ui,R.string.text_order,TAB_ID_ORDER);
-        addBottomTab(CashierActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_pay,TAB_ID_CASHIER);
-        addBottomTab(ProManageActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_pro_manage,TAB_ID_PRO_MANAGE);
-        addBottomTab(MyActivity.class,R.drawable.tab_activity_main_ui,R.string.text_main_ui_my,TAB_ID_MY);
+        addBottomTab(ProOrderActivity.class,R.drawable.tab_activity_main_order,R.string.text_order,TAB_ID_ORDER);
+        addBottomTab(CashierActivity.class,R.drawable.tab_activity_main_cashier,R.string.text_main_ui_pay,TAB_ID_CASHIER);
+        addBottomTab(ProManageActivity.class,R.drawable.tab_activity_main_store,R.string.text_main_ui_pro_manage,TAB_ID_PRO_MANAGE);
+        addBottomTab(MyActivity.class,R.drawable.tab_activity_main_my,R.string.text_main_ui_my,TAB_ID_MY);
         setDefaultTab(0);
 
 

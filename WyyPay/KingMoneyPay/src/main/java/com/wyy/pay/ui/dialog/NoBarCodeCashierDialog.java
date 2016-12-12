@@ -101,7 +101,11 @@ public class NoBarCodeCashierDialog extends Dialog implements View.OnClickListen
         return false;
     }
     String goodsPrice = "0";
+    String tempText = "";
     private  void appendNumText(String text){
+        if(tempText.contains(".")&&text.equals(".")){
+            return;
+        }
 if(".".equals(text)&&builder.length()==0){
     builder.append("0");
 }
@@ -109,10 +113,9 @@ if(".".equals(text)&&builder.length()==0){
             setDefaultText();
             return;
         }
-        if(".".equals(text)&&builder.toString().contains(".")){
-            return;
-        }
+
         builder.append(text);
+        tempText = text;
         String result =  builder.toString();
         if(".".equals(result.substring(0))){
             String temp = builder.toString();
