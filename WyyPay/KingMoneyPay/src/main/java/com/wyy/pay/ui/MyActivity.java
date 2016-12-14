@@ -32,6 +32,8 @@ public class MyActivity extends Activity implements View.OnClickListener {
     private TextView tvEvaluateUs;//评价我们
     private TextView tvFeedback;//意见反馈
     private TextView tvAboutUs;//关于我们
+    private TextView tvMyIncome;//我的收入
+    private TextView tvOrderList;//账单流水
     private TextView tvUpdateVersition;//版本更新
     private TextView tvNewVersionHint;//有新版本（提示）
     private TextView tvVersionNum;//版本号
@@ -52,6 +54,8 @@ public class MyActivity extends Activity implements View.OnClickListener {
         tvSign.setOnClickListener(this);
         tvAccountSetting.setOnClickListener(this);
         tvCashierManage.setOnClickListener(this);
+        tvMyIncome.setOnClickListener(this);
+        tvOrderList.setOnClickListener(this);
 //        tvCashierMateriel.setOnClickListener(this);
 //        tvTransactionCosts.setOnClickListener(this);
         tvCashierSetting.setOnClickListener(this);
@@ -71,6 +75,8 @@ public class MyActivity extends Activity implements View.OnClickListener {
         tvSign  = (TextView) findViewById(R.id.tvSign);
         tvAccountSetting  = (TextView) findViewById(R.id.tvAccountSetting);
         tvCashierManage  = (TextView) findViewById(R.id.tvCashierManage);
+        tvMyIncome  = (TextView) findViewById(R.id.tvMyIncome);
+        tvOrderList  = (TextView) findViewById(R.id.tvOrderList);
 //        tvCashierMateriel  = (TextView) findViewById(R.id.tvCashierMateriel);
 //        tvTransactionCosts  = (TextView) findViewById(R.id.tvTransactionCosts);
         tvCashierSetting  = (TextView) findViewById(R.id.tvCashierSetting);
@@ -90,6 +96,12 @@ public class MyActivity extends Activity implements View.OnClickListener {
             case R.id.ivAvater://点击头像
                 break;
             case R.id.tvNameVerify://实名认证
+                break;
+            case R.id.tvMyIncome://我的收入
+                break;
+            case R.id.tvOrderList://账单流水
+                intent = new Intent(this,OrderListActivity.class);
+                startActivity(intent);
                 break;
             case R.id.tvSign://签到
                 break;

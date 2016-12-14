@@ -153,48 +153,48 @@
             android:layout_marginLeft="15dp"
             android:background="@color/bg_nav_bar"
             ></View>
-        <!-- ==============收银物料============= -->
-        <!--<TextView-->
-            <!--android:id="@+id/tvCashierMateriel"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="45dp"-->
-            <!--android:drawablePadding="14dp"-->
-            <!--android:paddingLeft="15dp"-->
-            <!--android:paddingRight="15dp"-->
-            <!--android:textColor="@color/bg_nav_bar"-->
-            <!--android:text="收银物料"-->
-            <!--android:textSize="16sp"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:drawableLeft="@drawable/ic_cash_feed"-->
-            <!--android:drawableRight="@drawable/icon_arrow"-->
-            <!--/>-->
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1px"-->
-            <!--android:layout_marginLeft="15dp"-->
-            <!--android:background="@color/bg_nav_bar"-->
-            <!--&gt;</View>-->
-        <!--&lt;!&ndash; ==============交易费率============= &ndash;&gt;-->
-        <!--<TextView-->
-            <!--android:id="@+id/tvTransactionCosts"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="45dp"-->
-            <!--android:drawablePadding="14dp"-->
-            <!--android:paddingLeft="15dp"-->
-            <!--android:paddingRight="15dp"-->
-            <!--android:textColor="@color/bg_nav_bar"-->
-            <!--android:text="交易费率"-->
-            <!--android:textSize="16sp"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:drawableLeft="@drawable/ic_cashier_fee"-->
-            <!--android:drawableRight="@drawable/icon_arrow"-->
-            <!--/>-->
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1px"-->
-            <!--android:background="@color/bg_nav_bar"-->
-            <!--&gt;</View>-->
-        <!-- ==============收银设置============= -->
+        <!-- ==============我的收入============= -->
+        <TextView
+            android:id="@+id/tvMyIncome"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:drawablePadding="14dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="@color/bg_nav_bar"
+            android:text="我的收入"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ic_cash_feed"
+            android:drawableRight="@drawable/icon_arrow"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="15dp"
+            android:background="@color/bg_nav_bar"
+            ></View>
+        <!-- ==============账单流水============= -->
+        <TextView
+            android:id="@+id/tvOrderList"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:drawablePadding="14dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="@color/bg_nav_bar"
+            android:text="账单流水"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ic_cashier_fee"
+            android:drawableRight="@drawable/icon_arrow"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/bg_nav_bar"
+            ></View>
+         ==============收银设置=============
         <TextView
             android:id="@+id/tvCashierSetting"
             android:layout_width="match_parent"

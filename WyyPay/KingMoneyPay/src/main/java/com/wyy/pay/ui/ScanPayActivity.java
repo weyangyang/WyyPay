@@ -256,6 +256,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                                         ScanPayActivity.this.runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
+                                                Toast.makeText(ScanPayActivity.this, "支付成功！", Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent();
                                                 intent.putExtra(ConstantUtils.INTENT_KEY_ORDER_NO,orderNewNo);
                                                 ScanPayActivity.this.setResult(RESULT_OK, intent);

@@ -128,6 +128,11 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
+            android:name=".ui.OrderListActivity"
+            android:label="账单流水界面"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <activity
             android:name=".ui.ProDetailActivity"
             android:label="商品详情界面"
             android:screenOrientation="portrait"

@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_nav_bar"
+    >
+<TextView
+    android:id="@+id/tvFilterWeixinPay"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/white"
+    android:text="微信收款"
+    android:gravity="center"
+    android:textSize="16sp"
+    android:padding="10dp"
+    />
+    <View
+        android:id="@+id/devide1"
+        android:layout_below="@+id/tvFilterWeixinPay"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bg_main_gray"
+        />
+<TextView
+    android:id="@+id/tvFilterAlipay"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/white"
+    android:text="支付宝收款"
+    android:layout_below="@+id/devide1"
+    android:gravity="center"
+    android:textSize="16sp"
+    android:padding="10dp"
+    />
+    <View
+        android:id="@+id/devide2"
+        android:layout_below="@+id/tvFilterAlipay"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bg_main_gray"
+        />
+
+<TextView
+    android:id="@+id/tvFilterCash"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/white"
+    android:text="现金收款"
+    android:layout_below="@+id/devide2"
+    android:gravity="center"
+    android:textSize="16sp"
+    android:padding="10dp"
+    />
+    <View
+        android:id="@+id/devide3"
+        android:layout_below="@+id/tvFilterCash"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bg_main_gray"
+        />
+<TextView
+    android:id="@+id/tvNoFilter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/white"
+    android:text="全部收款"
+    android:layout_below="@+id/devide3"
+    android:gravity="center"
+    android:textSize="16sp"
+    android:padding="10dp"
+    />
+    <View
+        android:id="@+id/devide4"
+        android:layout_below="@+id/tvNoFilter"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/bg_main_gray"
+        />
+
+
+</RelativeLayout>
