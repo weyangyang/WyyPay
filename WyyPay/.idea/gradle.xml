@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/KingMoneyPay" />
+            <option value="$PROJECT_DIR$/MPChartLib" />
             <option value="$PROJECT_DIR$/SgeCore" />
             <option value="$PROJECT_DIR$/SgeNetReq" />
             <option value="$PROJECT_DIR$/SgeScan" />

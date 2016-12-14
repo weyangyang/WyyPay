@@ -27,4 +27,6 @@ dependencies {
 //    compile project(':SgeNetReq')
     compile project(':SgeCore')
     compile project(':SgeScan')
+    compile project(':MPChartLib')
+
 }

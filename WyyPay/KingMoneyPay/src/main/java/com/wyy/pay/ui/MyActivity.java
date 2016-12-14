@@ -98,6 +98,8 @@ public class MyActivity extends Activity implements View.OnClickListener {
             case R.id.tvNameVerify://实名认证
                 break;
             case R.id.tvMyIncome://我的收入
+                intent = new Intent(this,MyIncomeActivity.class);
+                startActivity(intent);
                 break;
             case R.id.tvOrderList://账单流水
                 intent = new Intent(this,OrderListActivity.class);

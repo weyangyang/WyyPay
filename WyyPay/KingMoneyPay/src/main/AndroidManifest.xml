@@ -123,6 +123,11 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
+            android:name=".ui.MyIncomeActivity"
+            android:label="我的收入界面"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <activity
             android:name=".ui.CashPayActivity"
             android:label="现金收款界面"
             android:screenOrientation="portrait"

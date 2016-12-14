@@ -1,4 +1,4 @@
-include ':KingMoneyPay'
+include ':KingMoneyPay', ':MPChartLib'
 include ':SgeCore'
 include ':SgeNetReq'
 include ':SgeScan'
