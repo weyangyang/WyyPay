@@ -1,5 +1,6 @@
 package com.wyy.pay.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
@@ -46,8 +47,11 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import netutils.engine.NetReqCallBack;
+import netutils.httpclient.core.HttpResponse;
 import xtcore.utils.PreferenceUtils;
 import xtcore.utils.SystemUtils;
+
+import static android.R.id.message;
 
 /**
  * Created by liyusheng on 16/11/9.
@@ -238,11 +242,29 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
 
                     if(mCustomDialog==null)
                         mCustomDialog = CustomDialog.createLoadingDialog(ScanPayActivity.this,
-                                "正在获取短信验证码", true); }
+                                "正在尝试支付...", true); }
 
                 @Override
                 protected void doInbackgroud() {
                     RequestEngine.getInstance().requestPay(BaseApplication.getUserName(),BaseApplication.getWyyCode(),authToken,orderNo, new NetReqCallBack() {
+                        @Override
+                        public void getTimeOutMsg(int exceptionCode, String strMsg, String strUrl) {
+                            super.getTimeOutMsg(exceptionCode, strMsg, strUrl);
+                            Utils.sendAsyncToast(ScanPayActivity.this,"网络异常，支付失败");
+                        }
+
+                        @Override
+                        public void getErrData(int statusCode, String strJson, String strUrl) {
+                            super.getErrData(statusCode, strJson, strUrl);
+                            Utils.sendAsyncToast(ScanPayActivity.this,"支付失败");
+                        }
+
+                        @Override
+                        public void getExceptionMsg(int exceptionCode, String strMsg, String strUrl) {
+                            super.getExceptionMsg(exceptionCode, strMsg, strUrl);
+                            Utils.sendAsyncToast(ScanPayActivity.this,"支付失败");
+                        }
+
                         @Override
                         public void getSuccData(int statusCode, String strJson, String strUrl) {
                             try {
@@ -266,13 +288,18 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                                         });
                                     }
                                 }else {
-                                    if(TextUtils.isEmpty(message))
-                                        Toast.makeText(ScanPayActivity.this,message,Toast.LENGTH_SHORT).show();
+                                    if(TextUtils.isEmpty(message)){
+                                        Utils.sendAsyncToast(ScanPayActivity.this,message);
+
+                                    }else {
+                                        Utils.sendAsyncToast(ScanPayActivity.this,"支付失败");
+
+                                    }
                                     ScanPayActivity.this.orderNo="";
                                     ScanPayActivity.this.finish();
                                 }
                             } catch (JSONException e) {
-                                Toast.makeText(ScanPayActivity.this,"服务器异常，请稍后再试",Toast.LENGTH_SHORT).show();
+                                Utils.sendAsyncToast(ScanPayActivity.this,"服务器异常，请稍后再试");
                                 ScanPayActivity.this.orderNo="";
                                 ScanPayActivity.this.finish();
                             }
@@ -291,6 +318,8 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
             startActivity(intent);
         }
     }
+
+
 
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {

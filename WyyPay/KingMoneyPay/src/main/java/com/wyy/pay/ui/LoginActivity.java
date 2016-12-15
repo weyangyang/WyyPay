@@ -68,7 +68,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         Intent intent = null;
         switch (v.getId()) {
             case R.id.btnLogin://登录
-                if(3>2){
+                if(3>9){
                     intent = new Intent(LoginActivity.this,MainUIActivity.class);
                     startActivity(intent);
                     LoginActivity.this.finish();

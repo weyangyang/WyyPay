@@ -235,12 +235,30 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 			protected void onPreExectue() {
 				if(mCustomDialog==null)
 					mCustomDialog = CustomDialog.createLoadingDialog(StatementsActivity.this,
-							"正在保存订单", true);
+							"正在生成订单...", true);
 			}
 
 			@Override
 			protected void doInbackgroud() {
 				RequestEngine.getInstance().createOrder(userName, wyyCode, toPayMoney, new NetReqCallBack() {
+					@Override
+					public void getTimeOutMsg(int exceptionCode, String strMsg, String strUrl) {
+						super.getTimeOutMsg(exceptionCode, strMsg, strUrl);
+						Utils.sendAsyncToast(StatementsActivity.this,"网络异常,创建订单失败");
+					}
+
+					@Override
+					public void getExceptionMsg(int exceptionCode, String strMsg, String strUrl) {
+						super.getExceptionMsg(exceptionCode, strMsg, strUrl);
+						Utils.sendAsyncToast(StatementsActivity.this,"创建订单失败");
+					}
+
+					@Override
+					public void getErrData(int statusCode, String strJson, String strUrl) {
+						super.getErrData(statusCode, strJson, strUrl);
+						Utils.sendAsyncToast(StatementsActivity.this,"创建订单失败");
+					}
+
 					@Override
 					public void getSuccData(int statusCode, final String strJson, String strUrl) {
 						StatementsActivity.this.runOnUiThread(new Runnable() {
@@ -267,10 +285,10 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 										}
 									}else {
 										if(!TextUtils.isEmpty(message))
-											Toast.makeText(StatementsActivity.this,message,Toast.LENGTH_SHORT).show();
+										Utils.sendAsyncToast(StatementsActivity.this,message);
 									}
 								} catch (JSONException e) {
-									Toast.makeText(StatementsActivity.this,"服务器异常，请稍后再试",Toast.LENGTH_SHORT).show();
+									Utils.sendAsyncToast(StatementsActivity.this,"创建订单失败");
 								}
 							}
 						});

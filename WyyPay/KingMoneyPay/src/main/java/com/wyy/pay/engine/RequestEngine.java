@@ -49,8 +49,9 @@ public class RequestEngine extends BaseRequest {
 		ParameterList paramsList = HttpNetUtils.getHttpClient().newParams();
 		paramsList.add(new StringParameter("username", uname));
 		paramsList.add(new StringParameter("wyycode", wyyCode));
-		paramsList.add(new StringParameter("money", String.valueOf(money)));
-		super.post(Urls.BASE_URL + Urls.GET_DISCOUNT_URL,paramsList, callBack);
+		paramsList.add(new StringParameter("money", String.valueOf((int)money)));
+//		paramsList.add(new StringParameter("money", String.valueOf(money)));
+		super.post(Urls.BASE_URL + Urls.CREATE_ORDER_URL,paramsList, callBack);
 
 	}
 	public void getDiscountWithPhone(String uname,String wyyCode,String phone,NetReqCallBack callBack){
@@ -93,7 +94,7 @@ public class RequestEngine extends BaseRequest {
 		paramsList.add(new StringParameter("wyycode", wyyCode));
 		paramsList.add(new StringParameter("authcode", authCode));
 		paramsList.add(new StringParameter("orderno", orderNo));
-		super.post(Urls.BASE_URL + Urls.REGISTER_URL,paramsList, callBack);
+		super.post(Urls.BASE_URL + Urls.REQUEST_PAY_URL,paramsList, callBack);
 
 	}
 	public void getSmsVerifyCode(String phone,NetReqCallBack callBack){

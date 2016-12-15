@@ -227,5 +227,12 @@
             android:background="@color/bg_main_gray"
             android:layout_below="@+id/tv7DayMoneyTitle"
             />
+      <com.sge.mpchart.charts.LineChart
+          android:layout_below="@+id/viewDD7"
+          android:id="@+id/lineChart7day"
+          android:background="@color/white"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          />
 </RelativeLayout>
 </ScrollView>

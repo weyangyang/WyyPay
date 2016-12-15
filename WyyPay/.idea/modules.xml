@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/KingMoneyPay/KingMoneyPay.iml" filepath="$PROJECT_DIR$/KingMoneyPay/KingMoneyPay.iml" />
       <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/SgeCore/SgeCore.iml" filepath="$PROJECT_DIR$/SgeCore/SgeCore.iml" />
       <module fileurl="file://$PROJECT_DIR$/SgeNetReq/SgeNetReq.iml" filepath="$PROJECT_DIR$/SgeNetReq/SgeNetReq.iml" />
       <module fileurl="file://$PROJECT_DIR$/SgeScan/SgeScan.iml" filepath="$PROJECT_DIR$/SgeScan/SgeScan.iml" />

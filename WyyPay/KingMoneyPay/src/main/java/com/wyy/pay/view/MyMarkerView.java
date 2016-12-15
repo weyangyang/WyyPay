@@ -7,6 +7,7 @@ import com.sge.mpchart.components.MarkerView;
 import com.sge.mpchart.data.CandleEntry;
 import com.sge.mpchart.data.Entry;
 import com.sge.mpchart.utils.Utils;
+import com.wyy.pay.R;
 
 /**
  */
@@ -19,7 +20,7 @@ public class MyMarkerView extends MarkerView  {
 	public MyMarkerView(final Context context, int layoutResource) {
 		super(context, layoutResource);
 		this.mContext = context;
-		//tvContent = (TextView) findViewById(R.id.tvContent);
+		tvContent = (TextView) findViewById(R.id.tvMarkerView);
 	}
 
 	// callbacks everytime the MarkerView is redrawn, can be used to update the

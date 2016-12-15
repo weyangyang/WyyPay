@@ -36,11 +36,13 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.wyy.pay.bean.TableUserBean;
 import com.wyy.pay.ui.ApkUpdateActivity;
 import com.wyy.pay.ui.BaseApplication;
 import com.wyy.pay.ui.LoginActivity;
+import com.wyy.pay.ui.ScanPayActivity;
 
 import xtcore.utils.SystemUtils;
 
@@ -147,7 +149,14 @@ public class Utils {
 			return true;
 		}
 	}
-
+	public static void sendAsyncToast(final Activity mActivity, final String message) {
+		mActivity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(mActivity,message,Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
 	/**
 	 *
 	 * @param str 需要相加的字符串数字
