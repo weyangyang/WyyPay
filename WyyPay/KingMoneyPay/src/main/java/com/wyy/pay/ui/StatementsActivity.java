@@ -47,7 +47,7 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 	private ArrayList<TableGoodsDetailBean> shopingCartList;//购物车
 	private StatementsListAdapter adapter;
 	private  double toPayMoney =0;//实际支付的钱
-	private CustomDialog mCustomDialog;
+
 	private volatile static String orderNo = "";
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -228,7 +228,7 @@ public class StatementsActivity extends BaseActivity implements View.OnClickList
 				break;
 		}
 	}
-
+	private CustomDialog mCustomDialog;
 	private void createOrder4Net(final String userName, final String wyyCode, final double toPayMoney) {
 		new XTAsyncTask() {
 			@Override

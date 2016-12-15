@@ -308,6 +308,8 @@ private static final int TO_SCAN_ADD_SHOPING_REQUEST_CODE = 112;
                 if(shopingCartList==null){
                     shopingCartList = new ArrayList<>();
                 }
+                intent.putExtra(ConstantUtils.INTENT_KEY_SHOPING_CART_LIST,(Serializable)shopingCartList);
+                startActivity(intent);
 
                 break;
             case R.id.tvNavLeft:

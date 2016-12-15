@@ -14,13 +14,21 @@ import com.wyy.pay.R;
 import com.wyy.pay.bean.StatementsDiscountBean;
 import com.wyy.pay.bean.TableCategoryBean;
 import com.wyy.pay.bean.TableDiscountNumBean;
+import com.wyy.pay.engine.RequestEngine;
+import com.wyy.pay.engine.XTAsyncTask;
+import com.wyy.pay.ui.dialog.CustomDialog;
 import com.wyy.pay.utils.ConstantUtils;
 import com.wyy.pay.utils.SubstringUtils;
 import com.wyy.pay.utils.Utils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
+import netutils.engine.NetReqCallBack;
 import xtcore.utils.PreferenceUtils;
+import xtcore.utils.SystemUtils;
 
 
 public class CashierActivity extends BaseActivity implements View.OnClickListener, View.OnLongClickListener, StatementDiscountPopWindow.DiscountPopWindowListener {
@@ -229,7 +237,23 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
                 addNumber((TextView) v);
                 break;
             case ALIPAY:
-                toWeixinOrAlipay(ConstantUtils.PAY_TYPE_ALIPAY);
+                double toPayMoney = getTotalMoney();
+                if(toPayMoney>0){
+                    if(SystemUtils.checkAllNet(this)){
+                        if(Utils.checkUserIsLogin(CashierActivity.this)){
+                            createOrder4Net(2,BaseApplication.getUserName(),BaseApplication.getWyyCode(),toPayMoney);
+                        }else {
+                            Intent intent = new Intent(CashierActivity.this,LoginActivity.class);
+                            CashierActivity.this.startActivity(intent);
+                        }
+
+                    }else {
+                        Toast.makeText(CashierActivity.this,getString(R.string.text_net_error),Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(this,"待支付金额不能为0",Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case NUMBER_1:
                 addNumber((TextView) v);
@@ -241,7 +265,22 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
                 addNumber((TextView) v);
                 break;
             case WEIXIN_PAY:
-                toWeixinOrAlipay(ConstantUtils.PAY_TYPE_WEXIN);
+                 toPayMoney = getTotalMoney();
+                if(toPayMoney>0){
+                    if(SystemUtils.checkAllNet(this)){
+                        if(Utils.checkUserIsLogin(CashierActivity.this)){
+                            createOrder4Net(1,BaseApplication.getUserName(),BaseApplication.getWyyCode(),toPayMoney);
+                        }else {
+                            Intent intent = new Intent(CashierActivity.this,LoginActivity.class);
+                            CashierActivity.this.startActivity(intent);
+                        }
+
+                    }else {
+                        Toast.makeText(CashierActivity.this,getString(R.string.text_net_error),Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(this,"待支付金额不能为0",Toast.LENGTH_SHORT).show();
+                }
                 break;
             case NUMBER_0:
                 addNumber((TextView) v);
@@ -313,14 +352,27 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
         tvNavRight.setText("");
         tvNavRight.setBackgroundResource(R.drawable.ic_nav_back);
     }
-
+private double getTotalMoney(){
+    String strMoney = tvMoneySumCount.getText().toString().trim();
+    strMoney =  SubstringUtils.substringAfter(strMoney,"￥");
+    double money = Double.parseDouble(strMoney);
+    if(money<=0){
+        return 0;
+    }
+    if(tempMoney>0 && tempMoney<money){
+        return tempMoney;
+    }else {
+        return money;
+    }
+}
     private void toWeixinOrAlipay(int payType) {
         if(rlDiscount.isShown()){
             setDiscountShow(true,discountType,discountNum);
         }
-        String strMoney = tvMoneySumCount.getText().toString().trim();
-        strMoney =  SubstringUtils.substringAfter(strMoney,"￥");
-        double money = Double.parseDouble(strMoney);
+//        String strMoney = tvMoneySumCount.getText().toString().trim();
+//        strMoney =  SubstringUtils.substringAfter(strMoney,"￥");
+//        double money = Double.parseDouble(strMoney);
+        double money = getTotalMoney();
         if(money<=0){
             Toast.makeText(this,"付款金额不能为0!",Toast.LENGTH_SHORT).show();
             return;
@@ -328,12 +380,12 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
 
        Intent intent = new Intent(this,ScanPayActivity.class);
         intent.putExtra(ConstantUtils.INTENT_KEY_PAY_TYPE,payType);
-        if(tempMoney>0 && tempMoney<money){
-            intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,tempMoney);
-        }else {
+//        if(tempMoney>0 && tempMoney<money){
+//            intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,tempMoney);
+//        }else {
 
             intent.putExtra(ConstantUtils.INTENT_KEY_SUM_OF_MONEY,money);
-        }
+//        }
         startActivity(intent);
         clearAllHistoryData();
     }
@@ -367,5 +419,87 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
     public void onDiscountPopWindowDismiss() {
         tvNavRight.setText("选择优惠");
         tvNavRight.setBackground(null);
+    }
+    private volatile  static String orderNo = "";
+    private CustomDialog mCustomDialog;
+    private void createOrder4Net(final int type, final String userName, final String wyyCode, final double toPayMoney) {
+        new XTAsyncTask() {
+            @Override
+            protected void onPreExectue() {
+                if(mCustomDialog==null)
+                    mCustomDialog = CustomDialog.createLoadingDialog(CashierActivity.this,
+                            "正在生成订单...", true);
+            }
+
+            @Override
+            protected void doInbackgroud() {
+                RequestEngine.getInstance().createOrder(userName, wyyCode, toPayMoney, new NetReqCallBack() {
+                    @Override
+                    public void getTimeOutMsg(int exceptionCode, String strMsg, String strUrl) {
+                        super.getTimeOutMsg(exceptionCode, strMsg, strUrl);
+                        Utils.sendAsyncToast(CashierActivity.this,"网络异常,创建订单失败");
+                    }
+
+                    @Override
+                    public void getExceptionMsg(int exceptionCode, String strMsg, String strUrl) {
+                        super.getExceptionMsg(exceptionCode, strMsg, strUrl);
+                        Utils.sendAsyncToast(CashierActivity.this,"创建订单失败");
+                    }
+
+                    @Override
+                    public void getErrData(int statusCode, String strJson, String strUrl) {
+                        super.getErrData(statusCode, strJson, strUrl);
+                        Utils.sendAsyncToast(CashierActivity.this,"创建订单失败");
+                    }
+
+                    @Override
+                    public void getSuccData(int statusCode, final String strJson, String strUrl) {
+                        CashierActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    JSONObject mJSONObject = new JSONObject(strJson);
+                                    int code = mJSONObject.optInt("Code");
+                                    String message = mJSONObject.optString("Message");
+                                    if(code==1){
+                                        //创建订单成功
+                                        JSONObject orderObj = 	mJSONObject.optJSONObject("Obj");
+                                        if(orderObj!=null){
+                                            String orderNo = orderObj.optString("orderno");
+                                            CashierActivity.orderNo = orderNo;
+                                            CashierActivity.this.runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    switch (type){
+                                                        case 1:
+                                                            toWeixinOrAlipay(ConstantUtils.PAY_TYPE_WEXIN);
+                                                            break;
+                                                        case 2:
+                                                            toWeixinOrAlipay(ConstantUtils.PAY_TYPE_ALIPAY);
+                                                            break;
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }else {
+                                        if(!TextUtils.isEmpty(message))
+                                            Utils.sendAsyncToast(CashierActivity.this,message);
+                                    }
+                                } catch (JSONException e) {
+                                    Utils.sendAsyncToast(CashierActivity.this,"创建订单失败");
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+
+            @Override
+            protected void onPostExecute() {
+                if(null!=CashierActivity.this&& mCustomDialog.isShowing())
+                    mCustomDialog.dismiss();
+            }
+        }.execute();
     }
 }
