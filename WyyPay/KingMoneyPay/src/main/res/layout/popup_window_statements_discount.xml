@@ -11,8 +11,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/white"
-    android:padding="15dp"
-
+    android:padding="20dp"
     >
     <TextView
         android:id="@+id/tvDiscountTips"
@@ -126,7 +125,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="20dp"
         android:background="#66000000"
         android:id="@+id/spaceView" />
 </LinearLayout>
