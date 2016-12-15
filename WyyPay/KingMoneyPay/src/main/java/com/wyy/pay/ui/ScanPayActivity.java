@@ -242,7 +242,7 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
 
                     if(mCustomDialog==null)
                         mCustomDialog = CustomDialog.createLoadingDialog(ScanPayActivity.this,
-                                "正在尝试支付...", true); }
+                                "正在尝试支付...", false); }
 
                 @Override
                 protected void doInbackgroud() {
@@ -251,18 +251,21 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                         public void getTimeOutMsg(int exceptionCode, String strMsg, String strUrl) {
                             super.getTimeOutMsg(exceptionCode, strMsg, strUrl);
                             Utils.sendAsyncToast(ScanPayActivity.this,"网络异常，支付失败");
+                            AsyncfinishThisActivity();
                         }
 
                         @Override
                         public void getErrData(int statusCode, String strJson, String strUrl) {
                             super.getErrData(statusCode, strJson, strUrl);
                             Utils.sendAsyncToast(ScanPayActivity.this,"支付失败");
+                            AsyncfinishThisActivity();
                         }
 
                         @Override
                         public void getExceptionMsg(int exceptionCode, String strMsg, String strUrl) {
                             super.getExceptionMsg(exceptionCode, strMsg, strUrl);
                             Utils.sendAsyncToast(ScanPayActivity.this,"支付失败");
+                            AsyncfinishThisActivity();
                         }
 
                         @Override
@@ -295,13 +298,11 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
                                         Utils.sendAsyncToast(ScanPayActivity.this,"支付失败");
 
                                     }
-                                    ScanPayActivity.this.orderNo="";
-                                    ScanPayActivity.this.finish();
+                                    AsyncfinishThisActivity();
                                 }
                             } catch (JSONException e) {
                                 Utils.sendAsyncToast(ScanPayActivity.this,"服务器异常，请稍后再试");
-                                ScanPayActivity.this.orderNo="";
-                                ScanPayActivity.this.finish();
+                                AsyncfinishThisActivity();
                             }
                         }
                     });
@@ -319,6 +320,18 @@ public class ScanPayActivity extends BaseActivity implements Callback, View.OnCl
         }
     }
 
+    private void AsyncfinishThisActivity() {
+        ScanPayActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(mCustomDialog!=null && mCustomDialog.isShowing()){
+                    mCustomDialog.dismiss();
+                }
+                ScanPayActivity.this.orderNo="";
+                ScanPayActivity.this.finish();
+            }
+        });
+    }
 
 
     private void initCamera(SurfaceHolder surfaceHolder) {
