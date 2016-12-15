@@ -11,12 +11,12 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginTop="20dp"
-            android:background="@color/bg_nav_bar"
+            android:background="@color/gray"
             />
         <RelativeLayout
             android:id="@+id/rlDiscountSetting"
             android:layout_width="match_parent"
-            android:layout_height="42dp"
+            android:layout_height="46dp"
             android:background="@color/white"
             android:gravity="center|left"
             android:paddingLeft="20dp"
@@ -55,14 +55,14 @@
 <View
     android:layout_width="match_parent"
     android:layout_height="1px"
-    android:background="@color/bg_nav_bar"
+    android:background="@color/gray"
     android:layout_marginRight="20dp"
     android:layout_marginLeft="20dp"
     />
         <RelativeLayout
             android:id="@+id/rlRemoveZeroSetting"
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
+            android:layout_height="46dp"
             android:gravity="center|left"
             android:background="@color/white"
             android:paddingLeft="20dp"
@@ -100,7 +100,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/bg_nav_bar"
+            android:background="@color/gray"
             />
     </LinearLayout>
 
