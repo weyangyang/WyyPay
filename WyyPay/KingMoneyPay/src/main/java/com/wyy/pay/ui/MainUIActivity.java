@@ -28,10 +28,13 @@ public class MainUIActivity extends TabActivity implements View.OnClickListener 
     private static final String TAB_ID_MY = "my";
     private int widgetW = 0, currIndex = 0;
     private ImageView iv_cursor;
+    public static MainUIActivity instance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
+
         super.onCreate(savedInstanceState);
+        instance = this;
         initView();
         initData();
         mTabHost = getTabHost();

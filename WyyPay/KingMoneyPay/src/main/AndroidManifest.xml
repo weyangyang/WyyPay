@@ -60,87 +60,104 @@
             android:name=".ui.MainUIActivity"
             android:label="主程序界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.LoginActivity"
             android:label="登录界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.RegisterActivity"
             android:label="注册界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.ProManageActivity"
             android:label="商品管理界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.CashierSettingActivity"
             android:label="收银设置界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.RemoveZeroSettingActivity"
             android:label="抹零设置界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.DiscountSettingActivity"
             android:label="优惠折扣设置界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.ForgetPasswdActivity"
             android:label="忘记密码界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.FeedbackActivity"
             android:label="意见反馈界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.MyActivity"
             android:label="我的界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.StatementsActivity"
             android:label="结算界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
         android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.ProOrderActivity"
             android:label="产品订单界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.CashierActivity"
             android:label="收款界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.MyIncomeActivity"
             android:label="我的收入界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.CashPayActivity"
             android:label="现金收款界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.OrderListActivity"
             android:label="账单流水界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.ProDetailActivity"
             android:label="商品详情界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".ui.ApkUpdateActivity"
@@ -156,6 +173,7 @@
             android:name=".ui.ScanPayActivity"
             android:label="扫码付款界面"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity

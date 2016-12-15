@@ -272,7 +272,7 @@ public class CashierActivity extends BaseActivity implements View.OnClickListene
                 clearAllHistoryData();
                 break;
             case TV_NAV_LEFT:
-                Toast.makeText(this,(String)v.getTag(),Toast.LENGTH_SHORT).show();
+                MainUIActivity.instance.getTabHost().setCurrentTab(0);
                 break;
             case TV_NAV_RIGHT:
                 if(totalMoney>0){

@@ -246,8 +246,10 @@ public class ProManageActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.tvNavLeft://返回
-                ProManageActivity.this.finish();
+            case R.id.tvNavLeft://去订单界面
+                MainUIActivity.instance.getTabHost().setCurrentTab(0);
+//                Intent intent = new Intent(this,ProOrderActivity.class);
+//                startActivity(intent);
                 break;
             case R.id.tvNavRight:
                 ProManagePopWindow morePopWindow = new ProManagePopWindow(ProManageActivity.this);
